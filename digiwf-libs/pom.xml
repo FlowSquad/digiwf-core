@@ -18,6 +18,10 @@
         <module>digiwf-json-serialization</module>
         <module>digiwf-spring-cloudstream-utils</module>
         <module>digiwf-camunda-prometheus</module>
+        <module>digiwf-message</module>
+        <module>digiwf-message/digiwf-message-core</module>
+        <module>digiwf-message/digiwf-message-starter</module>
+        <module>digiwf-message/digiwf-message-example</module>
     </modules>
 
 </project>
