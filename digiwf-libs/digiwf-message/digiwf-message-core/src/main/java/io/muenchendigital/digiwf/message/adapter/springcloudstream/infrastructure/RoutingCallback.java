@@ -8,7 +8,7 @@ import java.util.Map;
 
 import static io.muenchendigital.digiwf.message.adapter.springcloudstream.infrastructure.ErrorMessageDefaultListener.FUNCTION_ROUTING_ERROR;
 import static io.muenchendigital.digiwf.message.adapter.springcloudstream.infrastructure.ErrorMessageDefaultListener.MISSING_TYPE_HEADER_ERROR;
-
+import static io.muenchendigital.digiwf.message.common.MessageConstants.TYPE;
 
 @RequiredArgsConstructor
 public class RoutingCallback implements MessageRoutingCallback {
@@ -27,8 +27,8 @@ public class RoutingCallback implements MessageRoutingCallback {
     public FunctionRoutingResult routingResult(final Message<?> message) {
         final String functionDefinition;
 
-        if (message.getHeaders().containsKey(StreamingHeaders.TYPE)) {
-            final String header = (String) message.getHeaders().get(StreamingHeaders.TYPE);
+        if (message.getHeaders().containsKey(TYPE)) {
+            final String header = (String) message.getHeaders().get(TYPE);
             functionDefinition = this.typeMappings.getOrDefault(header, FUNCTION_ROUTING_ERROR);
         } else {
             functionDefinition = MISSING_TYPE_HEADER_ERROR;

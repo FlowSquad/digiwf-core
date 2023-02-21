@@ -7,7 +7,7 @@ import java.util.Map;
 
 @Getter
 public class Message<T> {
-    private final Map<String, String> headers;
+    private final Map<String, Object> headers;
     private T payload;
 
     public Message() {

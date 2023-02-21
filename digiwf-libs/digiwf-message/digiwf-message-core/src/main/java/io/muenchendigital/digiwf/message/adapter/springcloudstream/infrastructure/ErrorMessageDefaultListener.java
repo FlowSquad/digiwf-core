@@ -8,8 +8,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.function.Consumer;
 
-@Slf4j
+import static io.muenchendigital.digiwf.message.common.MessageConstants.TYPE;
+
 @Component
+@Slf4j
 public class ErrorMessageDefaultListener {
 
     public static final String FUNCTION_ROUTING_ERROR = "springCloudstreamUtilsFunctionRoutingError";
@@ -21,7 +23,7 @@ public class ErrorMessageDefaultListener {
      */
     @Bean
     public Consumer<Message<Object>> springCloudstreamUtilsFunctionRoutingError() {
-        return message -> log.error("Message handling for messages with type '{}' is not implemented. (message {})", message.getHeaders().get(StreamingHeaders.TYPE), message.getHeaders().get(MessageHeaders.ID));
+        return message -> log.error("Message handling for messages with type '{}' is not implemented. (message {})", message.getHeaders().get(TYPE), message.getHeaders().get(MessageHeaders.ID));
     }
 
     /**
@@ -30,7 +32,7 @@ public class ErrorMessageDefaultListener {
      */
     @Bean
     public Consumer<Message<Object>> springCloudstreamUtilsMissingTypeHeaderError() {
-        return message -> log.error("The message header '{}' must be set in message '{}'.", StreamingHeaders.TYPE, message.getHeaders().get(MessageHeaders.ID));
+        return message -> log.error("The message header '{}' must be set in message '{}'.", TYPE, message.getHeaders().get(MessageHeaders.ID));
     }
 
 }

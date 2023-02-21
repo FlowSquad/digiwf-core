@@ -1,6 +1,5 @@
 package io.muenchendigital.digiwf.message.core.impl;
 
-import io.muenchendigital.digiwf.message.common.Api;
 import io.muenchendigital.digiwf.message.core.api.IncidentApi;
 import io.muenchendigital.digiwf.message.core.api.SendMessageApi;
 import io.muenchendigital.digiwf.message.core.api.TechnicalErrorApi;
@@ -8,7 +7,8 @@ import io.muenchendigital.digiwf.message.core.impl.dto.TechnicalErrorDto;
 import io.muenchendigital.digiwf.message.core.impl.model.Message;
 import lombok.RequiredArgsConstructor;
 
-@Api
+import static io.muenchendigital.digiwf.message.common.MessageConstants.*;
+
 @RequiredArgsConstructor
 public class MessageService implements SendMessageApi, TechnicalErrorApi, IncidentApi {
 
@@ -16,10 +16,6 @@ public class MessageService implements SendMessageApi, TechnicalErrorApi, Incide
     private final SendMessagePort sendMessagePort;
     private final String incidentDestination;
     private final String technicalErrorDestination;
-
-    public static final String TYPE = "type";
-    public static final String DIGIWF_MESSAGE_NAME = "digiwf.messagename";
-    public static final String DIGIWF_PROCESS_INSTANCE_ID = "digiwf.processinstanceid";
 
     @Override
     public boolean sendMessage(final Object payload, final String destination) {

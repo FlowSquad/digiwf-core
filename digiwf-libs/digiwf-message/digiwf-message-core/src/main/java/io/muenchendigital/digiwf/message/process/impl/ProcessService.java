@@ -1,6 +1,5 @@
 package io.muenchendigital.digiwf.message.process.impl;
 
-import io.muenchendigital.digiwf.message.common.Api;
 import io.muenchendigital.digiwf.message.process.api.CorrelateMessageApi;
 import io.muenchendigital.digiwf.message.process.api.StartProcessApi;
 import io.muenchendigital.digiwf.message.process.impl.dto.CorrelateMessageDto;
@@ -10,7 +9,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
-@Api
+import static io.muenchendigital.digiwf.message.common.MessageConstants.*;
+
 @RequiredArgsConstructor
 public class ProcessService implements StartProcessApi, CorrelateMessageApi {
 
@@ -22,9 +22,6 @@ public class ProcessService implements StartProcessApi, CorrelateMessageApi {
 
     private static final String CORRELATEMESSAGEV_01 = "correlatemessagev01";
     private static final String STARTPROCESS_V01 = "startProcessV01";
-    public static final String TYPE = "type";
-    public static final String DIGIWF_MESSAGE_NAME = "digiwf.messagename";
-    public static final String DIGIWF_PROCESS_INSTANCE_ID = "digiwf.processinstanceid";
 
     @Override
     public boolean startProcess(final String processKey, final Map<String, Object> variables) {
