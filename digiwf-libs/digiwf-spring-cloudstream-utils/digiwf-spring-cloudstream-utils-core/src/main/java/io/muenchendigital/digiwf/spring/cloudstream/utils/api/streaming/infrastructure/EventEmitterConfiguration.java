@@ -40,6 +40,7 @@ public class EventEmitterConfiguration {
      *
      * @return Sink
      */
+    @Deprecated
     @Bean
     public Sinks.Many<Message<CorrelateMessageEvent>> sendCorrelateMessageSink() {
         return Sinks.many().unicast().onBackpressureBuffer();
@@ -51,6 +52,7 @@ public class EventEmitterConfiguration {
      * @param sink corresponding sink
      * @return supplier
      */
+    @Deprecated
     @Bean
     public Supplier<Flux<Message<CorrelateMessageEvent>>> sendCorrelateMessage(final Sinks.Many<Message<CorrelateMessageEvent>> sink) {
         return sink::asFlux;
@@ -61,6 +63,7 @@ public class EventEmitterConfiguration {
      *
      * @return Sink
      */
+    @Deprecated
     @Bean
     public Sinks.Many<Message<BpmnErrorEvent>> sendBpmnErrorSink() {
         return Sinks.many().unicast().onBackpressureBuffer();
@@ -72,6 +75,7 @@ public class EventEmitterConfiguration {
      * @param sink corresponding sink
      * @return supplier
      */
+    @Deprecated
     @Bean
     public Supplier<Flux<Message<BpmnErrorEvent>>> sendBpmnError(final Sinks.Many<Message<BpmnErrorEvent>> sink) {
         return sink::asFlux;
@@ -82,6 +86,7 @@ public class EventEmitterConfiguration {
      *
      * @return Sink
      */
+    @Deprecated
     @Bean
     public Sinks.Many<Message<String>> sendIncidentSink() {
         return Sinks.many().unicast().onBackpressureBuffer();
@@ -93,6 +98,7 @@ public class EventEmitterConfiguration {
      * @param sink corresponding sink
      * @return supplier
      */
+    @Deprecated
     @Bean
     public Supplier<Flux<Message<String>>> sendIncident(final Sinks.Many<Message<String>> sink) {
         return sink::asFlux;
@@ -103,6 +109,7 @@ public class EventEmitterConfiguration {
      *
      * @return Sink
      */
+    @Deprecated
     @Bean
     public Sinks.Many<Message<StartProcessEvent>> startProcessSink() {
         return Sinks.many().unicast().onBackpressureBuffer();
@@ -114,6 +121,7 @@ public class EventEmitterConfiguration {
      * @param sink corresponding sink
      * @return supplier
      */
+    @Deprecated
     @Bean
     public Supplier<Flux<Message<StartProcessEvent>>> sendStartProcess(final Sinks.Many<Message<StartProcessEvent>> sink) {
         return sink::asFlux;
