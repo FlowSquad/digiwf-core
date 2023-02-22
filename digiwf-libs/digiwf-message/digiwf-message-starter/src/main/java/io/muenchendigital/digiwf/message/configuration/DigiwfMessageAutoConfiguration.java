@@ -1,27 +1,25 @@
 package io.muenchendigital.digiwf.message.configuration;
 
 import io.muenchendigital.digiwf.message.adapter.springcloudstream.SpringCloudStreamAdapter;
-import io.muenchendigital.digiwf.message.core.api.IncidentApi;
-import io.muenchendigital.digiwf.message.core.api.SendMessageApi;
-import io.muenchendigital.digiwf.message.core.api.TechnicalErrorApi;
-import io.muenchendigital.digiwf.message.core.impl.DigiwfMessageService;
+import io.muenchendigital.digiwf.message.core.api.MessageApi;
+import io.muenchendigital.digiwf.message.core.impl.MessageApiImpl;
 import io.muenchendigital.digiwf.message.core.impl.SendMessagePort;
-import io.muenchendigital.digiwf.message.process.api.CorrelateMessageApi;
-import io.muenchendigital.digiwf.message.process.api.StartProcessApi;
-import io.muenchendigital.digiwf.message.process.impl.CorrelateMessagePort;
-import io.muenchendigital.digiwf.message.process.impl.DigiwfProcessService;
-import io.muenchendigital.digiwf.message.process.impl.StartProcessPort;
+import io.muenchendigital.digiwf.message.process.api.ProcessApi;
+import io.muenchendigital.digiwf.message.process.impl.ProcessApiImpl;
+import io.muenchendigital.digiwf.message.process.impl.ProcessPortImpl;
+import io.muenchendigital.digiwf.message.process.impl.port.CorrelateMessagePort;
+import io.muenchendigital.digiwf.message.process.impl.port.IncidentPort;
+import io.muenchendigital.digiwf.message.process.impl.port.StartProcessPort;
+import io.muenchendigital.digiwf.message.process.impl.port.TechnicalErrorPort;
 import io.muenchendigital.digiwf.message.properties.DigiwfMessageProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.messaging.Message;
 import reactor.core.publisher.Sinks;
 
 @RequiredArgsConstructor
-@ComponentScan(basePackages = "io.muenchendigital.digiwf.message")
 @EnableConfigurationProperties(value = DigiwfMessageProperties.class)
 public class DigiwfMessageAutoConfiguration {
 
@@ -30,22 +28,27 @@ public class DigiwfMessageAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public DigiwfMessageService digiwfMessageService(final SendMessagePort messagePort) {
-        return new DigiwfMessageService(
-                messagePort,
-                this.digiwfMessageProperties.getIncidentDestination(),
-                this.digiwfMessageProperties.getTechnicalErrorDestination()
-        );
+    public MessageApiImpl messageApiImpl(final SendMessagePort messagePort) {
+        return new MessageApiImpl(messagePort);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public DigiwfProcessService digiwfProcessService(final CorrelateMessagePort correlateMessagePort, final StartProcessPort startProcessPort) {
-        return new DigiwfProcessService(
+    public ProcessApiImpl processApiImpl(
+            final CorrelateMessagePort correlateMessagePort,
+            final StartProcessPort startProcessPort,
+            final IncidentPort incidentPort,
+            final TechnicalErrorPort technicalErrorPort
+            ) {
+        return new ProcessApiImpl(
                 this.digiwfMessageProperties.getCorrelateMessageDestination(),
                 this.digiwfMessageProperties.getStartProcessDestination(),
+                this.digiwfMessageProperties.getIncidentDestination(),
+                this.digiwfMessageProperties.getTechnicalErrorDestination(),
                 correlateMessagePort,
-                startProcessPort
+                startProcessPort,
+                incidentPort,
+                technicalErrorPort
         );
     }
 
@@ -53,49 +56,43 @@ public class DigiwfMessageAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public CorrelateMessageApi correlateMessageApi(final DigiwfProcessService processService) {
-        return processService;
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public StartProcessApi startProcessApi(final DigiwfProcessService processService) {
-        return processService;
+    public ProcessApi processApi(final ProcessApiImpl processApiImpl) {
+        return processApiImpl;
     }
 
     // message api
 
     @Bean
     @ConditionalOnMissingBean
-    public SendMessageApi sendMessageApi(final DigiwfMessageService messageService) {
-        return messageService;
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public TechnicalErrorApi technicalErrorApi(final DigiwfMessageService messageService) {
-        return messageService;
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public IncidentApi incidentApi(final DigiwfMessageService messageService) {
-        return messageService;
+    public MessageApi messageApi(final MessageApiImpl messageApiImpl) {
+        return messageApiImpl;
     }
 
     // process port
 
-    @Bean
-    @ConditionalOnMissingBean
-    public CorrelateMessagePort correlatMessagePort() {
-        return this.springCloudStreamAdapter();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public StartProcessPort startProcessPort() {
-        return this.springCloudStreamAdapter();
-    }
+//    @Bean
+//    @ConditionalOnMissingBean
+//    public CorrelateMessagePort correlatMessagePort() {
+//        return this.springCloudStreamAdapter();
+//    }
+//
+//    @Bean
+//    @ConditionalOnMissingBean
+//    public StartProcessPort startProcessPort() {
+//        return this.springCloudStreamAdapter();
+//    }
+//
+//    @Bean
+//    @ConditionalOnMissingBean
+//    public IncidentPort incidentPort() {
+//        return this.springCloudStreamAdapter();
+//    }
+//
+//    @Bean
+//    @ConditionalOnMissingBean
+//    public TechnicalErrorPort technicalErrorPort() {
+//        return this.springCloudStreamAdapter();
+//    }
 
     // message ports
 
@@ -105,8 +102,12 @@ public class DigiwfMessageAutoConfiguration {
         return this.springCloudStreamAdapter();
     }
 
-//    @Bean
-//    @ConditionalOnMissingBean
+    @Bean
+    @ConditionalOnMissingBean
+    public ProcessPortImpl processAdapter(final MessageApi messageApi) {
+        return new ProcessPortImpl(messageApi);
+    }
+
     public SpringCloudStreamAdapter springCloudStreamAdapter() {
         return new SpringCloudStreamAdapter(this.messageSink);
     }

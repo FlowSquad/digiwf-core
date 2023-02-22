@@ -1,8 +1,8 @@
-package io.muenchendigital.digiwf.message.example.service;
+package io.muenchendigital.digiwf.message.example.message.service;
 
-import io.muenchendigital.digiwf.message.core.api.SendMessageApi;
-import io.muenchendigital.digiwf.message.example.model.Message;
-import io.muenchendigital.digiwf.message.example.model.MessageSuccess;
+import io.muenchendigital.digiwf.message.core.api.MessageApi;
+import io.muenchendigital.digiwf.message.example.message.dto.Message;
+import io.muenchendigital.digiwf.message.example.message.dto.MessageSuccess;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MessageService {
 
-    private final SendMessageApi sendMessageApi;
+    private final MessageApi sendMessageApi;
 
-    // in this use case we don't really need the destination
     private final String messageDestination = "my-destination";
 
     public MessageSuccess sendMessage(final Message message) {
+        // send a message to the destination
         final boolean success = this.sendMessageApi.sendMessage(message, this.messageDestination);
             return new MessageSuccess(success, success ? "Message was successfully sent": "Sending message failed");
     }

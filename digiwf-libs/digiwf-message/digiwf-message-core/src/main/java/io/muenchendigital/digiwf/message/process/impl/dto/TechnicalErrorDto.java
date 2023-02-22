@@ -1,4 +1,4 @@
-package io.muenchendigital.digiwf.message.core.impl.dto;
+package io.muenchendigital.digiwf.message.process.impl.dto;
 
 
 import lombok.Builder;
