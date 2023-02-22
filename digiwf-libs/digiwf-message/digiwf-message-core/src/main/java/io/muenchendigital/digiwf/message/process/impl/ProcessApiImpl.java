@@ -87,9 +87,9 @@ public class ProcessApiImpl implements ProcessApi {
                 .messageName(this.technicalErrorDestination)
                 .build();
         final Message<TechnicalErrorDto> message = new Message<>();
-        message.addHeader(TYPE, this.incidentDestination);
+        message.addHeader(TYPE, this.technicalErrorDestination);
         message.addPayload(payload);
-        return this.technicalErrorMessagePort.sendTechnicalErrorMessage(message, this.incidentDestination);
+        return this.technicalErrorMessagePort.sendTechnicalErrorMessage(message, this.technicalErrorDestination);
     }
 
 }
