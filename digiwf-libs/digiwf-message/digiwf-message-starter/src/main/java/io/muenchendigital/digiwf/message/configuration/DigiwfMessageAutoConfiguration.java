@@ -5,6 +5,7 @@ import io.muenchendigital.digiwf.message.core.api.MessageApi;
 import io.muenchendigital.digiwf.message.core.impl.MessageApiImpl;
 import io.muenchendigital.digiwf.message.core.impl.SendMessagePort;
 import io.muenchendigital.digiwf.message.process.api.ProcessApi;
+import io.muenchendigital.digiwf.message.process.impl.MessagingExceptionAspect;
 import io.muenchendigital.digiwf.message.process.impl.ProcessApiImpl;
 import io.muenchendigital.digiwf.message.process.impl.ProcessPortImpl;
 import io.muenchendigital.digiwf.message.process.impl.port.CorrelateMessagePort;
@@ -52,49 +53,17 @@ public class DigiwfMessageAutoConfiguration {
         );
     }
 
-    // process api
-
     @Bean
     @ConditionalOnMissingBean
     public ProcessApi processApi(final ProcessApiImpl processApiImpl) {
         return processApiImpl;
     }
 
-    // message api
-
     @Bean
     @ConditionalOnMissingBean
     public MessageApi messageApi(final MessageApiImpl messageApiImpl) {
         return messageApiImpl;
     }
-
-    // process port
-
-//    @Bean
-//    @ConditionalOnMissingBean
-//    public CorrelateMessagePort correlatMessagePort() {
-//        return this.springCloudStreamAdapter();
-//    }
-//
-//    @Bean
-//    @ConditionalOnMissingBean
-//    public StartProcessPort startProcessPort() {
-//        return this.springCloudStreamAdapter();
-//    }
-//
-//    @Bean
-//    @ConditionalOnMissingBean
-//    public IncidentPort incidentPort() {
-//        return this.springCloudStreamAdapter();
-//    }
-//
-//    @Bean
-//    @ConditionalOnMissingBean
-//    public TechnicalErrorPort technicalErrorPort() {
-//        return this.springCloudStreamAdapter();
-//    }
-
-    // message ports
 
     @Bean
     @ConditionalOnMissingBean
@@ -106,6 +75,11 @@ public class DigiwfMessageAutoConfiguration {
     @ConditionalOnMissingBean
     public ProcessPortImpl processAdapter(final MessageApi messageApi) {
         return new ProcessPortImpl(messageApi);
+    }
+
+    @Bean
+    public MessagingExceptionAspect messagingExceptionAspect(final ProcessApi processApi) {
+        return new MessagingExceptionAspect(processApi);
     }
 
     public SpringCloudStreamAdapter springCloudStreamAdapter() {

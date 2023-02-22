@@ -1,9 +1,9 @@
 package example.process.api;
 
 
-import example.process.dto.ProcessMessageDto;
 import example.process.dto.StartProcessDto;
 import example.process.service.ProcessService;
+import io.muenchendigital.digiwf.message.process.impl.dto.CorrelateMessageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +21,7 @@ public class ProcessController {
     }
 
     @PostMapping("/process/correlate")
-    public void correlateMessage(@RequestBody final ProcessMessageDto processMessageDto) {
+    public void correlateMessage(@RequestBody final CorrelateMessageDto processMessageDto) {
         this.processService.correlateMessage(processMessageDto);
 
     }

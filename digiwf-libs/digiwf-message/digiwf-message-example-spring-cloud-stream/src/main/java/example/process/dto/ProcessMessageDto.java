@@ -12,5 +12,7 @@ import java.util.Map;
 public class ProcessMessageDto {
     private String processInstanceId;
     private String messageName;
-    private Map<String, Object> variables;
+    private String businessKey;
+    private Map<String, Object> payloadVariables;
+    private Map<String, Object> payloadVariablesLocal;
 }

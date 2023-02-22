@@ -16,34 +16,24 @@ Content-Type: application/json
 
 {
   "processInstanceId": "my-awesome-process-01",
+  "businessKey": "MyAwesomeProcess",
   "messageName": "finish-user-task",
   "variables": {
     "input": "test"
   }
 }
 
-### Bpmn Error
+### Error
 
 POST http://localhost:8080/process/correlate
 Content-Type: application/json
 
 {
   "processInstanceId": "my-awesome-process-01",
+  "businessKey": "MyAwesomeProcess",
   "messageName": "finish-user-task",
   "variables": {
 
   }
 }
-
-### Incident
-POST http://localhost:8080/process/start
-Content-Type: application/json
-
-{
-  "key": null,
-  "variables": {
-
-  }
-}
-
 

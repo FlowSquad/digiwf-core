@@ -8,7 +8,10 @@ io:
         startProcessDestination: "digiwf-message-scs-example-start-process"
       streaming:
         typeMappings:
-          processMessage: processMessage
+          digiwf-message-scs-example-incident: "onIncident"
+          digiwf-message-scs-example-technical-error: "onTechnicalError"
+          correlatemessagev01: "correlateMessage"
+          startProcessV01: "startProcess"
 spring:
   cloud:
     stream:
