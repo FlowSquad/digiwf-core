@@ -10,8 +10,7 @@ import lombok.RequiredArgsConstructor;
 import static io.muenchendigital.digiwf.message.common.MessageConstants.*;
 
 @RequiredArgsConstructor
-public class MessageService implements SendMessageApi, TechnicalErrorApi, IncidentApi {
-
+public class DigiwfMessageService implements SendMessageApi, TechnicalErrorApi, IncidentApi {
 
     private final SendMessagePort sendMessagePort;
     private final String incidentDestination;

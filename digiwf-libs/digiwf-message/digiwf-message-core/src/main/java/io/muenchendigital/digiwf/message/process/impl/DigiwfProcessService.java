@@ -12,7 +12,7 @@ import java.util.Map;
 import static io.muenchendigital.digiwf.message.common.MessageConstants.*;
 
 @RequiredArgsConstructor
-public class ProcessService implements StartProcessApi, CorrelateMessageApi {
+public class DigiwfProcessService implements StartProcessApi, CorrelateMessageApi {
 
     private final String correlateMessageDestination;
     private final String startProcessDestination;
