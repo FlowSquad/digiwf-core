@@ -6,12 +6,12 @@ io:
         technicalErrorDestination: "digiwf-message-scs-example-technical-error"
         correlateMessageDestination: "digiwf-message-scs-example-correlate-message"
         startProcessDestination: "digiwf-message-scs-example-start-process"
-      streaming:
         typeMappings:
           digiwf-message-scs-example-incident: "onIncidentConsumer"
           digiwf-message-scs-example-technical-error: "onTechnicalErrorConsumer"
           correlatemessagev01: "correlateMessageConsumer"
           startProcessV01: "startProcessConsumer"
+
 spring:
   cloud:
     stream:
@@ -19,6 +19,7 @@ spring:
         functionRouter-in-0:
           group: "digiwf-message-scs-example"
           destination: "digiwf-message-scs-example,digiwf-message-scs-example-incident,digiwf-message-scs-example-technical-error,digiwf-message-scs-example-correlate-message,digiwf-message-scs-example-start-process"
+          error-handler-definition: "customErrorHandler"
         sendMessage-out-0:
           destination: "digiwf-message-scs-example"
       kafka:

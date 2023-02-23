@@ -1,4 +1,4 @@
-package io.muenchendigital.digiwf.spring.cloudstream.utils.api.streaming.infrastructure;
+package io.muenchendigital.digiwf.message.adapter.springcloudstream;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.function.context.MessageRoutingCallback;
@@ -6,11 +6,10 @@ import org.springframework.messaging.Message;
 
 import java.util.Map;
 
-import static io.muenchendigital.digiwf.spring.cloudstream.utils.api.error.ErrorMessageDefaultListener.FUNCTION_ROUTING_ERROR;
-import static io.muenchendigital.digiwf.spring.cloudstream.utils.api.error.ErrorMessageDefaultListener.MISSING_TYPE_HEADER_ERROR;
+import static io.muenchendigital.digiwf.message.adapter.springcloudstream.ErrorMessageDefaultListener.FUNCTION_ROUTING_ERROR;
+import static io.muenchendigital.digiwf.message.adapter.springcloudstream.ErrorMessageDefaultListener.MISSING_TYPE_HEADER_ERROR;
 
 @RequiredArgsConstructor
-@Deprecated
 public class RoutingCallback implements MessageRoutingCallback {
 
     private final Map<String, String> typeMappings;

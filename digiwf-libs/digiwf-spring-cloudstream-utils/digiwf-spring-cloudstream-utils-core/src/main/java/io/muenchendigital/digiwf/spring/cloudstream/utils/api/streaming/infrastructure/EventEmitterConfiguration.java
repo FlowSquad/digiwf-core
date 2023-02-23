@@ -12,6 +12,7 @@ import reactor.core.publisher.Sinks;
 import java.util.function.Supplier;
 
 @Configuration
+@Deprecated
 public class EventEmitterConfiguration {
 
     /**

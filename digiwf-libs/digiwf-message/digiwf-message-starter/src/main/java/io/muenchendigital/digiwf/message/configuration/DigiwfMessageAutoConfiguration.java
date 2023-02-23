@@ -1,5 +1,6 @@
 package io.muenchendigital.digiwf.message.configuration;
 
+import io.muenchendigital.digiwf.message.adapter.springcloudstream.RoutingCallback;
 import io.muenchendigital.digiwf.message.adapter.springcloudstream.SpringCloudStreamAdapter;
 import io.muenchendigital.digiwf.message.core.api.MessageApi;
 import io.muenchendigital.digiwf.message.core.impl.MessageApiImpl;
@@ -15,11 +16,14 @@ import io.muenchendigital.digiwf.message.properties.DigiwfMessageProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.function.context.MessageRoutingCallback;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.messaging.Message;
 import reactor.core.publisher.Sinks;
 
 @RequiredArgsConstructor
+@ComponentScan(basePackages = "io.muenchendigital.digiwf.message.adapter.springcloudstream")
 @EnableConfigurationProperties(value = DigiwfMessageProperties.class)
 public class DigiwfMessageAutoConfiguration {
 
@@ -74,6 +78,19 @@ public class DigiwfMessageAutoConfiguration {
     @ConditionalOnMissingBean
     public ProcessPortImpl processAdapter(final MessageApi messageApi) {
         return new ProcessPortImpl(messageApi);
+    }
+
+    // spring cloud stream adapter
+
+    /**
+     * Default router, using the typeMappings configured in your application.yml.
+     * You can define another router in your application, hence why @ConditionalOnMissingBean.
+     * @return the router
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public MessageRoutingCallback customRouter() {
+        return new RoutingCallback(this.digiwfMessageProperties.getTypeMappings());
     }
 
     public SpringCloudStreamAdapter springCloudStreamAdapter() {

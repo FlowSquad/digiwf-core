@@ -1,10 +1,9 @@
-package io.muenchendigital.digiwf.spring.cloudstream.utils.api.streaming.infrastructure;
+package io.muenchendigital.digiwf.message.adapter.springcloudstream;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@Deprecated
 public final class StreamingHeaders {
 
     public static final String TYPE = "type";
