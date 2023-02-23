@@ -1,12 +1,13 @@
 package example.shared.streaming;
 
-import example.process.dto.ProcessMessageDto;
 import example.process.dto.StartProcessDto;
+import io.muenchendigital.digiwf.message.process.api.HandleIncident;
+import io.muenchendigital.digiwf.message.process.api.HandleTechnicalError;
+import io.muenchendigital.digiwf.message.process.impl.dto.CorrelateMessageDto;
 import io.muenchendigital.digiwf.message.process.impl.error.TechnicalError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
-import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Consumer;
@@ -16,24 +17,26 @@ import java.util.function.Consumer;
 public class Consumers {
 
     @Bean
-    public Consumer<Message<Object>> onTechnicalError() {
+    public Consumer<Message<Object>> onTechnicalErrorConsumer() {
         return message -> log.warn("Technical Error: {}", message.toString());
     }
 
     @Bean
-    public Consumer<Message<Object>> onIncident() {
+    public Consumer<Message<Object>> onIncidentConsumer() {
         return message -> log.warn("Incident:  {}", message.toString());
     }
 
+    @HandleTechnicalError
+    @HandleIncident
     @Bean
-    @MessageExceptionHandler
-    public Consumer<Message<StartProcessDto>> startProcess() {
+    public Consumer<Message<StartProcessDto>> startProcessConsumer() {
         return message -> log.info(message.toString());
     }
 
+    @HandleTechnicalError
+    @HandleIncident
     @Bean
-    @MessageExceptionHandler
-    public Consumer<Message<ProcessMessageDto>> correlateMessage() {
+    public Consumer<Message<CorrelateMessageDto>> correlateMessageConsumer() {
         return message -> {
             if (message.getPayload().getPayloadVariables().isEmpty()) {
                 // incident

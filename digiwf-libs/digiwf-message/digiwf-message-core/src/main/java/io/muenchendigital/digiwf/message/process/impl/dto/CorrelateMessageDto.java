@@ -1,12 +1,14 @@
 package io.muenchendigital.digiwf.message.process.impl.dto;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.Map;
 
-@Getter
+@Data
 @Builder
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class CorrelateMessageDto {
     private String processInstanceId;
     private String messageName;
