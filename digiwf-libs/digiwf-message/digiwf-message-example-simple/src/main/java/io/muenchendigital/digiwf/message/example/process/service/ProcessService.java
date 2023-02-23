@@ -21,7 +21,7 @@ public class ProcessService {
         this.processApi.startProcess(startProcessDto.getKey(), startProcessDto.getVariables());
     }
 
-    public void correlateMessage(final ProcessMessageDto messageDto) throws RuntimeException, TechnicalError {
+    public void correlateMessage(final ProcessMessageDto messageDto) throws RuntimeException {
         if (messageDto.getProcessInstanceId() == null || messageDto.getProcessInstanceId().isEmpty()) {
             // incident occurred
             throw new RuntimeException("Can not correlate message. ProcessInstanceId is missing.");

@@ -15,15 +15,22 @@ public class MessagingExceptionAspect {
 
     private final ProcessApi processApi;
 
-    @Around(value = "@annotation(io.muenchendigital.digiwf.message.process.api.HandleMessagingException)")
-    public void doSomethingWithException(final ProceedingJoinPoint joinPoint) {
+    @Around(value = "@annotation(io.muenchendigital.digiwf.message.process.api.HandleTechnicalError)")
+    public void handleTechnicalError(final ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             joinPoint.proceed();
         } catch (final TechnicalError ex) {
             log.info("Handling exception {} with message {}", ex.getClass().getSimpleName(), ex.getErrorMessage());
             this.processApi.handleTechnicalError(ex.getProcessInstanceId(), ex.getErrorCode(), ex.getErrorMessage());
+        }
+    }
+
+    @Around(value = "@annotation(io.muenchendigital.digiwf.message.process.api.HandleIncident)")
+    public void handleIncident(final ProceedingJoinPoint joinPoint) {
+        try {
+            joinPoint.proceed();
         } catch (final Throwable e) {
-            log.info("Handling exception {} with message {}", e.getClass().getSimpleName(), e.getMessage());
+            log.warn("Handling exception {} with message {}", e.getClass().getSimpleName(), e.getMessage());
             this.processApi.handleIncident("", "", e.getMessage());
         }
     }
