@@ -3,8 +3,6 @@ package io.muenchendigital.digiwf.message.example.process.api;
 import io.muenchendigital.digiwf.message.example.process.dto.ProcessMessageDto;
 import io.muenchendigital.digiwf.message.example.process.dto.StartProcessDto;
 import io.muenchendigital.digiwf.message.example.process.service.ProcessService;
-import io.muenchendigital.digiwf.message.process.api.HandleIncident;
-import io.muenchendigital.digiwf.message.process.api.HandleTechnicalError;
 import io.muenchendigital.digiwf.message.process.impl.error.TechnicalError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,18 +16,13 @@ public class ProcessController {
     private final ProcessService processService;
 
     @PostMapping("/process/start")
-    @HandleTechnicalError
-    @HandleIncident
     public void startProcess(@RequestBody final StartProcessDto startProcessDto) {
         this.processService.startProcess(startProcessDto);
     }
 
     @PostMapping("/process/correlate")
-    @HandleTechnicalError
-    @HandleIncident
     public void correlateMessage(@RequestBody final ProcessMessageDto processMessageDto) throws TechnicalError {
         this.processService.correlateMessage(processMessageDto);
-
     }
 
 }
