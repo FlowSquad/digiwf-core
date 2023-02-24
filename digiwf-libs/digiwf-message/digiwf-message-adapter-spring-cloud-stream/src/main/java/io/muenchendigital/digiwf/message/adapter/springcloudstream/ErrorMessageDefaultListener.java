@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.stereotype.Component;
 
@@ -44,26 +45,35 @@ public class ErrorMessageDefaultListener {
     @Bean
     public Consumer<ErrorMessage> customErrorHandler() {
         return error -> {
+            Optional<Object> processInstance = Optional.empty();
+            Optional<Object> messageName = Optional.empty();
+
+            if (error.getPayload() instanceof MessagingException) {
+                final MessagingException messageHandlingException = (MessagingException) error.getPayload();
+                final Message<?> failedMessage = messageHandlingException.getFailedMessage();
+                processInstance = Optional.ofNullable(failedMessage.getHeaders().get(StreamingHeaders.DIGIWF_PROCESS_INSTANCE_ID));
+                messageName = Optional.ofNullable(failedMessage.getHeaders().get(StreamingHeaders.DIGIWF_MESSAGE_NAME));
+            }
+
+            // technical error
             if (error.getPayload().getCause() instanceof TechnicalError) {
                 final TechnicalError technicalError = (TechnicalError) error.getPayload().getCause();
                 this.processApi.handleTechnicalError(technicalError.getProcessInstanceId(), technicalError.getErrorCode(), technicalError.getErrorMessage());
                 log.info("Handling technical error for process {} error {}", technicalError.getProcessInstanceId(), technicalError.getErrorMessage());
                 return;
             }
-            // incident
-            // Todo original message is always null
-            if (error.getOriginalMessage() != null) {
-                final Message<?> originalMessage = error.getOriginalMessage();
-                final Optional<Object> processInstance = Optional.ofNullable(originalMessage.getHeaders().get(StreamingHeaders.DIGIWF_PROCESS_INSTANCE_ID));
-                final Optional<Object> messageName = Optional.ofNullable(originalMessage.getHeaders().get(StreamingHeaders.DIGIWF_MESSAGE_NAME));
-                this.processApi.handleIncident(
-                        processInstance.orElse("").toString(),
-                        messageName.orElse("").toString(),
-                        error.getPayload().getMessage());
-                log.info("Creating incident for process {} error {}", processInstance.orElse("").toString(), messageName.orElse("").toString());
+
+            // otherwise incident
+            if (processInstance.isPresent() && messageName.isPresent()) {
+                final String processInstanceId = processInstance.get().toString();
+                final String digiwfMessageName = messageName.get().toString();
+                final String errorMsg = error.getPayload().getMessage();
+                this.processApi.handleIncident(processInstanceId, digiwfMessageName, errorMsg);
+                log.info("Creating incident for process {} error {}", processInstanceId, errorMsg);
                 return;
             }
-            log.warn("Exception was not handled. Exception was {}", error.getPayload().getCause().getMessage());
+
+            log.error("Exception was not handled. Exception was {}", error.getPayload().getCause().getMessage());
         };
     }
 
