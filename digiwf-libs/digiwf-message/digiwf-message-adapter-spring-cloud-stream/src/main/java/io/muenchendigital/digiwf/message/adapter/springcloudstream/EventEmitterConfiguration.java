@@ -8,6 +8,11 @@ import reactor.core.publisher.Sinks;
 
 import java.util.function.Supplier;
 
+/**
+ * EventEmitter configuration that creates the sinks for sending messages
+ * Note: We use the spring cloud stream header spring.cloud.stream.sendto.destination to send messages dynamically to topics.
+ * Therefore, we only need a single message sink.
+ */
 @Configuration
 public class EventEmitterConfiguration {
 

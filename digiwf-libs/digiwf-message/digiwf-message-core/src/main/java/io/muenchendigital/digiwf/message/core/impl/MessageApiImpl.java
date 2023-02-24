@@ -8,11 +8,20 @@ import java.util.Map;
 
 import static io.muenchendigital.digiwf.message.common.MessageConstants.TYPE;
 
+/**
+ * Implementation of {@link io.muenchendigital.digiwf.message.core.api.MessageApi}
+ */
 @RequiredArgsConstructor
 public class MessageApiImpl implements MessageApi {
 
     private final SendMessagePort sendMessagePort;
 
+    /**
+     * Sends a message to the specified destination with the given payload.
+     * @param payload The message payload.
+     * @param destination The destination to send the message to.
+     * @return true if the message was successfully sent, false otherwise.
+     */
     @Override
     public boolean sendMessage(final Object payload, final String destination) {
         final Message message = new Message();
@@ -21,6 +30,13 @@ public class MessageApiImpl implements MessageApi {
         return this.sendMessagePort.sendMessage(message, destination);
     }
 
+    /**
+     * Sends a message to the specified destination with the given payload and headers.
+     * @param payload The message payload.
+     * @param headers A map of headers to include with the message.
+     * @param destination The destination to send the message to.
+     * @return true if the message was successfully sent, false otherwise.
+     */
     @Override
     public boolean sendMessage(final Object payload, final Map<String, Object> headers, final String destination) {
         final Message message = new Message();

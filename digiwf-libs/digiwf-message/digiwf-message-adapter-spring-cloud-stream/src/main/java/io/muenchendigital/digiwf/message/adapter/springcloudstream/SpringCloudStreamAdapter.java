@@ -10,6 +10,9 @@ import reactor.core.publisher.Sinks;
 
 import java.util.Map;
 
+/**
+ * Implementation of a {@link io.muenchendigital.digiwf.message.core.impl.SendMessagePort} for spring cloud stream.
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class SpringCloudStreamAdapter implements SendMessagePort {
@@ -18,6 +21,13 @@ public class SpringCloudStreamAdapter implements SendMessagePort {
 
     public static final String SPRING_CLOUD_STREAM_SENDTO_DESTINATION = "spring.cloud.stream.sendto.destination";
 
+    /**
+     * Sends a message to a spring cloud stream topic.
+     *
+     * @param message The message that should be sent to the destination
+     * @param destination is the topic the message is sent to
+     * @return true if the message was successfully sent, false otherwise
+     */
     @Override
     public boolean sendMessage(final io.muenchendigital.digiwf.message.core.impl.model.Message message, final String destination) {
         final Map<String, Object> headers = message.getHeaders();

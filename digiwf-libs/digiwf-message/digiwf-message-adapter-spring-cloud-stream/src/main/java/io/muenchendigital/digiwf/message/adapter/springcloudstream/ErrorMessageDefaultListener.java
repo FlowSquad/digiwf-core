@@ -42,6 +42,19 @@ public class ErrorMessageDefaultListener {
         return message -> log.error("The message header '{}' must be set in message '{}'.", StreamingHeaders.TYPE, message.getHeaders().get(MessageHeaders.ID));
     }
 
+    /**
+     * Custom error handler that handels technical errors and all other exceptions raised by a consumer.
+     *
+     * Technical errors ({@link io.muenchendigital.digiwf.message.process.impl.error.TechnicalError}) will get propagated back to the process
+     * instance as technical error.
+     *
+     * Other messaging exceptions get transformed to incidents if the processInstanceId and the messageName is present
+     * in the messages streaming headers.
+     *
+     * To enable the customErrorHandler set the property spring.cloud.stream.bindings.binding-name.error-handler-definition="customErrorHandler" for your consumer.
+     *
+     * @return Consumer object that handles error messages
+     */
     @Bean
     public Consumer<ErrorMessage> customErrorHandler() {
         return error -> {
