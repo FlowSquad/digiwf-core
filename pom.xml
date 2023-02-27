@@ -39,6 +39,10 @@
         <module>digiwf-gateway</module>
         <module>digiwf-integrations</module>
         <module>digiwf-coverage</module>
+        <module>digiwf-libs/digiwf-integration-lib</module>
+        <module>digiwf-libs/digiwf-integration-lib/digiwf-integration-core</module>
+        <module>digiwf-libs/digiwf-integration-lib/digiwf-integration-starter</module>
+        <module>digiwf-libs/digiwf-integration-lib/digiwf-integration-example</module>
     </modules>
 
     <dependencyManagement>
