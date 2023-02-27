@@ -1,7 +1,6 @@
 package io.muenchendigital.digiwf.message.configuration;
 
-import io.muenchendigital.digiwf.message.adapter.springcloudstream.RoutingCallback;
-import io.muenchendigital.digiwf.message.adapter.springcloudstream.SpringCloudStreamAdapter;
+import io.muenchendigital.digiwf.message.adapter.api.OutputAdapter;
 import io.muenchendigital.digiwf.message.core.api.MessageApi;
 import io.muenchendigital.digiwf.message.core.impl.MessageApiImpl;
 import io.muenchendigital.digiwf.message.core.impl.SendMessagePort;
@@ -16,7 +15,6 @@ import io.muenchendigital.digiwf.message.properties.DigiwfMessageProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.function.context.MessageRoutingCallback;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.messaging.Message;
@@ -82,19 +80,8 @@ public class DigiwfMessageAutoConfiguration {
 
     // spring cloud stream adapter
 
-    /**
-     * Default router, using the typeMappings configured in your application.yml.
-     * You can define another router in your application, hence why @ConditionalOnMissingBean.
-     * @return the router
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    public MessageRoutingCallback customRouter() {
-        return new RoutingCallback(this.digiwfMessageProperties.getTypeMappings());
-    }
-
-    public SpringCloudStreamAdapter springCloudStreamAdapter() {
-        return new SpringCloudStreamAdapter(this.messageSink);
+    public OutputAdapter springCloudStreamAdapter() {
+        return new OutputAdapter(this.messageSink);
     }
 
 }

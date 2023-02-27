@@ -2,8 +2,8 @@ package io.muenchendigital.digiwf.message.example.process.service;
 
 import io.muenchendigital.digiwf.message.example.process.dto.ProcessMessageDto;
 import io.muenchendigital.digiwf.message.example.process.dto.StartProcessDto;
+import io.muenchendigital.digiwf.message.example.process.error.TechnicalError;
 import io.muenchendigital.digiwf.message.process.api.ProcessApi;
-import io.muenchendigital.digiwf.message.process.impl.error.TechnicalError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

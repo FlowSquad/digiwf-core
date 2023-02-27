@@ -1,4 +1,4 @@
-package io.muenchendigital.digiwf.message.adapter.springcloudstream;
+package io.muenchendigital.digiwf.message.adapter.api;
 
 import io.muenchendigital.digiwf.message.core.impl.SendMessagePort;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.Map;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class SpringCloudStreamAdapter implements SendMessagePort {
+public class OutputAdapter implements SendMessagePort {
 
     private final Sinks.Many<org.springframework.messaging.Message<Object>> messageSink;
 

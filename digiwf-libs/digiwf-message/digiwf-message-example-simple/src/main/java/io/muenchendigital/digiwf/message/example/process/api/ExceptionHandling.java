@@ -1,7 +1,7 @@
 package io.muenchendigital.digiwf.message.example.process.api;
 
+import io.muenchendigital.digiwf.message.example.process.error.TechnicalError;
 import io.muenchendigital.digiwf.message.process.api.ProcessApi;
-import io.muenchendigital.digiwf.message.process.impl.error.TechnicalError;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

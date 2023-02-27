@@ -9,8 +9,7 @@
         <version>0.17.4</version>
     </parent>
 
-    <artifactId>digiwf-message-starter</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>digiwf-message-adapter-springcloudstream</artifactId>
 
     <dependencies>
         <dependency>
@@ -19,19 +18,8 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.muenchendigital.digiwf</groupId>
-            <artifactId>digiwf-message-adapter-springcloudstream</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-            <version>${spring-boot.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream</artifactId>
         </dependency>
     </dependencies>
 

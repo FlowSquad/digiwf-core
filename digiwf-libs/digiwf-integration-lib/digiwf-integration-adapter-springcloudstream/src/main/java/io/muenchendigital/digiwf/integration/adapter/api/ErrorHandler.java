@@ -1,7 +1,8 @@
-package io.muenchendigital.digiwf.message.adapter.springcloudstream;
+package io.muenchendigital.digiwf.integration.adapter.api;
 
+import io.muenchendigital.digiwf.integration.adapter.shared.StreamingHeaders;
+import io.muenchendigital.digiwf.integration.core.api.TechnicalError;
 import io.muenchendigital.digiwf.message.process.api.ProcessApi;
-import io.muenchendigital.digiwf.message.process.impl.error.TechnicalError;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -17,12 +18,9 @@ import java.util.function.Consumer;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ErrorMessageDefaultListener {
+public class ErrorHandler {
 
     private final ProcessApi processApi;
-
-    public static final String FUNCTION_ROUTING_ERROR = "springCloudstreamUtilsFunctionRoutingError";
-    public static final String MISSING_TYPE_HEADER_ERROR = "springCloudstreamUtilsMissingTypeHeaderError";
 
     /**
      * When TYPE header of the incoming message is set but not configured in the application, message gets routed here.
@@ -45,7 +43,7 @@ public class ErrorMessageDefaultListener {
     /**
      * Custom error handler that handels technical errors and all other exceptions raised by a consumer.
      *
-     * Technical errors ({@link io.muenchendigital.digiwf.message.process.impl.error.TechnicalError}) will get propagated back to the process
+     * Technical errors ({@link io.muenchendigital.digiwf.integration.core.api.TechnicalError}) will get propagated back to the process
      * instance as technical error.
      *
      * Other messaging exceptions get transformed to incidents if the processInstanceId and the messageName is present

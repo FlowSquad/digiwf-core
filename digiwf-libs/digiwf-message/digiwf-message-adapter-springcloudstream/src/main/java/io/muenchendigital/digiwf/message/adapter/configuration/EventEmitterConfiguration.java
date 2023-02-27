@@ -1,4 +1,4 @@
-package io.muenchendigital.digiwf.message.adapter.springcloudstream;
+package io.muenchendigital.digiwf.message.adapter.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

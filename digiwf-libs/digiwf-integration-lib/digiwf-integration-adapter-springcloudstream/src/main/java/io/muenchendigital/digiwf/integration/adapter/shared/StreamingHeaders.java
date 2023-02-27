@@ -1,4 +1,4 @@
-package io.muenchendigital.digiwf.message.adapter.springcloudstream;
+package io.muenchendigital.digiwf.integration.adapter.shared;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
