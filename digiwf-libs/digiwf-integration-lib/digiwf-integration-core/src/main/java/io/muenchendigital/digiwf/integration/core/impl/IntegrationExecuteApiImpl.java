@@ -4,14 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.muenchendigital.digiwf.integration.core.api.IntegrationExecuteApi;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 @Component
-@Slf4j
 public class IntegrationExecuteApiImpl implements IntegrationExecuteApi {
 
     private final List<Integration> integrations = new ArrayList<>();
@@ -28,7 +26,6 @@ public class IntegrationExecuteApiImpl implements IntegrationExecuteApi {
 
         if (integrationInfo.isEmpty()) {
             final String errorMessage = String.format("No integration for type %s exists", type);
-            log.error(errorMessage);
             throw new RuntimeException(errorMessage);
         }
 

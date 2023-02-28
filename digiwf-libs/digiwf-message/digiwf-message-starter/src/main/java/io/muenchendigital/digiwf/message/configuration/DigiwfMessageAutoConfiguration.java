@@ -21,7 +21,7 @@ import org.springframework.messaging.Message;
 import reactor.core.publisher.Sinks;
 
 @RequiredArgsConstructor
-@ComponentScan(basePackages = "io.muenchendigital.digiwf.message.adapter.springcloudstream")
+@ComponentScan(basePackages = "io.muenchendigital.digiwf.message.adapter")
 @EnableConfigurationProperties(value = DigiwfMessageProperties.class)
 public class DigiwfMessageAutoConfiguration {
 

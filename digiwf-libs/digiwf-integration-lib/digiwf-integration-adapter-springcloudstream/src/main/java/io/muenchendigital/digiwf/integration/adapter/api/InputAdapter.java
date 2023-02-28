@@ -19,7 +19,6 @@ public class InputAdapter {
     public Consumer<Message<Map<String,Object>>> receiveMessages() {
         return message -> {
             final Object result = this.integrationExecuteApi.execute(message.getHeaders().get(StreamingHeaders.TYPE).toString(), message.getPayload());
-            System.out.println("Yay");
         };
     }
 

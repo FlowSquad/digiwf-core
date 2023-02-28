@@ -18,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class IntegrationInitializer implements ApplicationContextAware {
     private ApplicationContext ctx;
-    private final IntegrationInfoMapper digiwfIntegrationInfoMapper;
     private final IntegrationExecuteApiImpl integrationExecuteApi;
 
     @EventListener(ApplicationReadyEvent.class)
@@ -44,14 +43,14 @@ public class IntegrationInitializer implements ApplicationContextAware {
                 // Check if the method is annotated with the specific annotation
                 if (method.isAnnotationPresent(DigiwfIntegration.class)) {
                     final DigiwfIntegration annotInstance = method.getAnnotation(DigiwfIntegration.class);
-                    integrations.add(this.integrationBuilder(annotInstance, bean, method));
+                    integrations.add(this.buildIntegration(annotInstance, bean, method));
                 }
             });
         }
         return integrations;
     }
 
-    private Integration integrationBuilder(final DigiwfIntegration integration, final Object bean, final Method method) {
+    private Integration buildIntegration(final DigiwfIntegration integration, final Object bean, final Method method) {
         final Class<?>[] inputParameterTypes = method.getParameterTypes();
 
         if (inputParameterTypes.length > 1) {

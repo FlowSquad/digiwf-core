@@ -18,6 +18,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>io.muenchendigital.digiwf</groupId>
+            <artifactId>digiwf-integration-adapter-springcloudstream</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
             <version>${spring-boot.version}</version>

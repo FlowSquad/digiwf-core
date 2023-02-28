@@ -4,7 +4,7 @@ spring:
   cloud:
     stream:
       bindings:
-        genericConsumer-in-0:
+        receiveMessages-in-0:
           group: "digiwf-integration-example"
           destination: "digiwf-message-scs-example-correlate-message"
       kafka:
@@ -27,7 +27,7 @@ spring:
             security:
               protocol: "${KAFKA_SECURITY_PROTOCOL:PLAINTEXT}"
     function:
-      definition: genericConsumer;
+      definition: receiveMessages
   kafka:
     consumer:
       properties:
