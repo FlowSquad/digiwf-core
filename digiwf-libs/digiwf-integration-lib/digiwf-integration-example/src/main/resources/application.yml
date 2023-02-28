@@ -6,7 +6,18 @@ spring:
       bindings:
         receiveMessages-in-0:
           group: "digiwf-integration-example"
-          destination: "digiwf-message-scs-example-correlate-message"
+          destination: "digiwf-example-integration"
+        correlateMessageConsumer-in-0:
+          group: "digiwf-integration-example"
+          destination: "${io.muenchendigital.digiwf.message.correlateMessageDestination}"
+        onTechnicalErrorConsumer-in-0:
+          group: "digiwf-integration-example"
+          destination: "${io.muenchendigital.digiwf.message.technicalErrorDestination}"
+        onIncidentConsumer-in-0:
+          group: "digiwf-integration-example"
+          destination: "${io.muenchendigital.digiwf.message.incidentDestination}"
+        sendMessage-out-0:
+          destination: "digiwf-example-integration"
       kafka:
         binder:
           brokers: "${KAFKA_BOOTSTRAP_SERVER:localhost}:${KAFKA_BOOTSTRAP_SERVER_PORT:29092}"
@@ -27,7 +38,7 @@ spring:
             security:
               protocol: "${KAFKA_SECURITY_PROTOCOL:PLAINTEXT}"
     function:
-      definition: receiveMessages
+      definition: receiveMessages;correlateMessageConsumer;onTechnicalErrorConsumer;onIncidentConsumer;sendMessage;
   kafka:
     consumer:
       properties:
@@ -35,3 +46,10 @@ spring:
           json:
             trusted:
               packages: "*"
+io:
+  muenchendigital:
+    digiwf:
+      message:
+        incidentDestination: "digiwf-example-integration-incident"
+        technicalErrorDestination: "digiwf-example-integration-technical-error"
+        correlateMessageDestination: "digiwf-example-integration-correlate-message"

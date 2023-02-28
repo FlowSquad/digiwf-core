@@ -6,11 +6,11 @@ io:
         technicalErrorDestination: "digiwf-message-scs-example-technical-error"
         correlateMessageDestination: "digiwf-message-scs-example-correlate-message"
         startProcessDestination: "digiwf-message-scs-example-start-process"
-#        typeMappings:
-#          digiwf-message-scs-example-incident: "onIncidentConsumer"
-#          digiwf-message-scs-example-technical-error: "onTechnicalErrorConsumer"
-#          correlatemessagev01: "genericConsumer"
-#          startProcessV01: "startProcessConsumer"
+        typeMappings:
+          digiwf-message-scs-example-incident: "onIncidentConsumer"
+          digiwf-message-scs-example-technical-error: "onTechnicalErrorConsumer"
+          correlatemessagev01: "genericConsumer"
+          startProcessV01: "startProcessConsumer"
 
 spring:
   cloud:
