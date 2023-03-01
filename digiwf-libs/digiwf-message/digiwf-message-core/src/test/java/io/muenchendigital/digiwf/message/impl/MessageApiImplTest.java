@@ -25,7 +25,7 @@ class MessageApiImplTest {
         // check message object that should be sent
         final ArgumentCaptor<Message> messageCaptor = ArgumentCaptor.forClass(Message.class);
         Mockito.verify(this.spyDummySendMessagePort).sendMessage(messageCaptor.capture(), Mockito.eq("test"));
-        Assertions.assertEquals(messageCaptor.getValue().getPayload(), "test");
+        Assertions.assertEquals("test", messageCaptor.getValue().getPayload());
         Assertions.assertTrue(messageCaptor.getValue().getHeaders().containsKey("type"));
     }
 
@@ -50,6 +50,16 @@ class MessageApiImplTest {
 
         // with headers
         success = this.messageApi.sendMessage("test", Map.of("test", "test"), null);
+        Assertions.assertFalse(success);
+    }
+
+    @Test
+    void testSendMessageFailsIfPayloadIsNull() {
+        boolean success = this.messageApi.sendMessage(null, "test");
+        Assertions.assertFalse(success);
+
+        // with headers
+        success = this.messageApi.sendMessage(null, Map.of("test", "test"), "test");
         Assertions.assertFalse(success);
     }
 

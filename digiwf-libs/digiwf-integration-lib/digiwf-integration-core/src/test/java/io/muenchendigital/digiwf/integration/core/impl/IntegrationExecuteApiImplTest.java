@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.Map;
 
 class IntegrationExecuteApiImplTest {
@@ -17,8 +18,10 @@ class IntegrationExecuteApiImplTest {
 
     @BeforeEach
     void setUp() throws NoSuchMethodException {
-        final Integration integration = this.getExampleIntegration();
-        this.integrationExecuteApi.registerIntegration(integration);
+        this.integrationExecuteApi.registerIntegration(this.getExampleIntegration());
+        this.integrationExecuteApi.registerIntegration(this.getExampleIntegrationWithoutReturn());
+        this.integrationExecuteApi.registerIntegration(this.getTechnicalErrorIntegraton());
+        this.integrationExecuteApi.registerIntegration(this.getIncidentIntegration());
     }
 
     @Test
@@ -41,6 +44,13 @@ class IntegrationExecuteApiImplTest {
     }
 
     @Test
+    void testExecuteIntegrationWithoutReturn() {
+        // to improve testability, we use a dummy integration that just returns the event
+        final Object result = this.integrationExecuteApi.execute("voidExampleIntegration", this.event);
+        Assertions.assertEquals(new HashMap<>(), result);
+    }
+
+    @Test
     void testExecuteIntegrationThrowsRuntimeExceptionIfNoIntegrationIsRegisteredForType() {
         Assertions.assertThrows(RuntimeException.class, () ->
                 this.integrationExecuteApi.execute("non-existing-type", this.event));
@@ -48,18 +58,12 @@ class IntegrationExecuteApiImplTest {
 
     @Test
     void testExecuteIntegrationThrowsTechnicalError() throws NoSuchMethodException {
-        final Integration integration = this.getTechnicalErrorIntegraton();
-        this.integrationExecuteApi.registerIntegration(integration);
-
         Assertions.assertThrows(TechnicalError.class, () ->
                 this.integrationExecuteApi.execute("technicalErrorIntegration", this.event));
     }
 
     @Test
     void testExecuteIntegrationThrowsIncident() throws NoSuchMethodException {
-        final Integration integration = this.getIncidentIntegration();
-        this.integrationExecuteApi.registerIntegration(integration);
-
         Assertions.assertThrows(Exception.class, () ->
                 this.integrationExecuteApi.execute("incidentIntegration", this.event));
     }
@@ -74,6 +78,22 @@ class IntegrationExecuteApiImplTest {
         }
         return new Integration(
                 "exampleIntegration",
+                3000L,
+                new ExampleIntegration(),
+                ExampleIntegration.class.getMethod("exampleIntegration", Map.class),
+                Map.class,
+                Map.class
+        );
+    }
+
+    private Integration getExampleIntegrationWithoutReturn() throws NoSuchMethodException {
+        class ExampleIntegration {
+            public void exampleIntegration(final Map<String, Object> event) {
+
+            }
+        }
+        return new Integration(
+                "voidExampleIntegration",
                 3000L,
                 new ExampleIntegration(),
                 ExampleIntegration.class.getMethod("exampleIntegration", Map.class),
