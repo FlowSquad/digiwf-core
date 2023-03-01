@@ -14,6 +14,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+/**
+ * Adapter to connect spring cloud stream to the digiwf-integration-core.
+ * This SpringCloudStreamAdapter contains the receiveMessages consumer.
+ */
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -21,6 +25,10 @@ public class SpringCloudStreamAdapter {
     private final IntegrationExecuteApi integrationExecuteApi;
     private final ProcessApi processApi;
 
+    /**
+     * Consumer to receive messages from spring cloud stream and pass them to the digiwf-integration-core.
+     * @return Consumer
+     */
     @Bean
     public Consumer<Message<Map<String,Object>>> receiveMessages() {
         return message -> {

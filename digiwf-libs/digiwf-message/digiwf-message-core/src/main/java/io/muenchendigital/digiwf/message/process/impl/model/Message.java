@@ -5,6 +5,11 @@ import lombok.Getter;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Message class with headers and payload.
+ *
+ * @param <T> the messages payload type
+ */
 @Getter
 public class Message<T> {
     private final Map<String, Object> headers;

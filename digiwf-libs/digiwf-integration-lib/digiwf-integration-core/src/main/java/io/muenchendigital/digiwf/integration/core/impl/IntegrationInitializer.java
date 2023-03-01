@@ -14,23 +14,41 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Initializes all integrations after the application has started using the spring application ready event.
+ */
 @Component
 @RequiredArgsConstructor
 public class IntegrationInitializer implements ApplicationContextAware {
     private ApplicationContext ctx;
     private final IntegrationExecuteApiImpl integrationExecuteApi;
 
+    /**
+     * Initializes all integrations after the application has started using the spring application ready event.
+     * All beans with the {@link DigiwfIntegration} annotation are registered as integrations.
+     */
     @EventListener(ApplicationReadyEvent.class)
-    public void initializeWorkerAfterStartup() {
+    public void initializeIntegrationsAfterStartup() {
         final List<Integration> integrations = this.getIntegrations();
         integrations.forEach(this.integrationExecuteApi::registerIntegration);
     }
 
+    /**
+     * Sets the application context.
+     *
+     * @param applicationContext application context
+     * @throws BeansException
+     */
     @Override
     public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
         this.ctx = applicationContext;
     }
 
+    /**
+     * Helper method to get all integrations (using the {@link DigiwfIntegration} annotation) from the spring context.
+     *
+     * @return list of integrations
+     */
     private List<Integration> getIntegrations() {
         final List<Integration> integrations = new ArrayList<>();
         final String[] beanDefinitionNames = this.ctx.getBeanDefinitionNames();
@@ -50,6 +68,14 @@ public class IntegrationInitializer implements ApplicationContextAware {
         return integrations;
     }
 
+    /**
+     * Helper method to build an integration.
+     *
+     * @param integration integration annotation
+     * @param bean        bean
+     * @param method      method
+     * @return integration
+     */
     private Integration buildIntegration(final DigiwfIntegration integration, final Object bean, final Method method) {
         final Class<?>[] inputParameterTypes = method.getParameterTypes();
 

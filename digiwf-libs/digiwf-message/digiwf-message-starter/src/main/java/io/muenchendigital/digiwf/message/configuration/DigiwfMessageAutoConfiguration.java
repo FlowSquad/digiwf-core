@@ -20,6 +20,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.messaging.Message;
 import reactor.core.publisher.Sinks;
 
+/**
+ * Auto configuration for the digiwf-message library.
+ */
 @RequiredArgsConstructor
 @ComponentScan(basePackages = "io.muenchendigital.digiwf.message.adapter")
 @EnableConfigurationProperties(value = DigiwfMessageProperties.class)
@@ -28,12 +31,27 @@ public class DigiwfMessageAutoConfiguration {
     private final DigiwfMessageProperties digiwfMessageProperties;
     private final Sinks.Many<Message<Object>> messageSink;
 
+    /**
+     * Creates the bean for the default Implementation of {@link MessageApi}.
+     *
+     * @param messagePort
+     * @return
+     */
     @Bean
     @ConditionalOnMissingBean
     public MessageApiImpl messageApiImpl(final SendMessagePort messagePort) {
         return new MessageApiImpl(messagePort);
     }
 
+    /**
+     * Creates the bean for the default Implementation of {@link ProcessApi}.
+     *
+     * @param correlateMessagePort
+     * @param startProcessPort
+     * @param incidentPort
+     * @param technicalErrorPort
+     * @return
+     */
     @Bean
     @ConditionalOnMissingBean
     public ProcessApiImpl processApiImpl(
@@ -54,24 +72,43 @@ public class DigiwfMessageAutoConfiguration {
         );
     }
 
+    /**
+     * Creates the bean for the default Implementation of {@link ProcessApi}.
+     * @param processApiImpl
+     * @return
+     */
     @Bean
     @ConditionalOnMissingBean
     public ProcessApi processApi(final ProcessApiImpl processApiImpl) {
         return processApiImpl;
     }
 
+    /**
+     * Creates the bean for the default Implementation of {@link MessageApi}.
+     * @param messageApiImpl
+     * @return
+     */
     @Bean
     @ConditionalOnMissingBean
     public MessageApi messageApi(final MessageApiImpl messageApiImpl) {
         return messageApiImpl;
     }
 
+    /**
+     * Creates the bean for the default Implementation of {@link SendMessagePort}.
+     * @return
+     */
     @Bean
     @ConditionalOnMissingBean
     public SendMessagePort sendMessagePort() {
         return this.springCloudStreamAdapter();
     }
 
+    /**
+     * Creates the bean for the default Implementation of {@link CorrelateMessagePort}, {@link StartProcessPort}, {@link IncidentPort} and {@link TechnicalErrorPort}.
+     * @param messageApi
+     * @return
+     */
     @Bean
     @ConditionalOnMissingBean
     public ProcessPortImpl processAdapter(final MessageApi messageApi) {
@@ -80,6 +117,10 @@ public class DigiwfMessageAutoConfiguration {
 
     // spring cloud stream adapter
 
+    /**
+     * Creates the default Implementation of {@link SendMessagePort}.
+     * @return
+     */
     public OutputAdapter springCloudStreamAdapter() {
         return new OutputAdapter(this.messageSink);
     }

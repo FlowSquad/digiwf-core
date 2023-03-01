@@ -3,6 +3,9 @@ package io.muenchendigital.digiwf.integration.adapter.shared;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+/**
+ * Constants for the headers used in the spring cloud messages.
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class StreamingHeaders {
 
