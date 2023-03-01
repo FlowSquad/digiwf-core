@@ -1,4 +1,4 @@
-package io.muenchendigital.digiwf.message.util;
+package io.muenchendigital.digiwf.util;
 
 import io.muenchendigital.digiwf.message.core.impl.SendMessagePort;
 import io.muenchendigital.digiwf.message.core.impl.model.Message;
