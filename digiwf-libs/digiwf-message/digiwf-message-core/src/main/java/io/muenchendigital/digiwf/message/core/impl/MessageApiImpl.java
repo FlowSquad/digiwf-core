@@ -24,10 +24,7 @@ public class MessageApiImpl implements MessageApi {
      */
     @Override
     public boolean sendMessage(final Object payload, final String destination) {
-        final Message message = new Message();
-        message.addHeader(TYPE, destination);
-        message.addPayload(payload);
-        return this.sendMessagePort.sendMessage(message, destination);
+        return this.sendMessage(payload, Map.of(), destination);
     }
 
     /**
@@ -39,6 +36,13 @@ public class MessageApiImpl implements MessageApi {
      */
     @Override
     public boolean sendMessage(final Object payload, final Map<String, Object> headers, final String destination) {
+        if (destination == null || destination.isEmpty()) {
+            return false;
+        }
+        if (payload == null) {
+            return false;
+        }
+
         final Message message = new Message();
         message.addHeader(TYPE, destination);
         for (final Map.Entry<String, Object> entry : headers.entrySet()) {

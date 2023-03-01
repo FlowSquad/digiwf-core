@@ -12,4 +12,11 @@
     <artifactId>digiwf-integration-lib</artifactId>
     <packaging>pom</packaging>
 
+    <modules>
+        <module>digiwf-integration-core</module>
+        <module>digiwf-integration-starter</module>
+        <module>digiwf-integration-example</module>
+        <module>digiwf-integration-adapter-springcloudstream</module>
+    </modules>
+
 </project>
