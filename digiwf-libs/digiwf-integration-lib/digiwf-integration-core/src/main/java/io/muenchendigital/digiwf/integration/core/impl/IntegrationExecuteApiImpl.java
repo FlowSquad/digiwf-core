@@ -34,22 +34,26 @@ public class IntegrationExecuteApiImpl implements IntegrationExecuteApi {
      * @param data data to be processed
      * @return result of the integration
      */
+    @SuppressWarnings("java:S112")
     @Override
     public Object execute(final String type, final Object data) {
-        final Optional<Integration> integrations = this.integrations.stream()
+        final Optional<Integration> foundIntegration = this.integrations.stream()
                 .filter(integration -> integration.getType().equals(type))
                 .findFirst();
 
-        if (integrations.isEmpty()) {
+        if (foundIntegration.isEmpty()) {
             final String errorMessage = String.format("No integration for type %s exists", type);
             throw new RuntimeException(errorMessage);
         }
 
         try {
-            final Object in = this.mapInput(integrations.get().getInputType(), data);
-            return this.mapOutput(integrations.get().execute(in));
-        } catch (final InvocationTargetException | IllegalAccessException e) {
+            final Object in = this.mapInput(foundIntegration.get().getInputType(), data);
+            return this.mapOutput(foundIntegration.get().execute(in));
+        } catch (final IllegalAccessException e) {
             throw new RuntimeException(e);
+        } catch (final InvocationTargetException e) {
+            // Unwrap the exception wrapped by the InvocationTargetException
+            throw (RuntimeException) e.getTargetException();
         }
     }
 
