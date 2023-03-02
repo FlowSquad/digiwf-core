@@ -1,12 +1,14 @@
 package io.muenchendigital.digiwf.message.process.impl.dto;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.Map;
 
+@Data
 @Builder
-@Getter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class StartProcessDto {
     private String key;
     private String fileContext;

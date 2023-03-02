@@ -5,17 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.muenchendigital.digiwf</groupId>
-        <artifactId>digiwf-libs</artifactId>
+        <artifactId>digiwf-integrations</artifactId>
         <version>0.17.4</version>
     </parent>
 
-    <artifactId>digiwf-integration-lib</artifactId>
+    <artifactId>digiwf-example-integration</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>digiwf-integration-core</module>
-        <module>digiwf-integration-starter</module>
-        <module>digiwf-integration-adapter-springcloudstream</module>
+        <module>digiwf-example-integration-core</module>
+        <module>digiwf-example-integration-starter</module>
+        <module>digiwf-example-integration-example</module>
+        <module>digiwf-example-integration-service</module>
     </modules>
 
 </project>

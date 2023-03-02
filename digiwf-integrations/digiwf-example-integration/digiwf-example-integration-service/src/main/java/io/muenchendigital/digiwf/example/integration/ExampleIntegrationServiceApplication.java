@@ -1,14 +1,13 @@
-package io.muenchendigital.digiwf.spring.cloudstream;
-
+package io.muenchendigital.digiwf.example.integration;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@Deprecated
-public class DigiwfCloudstreamApplication {
+public class ExampleIntegrationServiceApplication {
 
     public static void main(final String[] args) {
-        SpringApplication.run(DigiwfCloudstreamApplication.class, args);
+        SpringApplication.run(ExampleIntegrationServiceApplication.class, args);
     }
+
 }

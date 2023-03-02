@@ -1,11 +1,13 @@
 package io.muenchendigital.digiwf.message.process.impl.dto;
 
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
+@Data
 @Builder
-@Getter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class TechnicalErrorDto {
     private String processInstanceId;
     private String messageName;
