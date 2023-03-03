@@ -117,6 +117,14 @@ module.exports = {
                             ]
                         },
                         {
+                            title: 'Bibliotheken',
+                            collapsable: false,
+                            children: [
+                                'libs/digiwf-message/',
+                                'libs/digiwf-integration-lib/',
+                            ]
+                        },
+                        {
                             title: 'Feature Prozesse',
                             collapsable: false,
                             children: [
