@@ -43,28 +43,26 @@ public class SpringCloudStreamAdapter {
                 final String messageName = messageNameHeader.orElseThrow(() -> new RuntimeException("Message type is missing in message headers. Message will be ignored.")).toString();
                 final String messageType = typeHeader.orElseThrow(() -> new RuntimeException("Message type is missing in message headers. Message will be ignored.")).toString();
 
-                // add process instance, messageName and messageType to the payload
-                final Map<String, Object> payload = message.getPayload();
-                payload.put(StreamingHeaders.DIGIWF_PROCESS_INSTANCE_ID, processInstance);
-                payload.put(StreamingHeaders.DIGIWF_MESSAGE_NAME, messageName);
-                payload.put(StreamingHeaders.TYPE, messageType);
+                try {
+                    // add process instance, messageName and messageType to the payload
+                    final Map<String, Object> payload = message.getPayload();
+                    payload.put(StreamingHeaders.DIGIWF_PROCESS_INSTANCE_ID, processInstance);
+                    payload.put(StreamingHeaders.DIGIWF_MESSAGE_NAME, messageName);
+                    payload.put(StreamingHeaders.TYPE, messageType);
 
-                // pass payload to the integration
-                final Map<String, Object> result = (Map<String, Object>) this.integrationExecuteApi.execute(messageType, payload);
+                    // pass payload to the integration
+                    final Map<String, Object> result = (Map<String, Object>) this.integrationExecuteApi.execute(messageType, payload);
 
-                // correlate message
-                this.processApi.correlateMessage(processInstance, messageName, result);
-            } catch (final ValidationException validationException) {
-                // validation exceptions are always technical errors
-                if (processInstanceHeader.isPresent() && messageNameHeader.isPresent()) {
+                    // correlate message
+                    this.processApi.correlateMessage(processInstance, messageName, result);
+                } catch (final ValidationException validationException) {
+                    // validation exceptions are always technical errors
                     this.processApi.handleTechnicalError(processInstanceHeader.get().toString(), "400", validationException.getLocalizedMessage());
                     log.warn("Handling validation error as technical error {}", validationException.getLocalizedMessage());
-                } else {
-                    log.error(validationException.getLocalizedMessage());
+                } catch (final TechnicalError technicalError) {
+                    this.processApi.handleTechnicalError(processInstance, technicalError.getErrorCode(), technicalError.getErrorMessage());
+                    log.warn("Handling technical error for process {} error {}", technicalError.getProcessInstanceId(), technicalError.getErrorMessage());
                 }
-            } catch (final TechnicalError technicalError) {
-                this.processApi.handleTechnicalError(technicalError.getProcessInstanceId(), technicalError.getErrorCode(), technicalError.getErrorMessage());
-                log.warn("Handling technical error for process {} error {}", technicalError.getProcessInstanceId(), technicalError.getErrorMessage());
             } catch (final Exception e) {
                 if (processInstanceHeader.isPresent() && messageNameHeader.isPresent()) {
                     this.processApi.handleIncident(processInstanceHeader.get().toString(), messageNameHeader.get().toString(), e.getMessage());

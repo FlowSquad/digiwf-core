@@ -14,4 +14,14 @@ public class TechnicalError extends RuntimeException {
     private final String errorCode;
     private final String errorMessage;
 
+    /**
+     * Constructor for a technical error without process instance id.
+     *
+     * @param errorCode    error code
+     * @param errorMessage error message
+     */
+    public TechnicalError(final String errorCode, final String errorMessage) {
+        this(null, errorCode, errorMessage);
+    }
+
 }
