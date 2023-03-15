@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 
+import javax.validation.ValidationException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -53,6 +54,14 @@ public class SpringCloudStreamAdapter {
 
                 // correlate message
                 this.processApi.correlateMessage(processInstance, messageName, result);
+            } catch (final ValidationException validationException) {
+                // validation exceptions are always technical errors
+                if (processInstanceHeader.isPresent() && messageNameHeader.isPresent()) {
+                    this.processApi.handleTechnicalError(processInstanceHeader.get().toString(), "400", validationException.getLocalizedMessage());
+                    log.warn("Handling validation error as technical error {}", validationException.getLocalizedMessage());
+                } else {
+                    log.error(validationException.getLocalizedMessage());
+                }
             } catch (final TechnicalError technicalError) {
                 this.processApi.handleTechnicalError(technicalError.getProcessInstanceId(), technicalError.getErrorCode(), technicalError.getErrorMessage());
                 log.warn("Handling technical error for process {} error {}", technicalError.getProcessInstanceId(), technicalError.getErrorMessage());
