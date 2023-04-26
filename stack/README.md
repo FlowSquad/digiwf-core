@@ -14,11 +14,13 @@ For local development you can use the following tools:
 Use docker compose to start the infrastructure components:
 
 ```bash
+# start infrastructure (for local development)
 docker compose up -d
 
-# with frontend
-docker compose --profile tasklist-frontend up -d
+# with tasklist and engine
+docker compose --profile tasklist --profile engine up -d
 ```
+=> Open `http://localhost:8082/`
 
 > Also checkout our documentation [https://digiwf.oss.muenchen.de/documentation/guides/technical-setup/#lokale-infrastruktur](https://digiwf.oss.muenchen.de/documentation/guides/technical-setup/#lokale-infrastruktur).
 
