@@ -1,8 +1,65 @@
 # Use this only in dev environments. It's not intended for production usage.
 version: '3.9'
 services:
+  digiwf-engine:
+    image: itatm/digiwf-engine-service-community:dev
+    container_name: digiwf-engine
+    depends_on:
+      keycloak-init:
+        condition: service_completed_successfully
+    env_file:
+      - local-docker.env
+    ports:
+      - "39146:39146"
+    environment:
+      SPRING_PROFILES_ACTIVE: "local, streaming, no-mail, no-ldap"
+      ENGINE_DATASOURCE_URL: "jdbc:postgresql://host.docker.internal:25433/enginedb"
+      KAFKA_BOOTSTRAP_SERVER: "kafka"
+      KAFKA_BOOTSTRAP_SERVER_PORT: "9092"
+      DOCUMENT_STORAGE_HOST: "http://host.docker.internal"
+      S3_URL: "http://host.docker.internal:9000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    profiles:
+      - engine # enable with --profile engine
+    networks:
+      - internal
+
+  digiwf-tasklist:
+    image: itatm/digiwf-tasklist:dev
+    container_name: digiwf-tasklist
+    ports:
+      - "8091:8080"
+    profiles:
+      - tasklist # enable with --profile tasklist
+    networks:
+      - internal
+
+  digiwf-gateway:
+    image: itatm/digiwf-gateway:dev
+    container_name: digiwf-gateway
+    depends_on:
+      keycloak-init:
+        condition: service_completed_successfully
+    env_file:
+      - local-docker.env
+    ports:
+      - "8082:8082"
+    environment:
+      #
+      # profile specific configuration
+      # possible values: local or (local, docker)
+      # add profile 'docker' if you want to run the engine and frontend in docker, add local when you want to run the engine and frontend outside of docker
+      #
+      SPRING_PROFILES_ACTIVE: "local, docker"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - internal
+
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -10,8 +67,10 @@ services:
       - '22181:2181'
     networks:
       - internal
+
   kafka:
     image: confluentinc/cp-kafka:latest
+    container_name: kafka
     depends_on:
       - zookeeper
     ports:
@@ -26,8 +85,9 @@ services:
     networks:
       - internal
 
-  init-kafka:
+  kafka-init:
     image: confluentinc/cp-kafka:latest
+    container_name: kafka-init
     depends_on:
       - kafka
     env_file:
@@ -69,6 +129,7 @@ services:
 
   minio:
     image: quay.io/minio/minio:latest
+    container_name: minio
     command: server /data --console-address ":9001"
     environment:
       MINIO_ROOT_USER: minio
@@ -83,47 +144,21 @@ services:
 
   mailhog:
     image: mailhog/mailhog:latest
+    container_name: mailhog
     ports:
       - '1025:1025' # smtp server
       - '9025:8025' # ui
     networks:
       - internal
 
-  digiwf-gateway:
-    image: itatm/digiwf-gateway:dev
-    depends_on:
-      init-keycloak:
-        condition: service_completed_successfully
-    env_file:
-      - local-docker.env
-    ports:
-      - "8082:8082"
-    environment:
-      #
-      # profile specific configuration
-      #
-      SPRING_PROFILES_ACTIVE: "local, docker" #possible values: local or  (local, docker) # add profile 'docker' if you want to run the engine and frontend in docker, add local when you want to run the engine and frontend outside of docker
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    networks:
-      - internal
-  # enable the tasklist with --profile tasklist if you don't want to run it locally. Then access via http://localhost:8081
-  digiwf-tasklist:
-    image: itatm/digiwf-tasklist:dev
-    ports:
-      - "8091:8080"
-    profiles:
-      - tasklist-frontend
-    networks:
-      - internal
   #
   # Local keycloak. To work properly, you need to change your local hosts file and add an alias to your
   # `127.0.0.1 localhost` line to look like this: `127.0.0.1 localhost keycloak`.
   # On Mac/Linux it is located in `/etc/hosts` on Win `C:\Windows\System32\Drivers\etc\hosts`
   #
   keycloak:
-    container_name: digiwf-keycloak
     image: ${KEYCLOAK_IMAGE:-quay.io/keycloak/keycloak:20.0.3}
+    container_name: keycloak
     depends_on:
       - postgres-keycloak
     ports:
@@ -142,8 +177,9 @@ services:
       - local-keycloak
       - internal
 
-  init-keycloak:
+  keycloak-init:
     image: klg71/keycloakmigration
+    container_name: keycloak-init
     depends_on:
       - keycloak
     env_file:
@@ -161,7 +197,7 @@ services:
 
   postgres-engine:
     image: postgres:13.2
-    container_name: digiwf-postgres-engine
+    container_name: postgres-engine
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: secret
@@ -173,7 +209,7 @@ services:
 
   postgres-tasklist:
     image: postgres:13.2
-    container_name: digiwf-postgres-tasklist
+    container_name: postgres-tasklist
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: secret
@@ -185,7 +221,7 @@ services:
 
   postgres-keycloak:
     image: postgres:13.2
-    container_name: digiwf-postgres-keycloak
+    container_name: postgres-keycloak
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak-user
