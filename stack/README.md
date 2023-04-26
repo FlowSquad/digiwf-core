@@ -20,7 +20,7 @@ docker compose up -d
 # with tasklist and engine
 docker compose --profile tasklist --profile engine up -d
 ```
-=> Open `http://localhost:8082/`
+=> Open `http://localhost:8082/` and login with `johndoe` and `test`
 
 > Also checkout our documentation [https://digiwf.oss.muenchen.de/documentation/guides/technical-setup/#lokale-infrastruktur](https://digiwf.oss.muenchen.de/documentation/guides/technical-setup/#lokale-infrastruktur).
 

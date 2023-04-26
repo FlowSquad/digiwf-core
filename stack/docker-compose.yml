@@ -21,7 +21,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     profiles:
-      - engine # enable with --profile engine
+      - all # enable with --profile all
     networks:
       - internal
 
@@ -31,7 +31,7 @@ services:
     ports:
       - "8091:8080"
     profiles:
-      - tasklist # enable with --profile tasklist
+      - all # enable with --profile all
     networks:
       - internal
 
@@ -46,12 +46,9 @@ services:
     ports:
       - "8082:8082"
     environment:
-      #
-      # profile specific configuration
-      # possible values: local or (local, docker)
-      # add profile 'docker' if you want to run the engine and frontend in docker, add local when you want to run the engine and frontend outside of docker
-      #
-      SPRING_PROFILES_ACTIVE: "local, docker"
+      SPRING_PROFILES_ACTIVE: "local,docker"
+    profiles:
+      - all # enable with --profile all
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:
