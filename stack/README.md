@@ -16,7 +16,8 @@ Use docker compose to start the infrastructure components:
 1. Add profiles to host file:
     ```bash
     # add profiles to host
-    127.0.0.1 localhost keycloak digiwf-tasklist
+    # On Mac/Linux it is located in `/etc/hosts` on Win `C:\Windows\System32\Drivers\etc\hosts`
+    127.0.0.1 localhost keycloak
     ```
 
 2. Start docker environment:
