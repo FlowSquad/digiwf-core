@@ -13,14 +13,23 @@ For local development you can use the following tools:
 
 Use docker compose to start the infrastructure components:
 
-```bash
-# start infrastructure (for local development)
-docker compose up -d
+1. Add profiles to host file:
+    ```bash
+    # add profiles to host
+    127.0.0.1 localhost keycloak digiwf-tasklist
+    ```
 
-# with tasklist and engine
-docker compose --profile tasklist --profile engine up -d
-```
-=> Open `http://localhost:8082/` and login with `johndoe` and `test`
+2. Start docker environment:
+    ```bash
+    # start infrastructure (for local development)
+    docker compose up -d
+
+    # with tasklist
+    docker compose --profile tasklist-frontend up -d
+    ```
+3. In Browser:
+
+   Open `http://localhost:8082/` and login with `johndoe` and `test`
 
 > Also checkout our documentation [https://digiwf.oss.muenchen.de/documentation/guides/technical-setup/#lokale-infrastruktur](https://digiwf.oss.muenchen.de/documentation/guides/technical-setup/#lokale-infrastruktur).
 

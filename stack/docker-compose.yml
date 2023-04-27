@@ -20,8 +20,6 @@ services:
       S3_URL: "http://host.docker.internal:9000"
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    profiles:
-      - all # enable with --profile all
     networks:
       - internal
 
@@ -31,7 +29,7 @@ services:
     ports:
       - "8091:8080"
     profiles:
-      - all # enable with --profile all
+      - tasklist-frontend
     networks:
       - internal
 
@@ -47,8 +45,6 @@ services:
       - "8082:8082"
     environment:
       SPRING_PROFILES_ACTIVE: "local,docker"
-    profiles:
-      - all # enable with --profile all
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:
