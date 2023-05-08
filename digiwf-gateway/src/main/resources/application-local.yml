@@ -11,6 +11,7 @@ spring:
             - Path=/api/sso/userinfo
           filters:
             - RewritePath=/api/sso/userinfo, /realms/${SSO_REALM}/protocol/openid-connect/userinfo
+
         - id: backend
           uri: http://${ENGINE_SERVER_HOST:localhost}:${ENGINE_SERVER_PORT}/
           predicates:
