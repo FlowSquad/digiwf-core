@@ -29,6 +29,7 @@ export default defineConfig({
   videosFolder: "tests/videos",
   screenshotsFolder: "tests/screenshots",
   trashAssetsBeforeRuns: true,
+  // chromeWebSecurity: false,
   // scrollBehavior: false,
   component: {
     devServer: {
@@ -46,6 +47,8 @@ export default defineConfig({
     numTestsKeptInMemory: 5,
     specPattern: "tests/e2e/**/*.spec.{js,jsx,ts,tsx}",
     supportFile: "tests/support/e2e.ts",
+    // chromeWebSecurity: false,
+    // experimentalSkipDomainInjection: ["*keycloak:8080", "*localhost:8082"],
     //
     setupNodeEvents(on, config) {
       const CONFIG = config;
