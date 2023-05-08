@@ -1,7 +1,6 @@
 import {
   DATACY_KEYCLOAK  as KC
 } from "./constants";
-// NOTE: Cypress testing is used in no-security mode only. Therefore, no login is applied.
 Cypress.Commands.add("login", (url: string, user = "johndoe", pw = Cypress.env("KEYCLOAK_ADMIN")): Cypress.Chainable => {
     return cy.session([url, user, pw], () => {
         // blank page
@@ -17,5 +16,6 @@ Cypress.Commands.add("login", (url: string, user = "johndoe", pw = Cypress.env("
         // get redirected
         // cy.url().should("include", `${Cypress.config("baseUrl")}/#`);
         // session created
+        cy.pause();
     });
 });

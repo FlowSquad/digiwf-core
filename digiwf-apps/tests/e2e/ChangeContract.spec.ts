@@ -7,7 +7,7 @@ describe("DIGIWF - Change Contract Testsuite", () => {
     //
   });
   beforeEach(() => {
-    cy.visit("/");
+    cy.login("/");
     //cy.origin("http://keycloak:8080/auth/realms/P82", () => {
      // cy.visit("/");
     // cy.request("http://keycloak:8080/auth/realms/P82");
