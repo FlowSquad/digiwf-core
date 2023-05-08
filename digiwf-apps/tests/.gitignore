@@ -1,0 +1,4 @@
+tests/reports/**
+tests/results/**
+tests/videos/**
+tests/screenshots/**

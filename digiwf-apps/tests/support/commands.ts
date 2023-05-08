@@ -10,8 +10,12 @@ Cypress.Commands.add("login", (url: string, user = "johndoe", pw = Cypress.env("
         // type credentials
         cy.get(KC.USERN).type(user);
         cy.get(KC.PASSW).type(pw);
+        cy.pause();
         // submit form
         cy.get(KC.SUBMIT).click();
+        // cy.getAllCookies().then(cookies => {
+        //     cy.log(JSON.stringify(cookies));
+        // });
         // receive the token
         // get redirected
         // cy.url().should("include", `${Cypress.config("baseUrl")}/#`);
