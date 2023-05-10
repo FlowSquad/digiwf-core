@@ -5,6 +5,10 @@ dotenv.config();
 
 // noinspection JSUnusedGlobalSymbols
 export default defineConfig({
+  env: {
+    auth2_username: process.env.AUTH2_USERNAME,
+    auth2_password: process.env.AUTH2_PASSWORD
+  },
   // projectId: "9c4me5",
   port: 8101,
   viewportWidth: 1400,
@@ -52,7 +56,7 @@ export default defineConfig({
     //
     setupNodeEvents(on, config) {
       const CONFIG = config;
-      CONFIG.env.KEYCLOAK_ADMIN = process.env.KEYCLOAK_ADMIN;
+      // CONFIG.env.KEYCLOAK_ADMIN = process.env.KEYCLOAK_ADMIN;
 
       on("before:browser:launch", (browser, launchOptions) => {
         switch (browser.family) {
