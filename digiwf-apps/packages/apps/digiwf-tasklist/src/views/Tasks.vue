@@ -27,7 +27,7 @@
         hide-details
         dense
         class="followUp"
-        data-cy="checkBox-showTemplate"
+        data-cy="showTemplate"
       />
     </div>
     <AppPaginationFooter

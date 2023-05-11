@@ -25,3 +25,7 @@ Cypress.Commands.add("login", (user = Cypress.env('auth2_username'), pw = Cypres
     });
   });
 });
+
+Cypress.Commands.add("drawer", (item): void => {
+  cy.get(`[data-cy=${item}]`).click();
+});
