@@ -8,6 +8,7 @@
         <!-- input.native to prevent this issue: https://github.com/vuetifyjs/vuetify/issues/4679 -->
         <v-combobox
           id="suchfeld"
+          data-cy="Processes-SearchField"
           v-model="filter"
           :items="persistentFilters.map((f) => f.filterString)"
           flat
@@ -52,6 +53,7 @@
             style="padding-left: 13px;"
             large
             color="primary"
+            data-cy="Processes-RefreshButton"
             @click="loadProcesses(true)"
           >
             <div style="min-width: 30px">
@@ -89,6 +91,7 @@
               :key="item.key"
               :item="item"
               :search-string="filter || ''"
+              :data-cy="'Processes-ProcessDefinitionItem-'+item.key"
             />
           </template>
         </template>

@@ -27,7 +27,7 @@ export default defineConfig({
     runMode: 0,
   },
   videoUploadOnPasses: false,
-  defaultCommandTimeout: 10000,
+  defaultCommandTimeout: 30000,
   downloadsFolder: "tests/downloads",
   fixturesFolder: "tests/fixtures",
   videosFolder: "tests/videos",

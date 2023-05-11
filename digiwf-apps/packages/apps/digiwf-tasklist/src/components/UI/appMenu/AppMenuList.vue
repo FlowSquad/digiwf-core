@@ -1,10 +1,21 @@
 <template>
     <v-list>
-      <AppMenuItem path="/mytask" label="Meine Aufgaben" :number-of-elements="numberOfMyTasks"/>
+      <AppMenuItem
+        path="/mytask"
+        label="Meine Aufgaben"
+        data-cy="App-NavigationDrawer-AppMenuList-AppMenuItem-MyTasks"
+        :number-of-elements="numberOfMyTasks"/>
       <hr class="hrDividerMenu">
-      <AppMenuItem path="/instance" label="Aktuelle Vorgänge" :number-of-elements="numberOfProcessInstances"/>
+      <AppMenuItem
+        path="/instance"
+        label="Aktuelle Vorgänge"
+        data-cy="App-NavigationDrawer-AppMenuList-AppMenuItem-Instances"
+        :number-of-elements="numberOfProcessInstances"/>
       <hr class="hrDividerMenu">
-      <AppMenuItem path="/process" label="Vorgang Starten"/>
+      <AppMenuItem
+        path="/process"
+        label="Vorgang Starten"
+        data-cy="App-NavigationDrawer-AppMenuList-AppMenuItem-Processes"/>
       <hr
         class="hrDividerMenu"
         style="margin-bottom: 60px"
@@ -12,9 +23,17 @@
       <p class="grey--text ml-9 mt-5 mb-0">
         Gruppenaufgaben
       </p>
-      <AppMenuItem path="/opengrouptask" label="Offen" :number-of-elements="numberOfOpenGroupTasks"/>
+      <AppMenuItem
+        path="/opengrouptask"
+        label="Offen"
+        data-cy="App-NavigationDrawer-AppMenuList-AppMenuItem-Open"
+        :number-of-elements="numberOfOpenGroupTasks"/>
       <hr class="hrDividerMenu">
-      <AppMenuItem path="/assignedgrouptask" label="In Bearbeitung" :number-of-elements="numberOfAssignedGroupTasks"/>
+      <AppMenuItem
+        path="/assignedgrouptask"
+        label="In Bearbeitung"
+        data-cy="App-NavigationDrawer-AppMenuList-AppMenuItem-AssignedGroupTasks"
+        :number-of-elements="numberOfAssignedGroupTasks"/>
       <hr class="hrDividerMenu">
     </v-list>
 </template>

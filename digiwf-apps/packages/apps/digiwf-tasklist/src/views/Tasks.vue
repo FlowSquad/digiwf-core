@@ -8,6 +8,7 @@
       :data-loading-error-message="errorMessage"
       :filter.sync="filter"
       pageId="tasks"
+      data-cy="taskList"
       @loadTasks="reloadTasks"
     >
       <template #default="props">
@@ -26,6 +27,7 @@
         hide-details
         dense
         class="followUp"
+        data-cy="checkBox-showTemplate"
       />
     </div>
     <AppPaginationFooter
