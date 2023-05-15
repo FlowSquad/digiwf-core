@@ -18,7 +18,7 @@ Cypress.Commands.add("login", (user = Cypress.env('auth2_username'), pw = Cypres
     cy.get(KC.PASSW).type(pw, { log: false });
     cy.get(KC.SUBMIT).click();
     // NOTE: Currently required workaround (cross-origin)
-    cy.origin(Cypress.config("baseUrl"), {args: testIds}, (testIds: Record<string, string>): void => {
+    cy.origin("http://localhost:8081", {args: testIds}, (testIds: Record<string, string>): void => {
       cy.get("table a").click();
       cy.get(`[data-cy=${testIds.list}] > div`).should("have.length.greaterThan", 3); // wait for the page loaded
       cy.wait(["@getTasks", "@getFilter"]); // wait for the login to complete
