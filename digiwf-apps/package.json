@@ -13,9 +13,9 @@
     "serve:tasklist": "lerna run dev --stream --scope=@muenchen/digiwf-tasklist",
     "serve:all": "lerna run dev --stream --parallel",
     "test": "lerna run test",
+    "e2e:local:generate-html-report": "npx mochawesome-merge tests/reports/*.json > e2e_report.json & npx marge e2e_report.json -o tests/reports & bash -c 'mv tests/reports/e2e_report.html tests/reports/`date +%d.%m.%y-%H-%M`_e2e_report.html; rm e2e_report.json;'",
     "e2e:local:gui": "bash -c 'rm tests/downloads/*;' & npx cypress open --config-file tests/cypress.config.ts",
-    "e2e:local:generate-html-report": "npx mochawesome-merge tests/results/*.json > e2e_report.json & npx marge e2e_report.json -o tests/results & bash -c 'rm -rf tests/reports/assets/; mv tests/results/assets/ tests/reports; mv tests/results/e2e_report.html tests/reports/`date +%d.%m.%y-%H-%M`_e2e_report.html; rm e2e_report.json;'",
-    "e2e:local": "bash -c 'rm tests/downloads/*; rm tests/results/mocha*;' & npx cypress run --config-file tests/cypress.config.ts --headless --browser chrome & npm run e2e:local:generate-html-report"
+    "e2e:local": "bash -c 'rm tests/downloads/*; rm tests/reports/mocha*;' & npx cypress run --config-file tests/cypress.config.ts --headless --browser chrome & npm run e2e:local:generate-html-report"
   },
   "author": {
     "name": "Dominik horn",

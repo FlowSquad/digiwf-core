@@ -17,7 +17,7 @@ export default defineConfig({
   reporterOptions: {
     consoleReporter: "spec",
     quiet: false,
-    reportDir: "tests/results",
+    reportDir: "tests/reports",
     overwrite: false,
     html: false,
     json: true,
