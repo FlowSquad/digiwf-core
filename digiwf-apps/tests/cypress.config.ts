@@ -26,8 +26,8 @@ export default defineConfig({
     openMode: 0,
     runMode: 0,
   },
-  videoUploadOnPasses: false,
-  defaultCommandTimeout: 30000,
+  videoUploadOnPasses: true,
+  defaultCommandTimeout: 5000,
   downloadsFolder: "tests/downloads",
   fixturesFolder: "tests/fixtures",
   videosFolder: "tests/videos",
@@ -47,7 +47,7 @@ export default defineConfig({
   },
   // eslint-disable-next-line object-shorthand
   e2e: {
-    baseUrl: "http://localhost:8082",
+    baseUrl: "http://keycloak:8082",
     numTestsKeptInMemory: 5,
     specPattern: "tests/e2e/**/*.spec.{js,jsx,ts,tsx}",
     supportFile: "tests/support/e2e.ts",

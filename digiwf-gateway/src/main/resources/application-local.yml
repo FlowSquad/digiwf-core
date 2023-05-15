@@ -26,6 +26,9 @@ spring:
             - Path=/**
 
       default-filters:
+      #  - RemoveResponseHeader=Expires
+      #  - RemoveRequestHeader=cookie
+      #  - RemoveRequestHeader=x-xsrf-token
         - TokenRelay=
 
   mvc:
