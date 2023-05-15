@@ -15,10 +15,7 @@ Cypress.Commands.add("login", (user = Cypress.env('auth2_username'), pw = Cypres
     cy.get(KC.USERN).type(user);
     cy.get(KC.PASSW).type(pw, {log: false});
     cy.get(KC.SUBMIT).click();
-    if (Cypress.config("baseUrl").includes("localhost")) {
-      cy.visit("/auth/realms/P82"); // required for localhost setup only?
-      cy.wait(["@getTasks", "@getFilter"]);
-    }
+    cy.wait(["@getTasks", "@getFilter"]);
   });
 });
 
