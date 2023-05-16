@@ -1,4 +1,5 @@
 import {
+  DATACY_TASKS as TASKS,
   KEYCLOAK as KC,
   API
 } from "./constants";
@@ -16,9 +17,14 @@ Cypress.Commands.add("login", (user = Cypress.env('auth2_username'), pw = Cypres
     cy.get(KC.PASSW).type(pw, {log: false});
     cy.get(KC.SUBMIT).click();
     cy.wait(["@getTasks", "@getFilter"]);
+    cy.get(`[data-cy=${TASKS.LIST.ROOT}] > div`).should("have.length.greaterThan", 3); // wait for the page loaded
   });
 });
 
 Cypress.Commands.add("drawer", (item): void => {
+  cy.intercept("GET", API.BACKEND_SERVICE.FILTER).as("getFilter");
   cy.get(`[data-cy=${item}]`).click();
+  cy.wait("@getFilter");
+  cy.get("#suchfeld").should("be.visible");
 });
+
