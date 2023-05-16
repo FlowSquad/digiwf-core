@@ -2,7 +2,9 @@
   <app-view-layout>
     <div>
       <v-flex>
-        <h1>Vorgänge</h1>
+        <h1
+          data-cy="Processes-Headline"
+        >Vorgänge</h1>
       </v-flex>
       <v-flex class="d-flex justify-space-between align-center searchField">
         <!-- input.native to prevent this issue: https://github.com/vuetifyjs/vuetify/issues/4679 -->
@@ -84,6 +86,7 @@
         :items="filteredProcesses"
         found-data-text="Vorgänge gefunden"
         no-data-text="Keine Vorgänge gefunden"
+        data-cy="Processes-List"
       >
         <template #default="props">
           <template v-for="item in props.items">
@@ -91,7 +94,7 @@
               :key="item.key"
               :item="item"
               :search-string="filter || ''"
-              :data-cy="'Processes-ProcessDefinitionItem-'+item.key"
+              :data-cy="'Processes-Item-'+item.key"
             />
           </template>
         </template>

@@ -8,7 +8,9 @@
     </v-flex>
     <v-flex v-if="task !== null">
       <span class="processName grey--text">{{ task.processName }}</span>
-      <h1>{{ task.name }}</h1>
+      <h1
+        data-cy="TaskDetail-Headline"
+      >{{ task.name }}</h1>
       <p>{{ task.description }}</p>
       <base-form
         v-if="task.form"

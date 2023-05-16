@@ -1,7 +1,9 @@
 <template>
   <div>
     <v-flex>
-      <h1>{{ viewName }}</h1>
+      <h1
+        data-cy="Tasks-Headline"
+      >{{ viewName }}</h1>
     </v-flex>
     <v-flex class="d-flex justify-space-between align-center searchField">
       <search-field

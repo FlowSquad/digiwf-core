@@ -1,7 +1,5 @@
 import {
-  DATACY_TASKS as TASKS,
-  KEYCLOAK as KC,
-  API
+  KEYCLOAK as KC
 } from "./constants";
 
 Cypress.Commands.add("login", (user = Cypress.env('auth2_username'), pw = Cypress.env('auth2_password')): Cypress.Chainable => {
@@ -20,9 +18,7 @@ Cypress.Commands.add("login", (user = Cypress.env('auth2_username'), pw = Cypres
 });
 
 Cypress.Commands.add("drawer", (item): void => {
-  cy.intercept("GET", API.BACKEND_SERVICE.FILTER).as("getFilter");
   cy.get(`[data-cy=${item}]`).click();
-  cy.wait("@getFilter");
   // guard: page changed
   cy.get("#suchfeld").should("be.visible");
 });

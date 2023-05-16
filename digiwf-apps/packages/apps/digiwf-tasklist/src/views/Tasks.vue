@@ -16,6 +16,7 @@
           :key="props.item.id"
           :task="props.item"
           :search-string="props.item.searchInput"
+          :data-cy="'Tasks-Item' + props.item.id"
         />
         <hr class="hrDivider">
       </template>

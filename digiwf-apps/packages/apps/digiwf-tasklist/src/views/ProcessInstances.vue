@@ -2,7 +2,9 @@
   <app-view-layout>
     <div>
       <v-flex>
-        <h1>Aktuelle Vorgänge</h1>
+        <h1
+          data-cy="ProcessInstances-Headline"
+        >Aktuelle Vorgänge</h1>
       </v-flex>
       <v-flex class="d-flex justify-space-between align-center searchField">
         <!-- input.native to prevent this issue: https://github.com/vuetifyjs/vuetify/issues/4679 -->
@@ -103,7 +105,7 @@
         :totalNumberOfItems="numberOfProcessInstances"
         found-data-text="Vorgänge gefunden"
         no-data-text="Keine laufenden Vorgänge gefunden"
-        data-cy="ProcessInstances-CurrentList"
+        data-cy="ProcessInstances-List"
       >
         <template #default="props">
           <template v-for="item in props.items">
@@ -111,7 +113,7 @@
               :key="item.id"
               :item="item"
               :search-string="filter || ''"
-              data-cy="'ProcessInstances-Instance-'item.id"
+              :data-cy="'ProcessInstances-Item-' + item.id"
             />
           </template>
         </template>

@@ -8,7 +8,9 @@
     </v-flex>
 
     <v-flex v-if="processInstanceDetail !== null">
-      <h1>{{ processInstanceDetail.definitionName }}</h1>
+      <h1
+        data-cy="ProcessInstanceDetailView-Headline"
+      >{{ processInstanceDetail.definitionName }}</h1>
       <p>{{ processInstanceDetail.description }}</p>
 
       <v-stepper
