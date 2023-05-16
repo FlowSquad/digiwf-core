@@ -8,7 +8,7 @@
       :data-loading-error-message="errorMessage"
       :filter.sync="filter"
       pageId="tasks"
-      data-cy="taskList"
+      data-cy="Tasks-List"
       @loadTasks="reloadTasks"
     >
       <template #default="props">

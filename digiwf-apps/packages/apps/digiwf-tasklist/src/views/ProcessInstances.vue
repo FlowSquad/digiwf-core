@@ -103,6 +103,7 @@
         :totalNumberOfItems="numberOfProcessInstances"
         found-data-text="Vorgänge gefunden"
         no-data-text="Keine laufenden Vorgänge gefunden"
+        data-cy="ProcessInstances-CurrentList"
       >
         <template #default="props">
           <template v-for="item in props.items">
@@ -110,6 +111,7 @@
               :key="item.id"
               :item="item"
               :search-string="filter || ''"
+              data-cy="'ProcessInstances-Instance-'item.id"
             />
           </template>
         </template>

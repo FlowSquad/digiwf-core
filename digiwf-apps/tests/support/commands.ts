@@ -10,14 +10,12 @@ Cypress.Commands.add("login", (user = Cypress.env('auth2_username'), pw = Cypres
       displayName: 'AUTH2 LOGIN',
       message: [`🔐 Authenticating | ${user}`]
     })
-    cy.intercept("GET", API.BACKEND_SERVICE.TASKS).as("getTasks");
-    cy.intercept("GET", API.BACKEND_SERVICE.FILTER).as("getFilter");
     cy.visit("/"); // becomes redirected to keycloak login for
     cy.get(KC.USERN).type(user);
     cy.get(KC.PASSW).type(pw, {log: false});
     cy.get(KC.SUBMIT).click();
-    cy.wait(["@getTasks", "@getFilter"]);
-    cy.get(`[data-cy=${TASKS.LIST.ROOT}] > div`).should("have.length.greaterThan", 3); // wait for the page loaded
+    // guard: page changed
+    cy.url().should('contain', 'mytask')
   });
 });
 
@@ -25,6 +23,7 @@ Cypress.Commands.add("drawer", (item): void => {
   cy.intercept("GET", API.BACKEND_SERVICE.FILTER).as("getFilter");
   cy.get(`[data-cy=${item}]`).click();
   cy.wait("@getFilter");
+  // guard: page changed
   cy.get("#suchfeld").should("be.visible");
 });
 

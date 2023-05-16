@@ -9,7 +9,9 @@
     <v-flex
       v-if="process !== null"
     >
-      <h1>{{ process.name }}</h1>
+      <h1
+        data-cy="StartProcess-Headline"
+      >{{ process.name }}</h1>
       <p>{{ process.description }}</p>
       <base-form
         v-if="process.startForm"
@@ -81,7 +83,9 @@ export default class StartProcess extends SaveLeaveMixin {
   processKey!: string;
 
   @Provide('formContext')
-  get formContext(): FormContext { return {id: this.processKey, type: "start"}};
+  get formContext(): FormContext {
+    return {id: this.processKey, type: "start"}
+  };
 
   @Provide('apiEndpoint')
   apiEndpoint = EngineServiceApiConfig.base;

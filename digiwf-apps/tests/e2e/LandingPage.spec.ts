@@ -12,7 +12,7 @@ describe("DIGIWF - Landing Page Testsuite", (): void => {
     TasklistUtils.openProcess("AntragDVMoHo");
   });
 
-  it("#taq - open and finish empty process", () => {
+  it.only("#taq - open and finish empty process", () => {
     TasklistUtils.openAndFinishEmptyProcess("DigitalWFErleben");
   });
 

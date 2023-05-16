@@ -5,7 +5,7 @@ const DATACY = {
     }
   },
   DRAWER: {
-    MY_TASKS: "App-NavigationDrawer-AppMenuList-AppMenuItem-MyTasks",
+    TASKS: "App-NavigationDrawer-AppMenuList-AppMenuItem-MyTasks",
     INSTANCES: "App-NavigationDrawer-AppMenuList-AppMenuItem-Instances",
     PROCESSES: "App-NavigationDrawer-AppMenuList-AppMenuItem-Processes",
     OPEN: "App-NavigationDrawer-AppMenuList-AppMenuItem-Open",
@@ -28,7 +28,7 @@ const DATACY = {
       EMPTY_CONTRACT: "DigitalWFErleben"
     },
     TASKS: {
-      SHOWTEMPLATE: "showTemplate",
+      SHOW_TEMPLATE: "showTemplate",
       LIST: {
         ROOT: "Tasks-List"
       },

@@ -67,7 +67,7 @@ class TasklistUtils {
    * openTask
    */
   static openTask(index = 0): void {
-    cy.drawer(DRAWER.MY_TASKS);
+    cy.drawer(DRAWER.TASKS);
     cy.get(`[data-cy=${TASKS.LIST.ROOT}]`).should("contain.text", "Aufgaben gefunden");
     //cy.get(`[data-cy=tasklist] div:nth-child(${index}) > a`).click();
   }
