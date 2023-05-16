@@ -1,5 +1,5 @@
 import {
-  DATACY_KEYCLOAK as KC,
+  KEYCLOAK as KC,
   API
 } from "./constants";
 
