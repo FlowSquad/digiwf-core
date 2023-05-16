@@ -1,7 +1,8 @@
 /*
  * TasklistUtils
- * Encapsulates cypress functionality for testing the digiwf landing page.
+ * Encapsulates cypress functionality for e2e-testing digiwf-apps.
  * @author: Martin Berner
+ * @url: https://miragon.io
  */
 import {
   DRAWERS
@@ -23,10 +24,9 @@ const getCurrentListItems = (drawer): Cypress.Chainable => {
   });
 }
 
-class TasklistUtils {
+export class TasklistUtils {
   /**
-   * openProcess
-   * (tests for the headline of the opened process)
+   * Opens a given process and asserts that the h1-HTMLElement of the opened process is visible.
    *
    * @param {string} name - name of process
    */
@@ -36,13 +36,14 @@ class TasklistUtils {
     cy.get(`[data-cy=${DRAWERS.PROCESSES.LIST.ITEM}-${name}]`).click();
     cy.get(`[data-cy=${DRAWERS.PROCESSES.LIST.ITEM_HEADLINE}]`).should("be.visible");
   }
-F
+
   /**
-   * openAndFinishEmptyProcess
-   * (tests for a new item has been inserted in the first page of the instances list)
+   * Opens a given process <b>(the user has to take care that it is an empty process)</b>.
+   * Selects the last button within the form-HTMLElement and clicks it.
+   * Asserts that the process has been transferred successfully to the instances list
+   * <b>(requires that the new process instance becomes added at the top of the instances list)</b>.
    *
    * @param {string} name - name of process
-   * @requires {} - new items are inserted at the top of the list
    */
   static openAndFinishEmptyProcess(name: string): void {
     let currentInstancesBefore: Array<string> = [];
@@ -61,8 +62,7 @@ F
   }
 
   /**
-   * openTask
-   * (tests for the headline of the opened task)
+   * Opens a given task and asserts that the h1-HTMLElement of the opened task is visible.
    *
    * @param {number} index - position of task item in list
    */
@@ -74,11 +74,12 @@ F
   }
 
   /**
-   * openAndFinishTask
-   * (tests for a new item has been inserted/removed in the first page of the tasks list)
+   * Open a given task <b>(the user has to take care that it is a single step task)</b>.
+   * Selects the last button within the form-HTMLElement and clicks it.
+   * Asserts that the task has been transferred successfully to the tasklist.
+   * <b>(requires that the new task becomes added at the top of the tasklist)</b>.
    *
    * @param {number} index - position of task item in list
-   * @requires {} - new items are inserted at the top of the list, task could be finish in one step
    */
   static openAndFinishOneStepTask(index = 0): void {
     let currentTasksBefore: Array<string> = [];
@@ -96,8 +97,6 @@ F
     });
   }
 }
-
-export default TasklistUtils;
 
 // it.skip("#agt - start process - begin contract", () => {
 //   cy.intercept("GET", API.BACKEND_SERVICE.FILTER).as("getFilter");

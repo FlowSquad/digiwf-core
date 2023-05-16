@@ -1,4 +1,4 @@
-import TasklistUtils from "../support/TasklistUtils";
+import {TasklistUtils} from "../support/TasklistUtils";
 
 describe("DIGIWF - Landing Page Testsuite", (): void => {
   beforeEach(() => {

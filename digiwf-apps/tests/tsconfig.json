@@ -11,5 +11,11 @@
   },
   "include": [
     "./**/*.ts"
-  ]
+  ],
+  "typedocOptions": {
+    "name": "Cypress E2E-Testing",
+    "entryPoints": ["./support/TasklistUtils.ts"],
+    "out": "docs",
+    "readme": "README.md"
+  }
 }
