@@ -11,7 +11,7 @@ describe("DIGIWF - Landing Page Testsuite", (): void => {
   });
 
   it("#taq - open and finish empty process", () => {
-    TasklistUtils.openAndFinishEmptyProcess("DigitalWFErleben");
+    TasklistUtils.openAndFinishProcess("DigitalWFErleben");
   });
 
   it("#phk - open task", () => {
