@@ -24,6 +24,10 @@ const getCurrentListItems = (drawer): Cypress.Chainable => {
   });
 }
 
+const fillFormular = (name, schema, data): void => {
+  console.log(name);
+}
+
 export class TasklistUtils {
   /**
    * Opens a given process and asserts that the h1-HTMLElement of the opened process is visible.
@@ -53,6 +57,39 @@ export class TasklistUtils {
     cy.drawer(DRAWERS.PROCESSES.DRAWER);
     cy.get(`[data-cy=${DRAWERS.PROCESSES.LIST.ITEM}-${name}]`).click();
     cy.get(`[data-cy=${DRAWERS.PROCESSES.LIST.ITEM_HEADLINE}]`).should("be.visible");
+    cy.get("form button").last().click();
+    // guard: page changed
+    cy.get(`[data-cy=${DRAWERS.PROCESSES.LIST.ITEM_HEADLINE}]`).should("not.exist");
+    getCurrentListItems(DRAWERS.INSTANCES).then((currentInstances: Array<string>): void => {
+      expect(simpleArrayCompare(currentInstancesBefore, currentInstances)).to.false;
+    });
+  }
+
+  /**
+   * Opens a given process.
+   * Finds out is there a form to fill or not.
+   * If not: selects the last button within the form-HTMLElement and clicks it.
+   * If yes: fills the form and only now clicks the last button within the form-HTMLElement.
+   * Asserts that the process has been transferred successfully to the instances list.
+   * <b>(requires that the new process instance becomes added at the top of the instances list)</b>.
+   *
+   * @param {string} name - name of process
+   */
+  static openAndFinishProcess(name: string): void {
+    let currentInstancesBefore: Array<string> = [];
+    getCurrentListItems(DRAWERS.INSTANCES).then((currentInstances: Array<string>): void => {
+      currentInstancesBefore = currentInstances;
+    });
+    cy.drawer(DRAWERS.PROCESSES.DRAWER);
+    cy.get(`[data-cy=${DRAWERS.PROCESSES.LIST.ITEM}-${name}]`).click();
+    cy.get(`[data-cy=${DRAWERS.PROCESSES.LIST.ITEM_HEADLINE}]`).should("be.visible");
+    // if empty do nothing else fill form
+    cy.get("form input").then(($inputs: JQuery<HTMLElement>): void => {
+      if ($inputs.length > 2) {
+        fillFormular(name, JSON.parse("{}"), JSON.parse("{}"));
+      }
+    });
+    cy.pause();
     cy.get("form button").last().click();
     // guard: page changed
     cy.get(`[data-cy=${DRAWERS.PROCESSES.LIST.ITEM_HEADLINE}]`).should("not.exist");

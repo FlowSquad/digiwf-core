@@ -2,10 +2,10 @@ import {
   KEYCLOAK as KC
 } from "./constants";
 
-Cypress.Commands.add("login", (user = Cypress.env('auth2_username'), pw = Cypress.env('auth2_password')): Cypress.Chainable => {
+Cypress.Commands.add("login", (user = Cypress.env('auth2_username'), pw = Cypress.env("auth2_password")): Cypress.Chainable => {
   return cy.session([user, pw], (): void => {
     Cypress.log({
-      displayName: 'AUTH2 LOGIN',
+      displayName: "'AUTH2 LOGIN",
       message: [`🔐 Authenticating | ${user}`]
     })
     cy.visit("/"); // becomes redirected to keycloak login for
@@ -13,7 +13,7 @@ Cypress.Commands.add("login", (user = Cypress.env('auth2_username'), pw = Cypres
     cy.get(KC.PASSW).type(pw, {log: false});
     cy.get(KC.SUBMIT).click();
     // guard: page changed
-    cy.url().should('contain', 'mytask')
+    cy.url().should("not.contain", 8080).and('contain', 'mytask');
   });
 });
 

@@ -21,4 +21,9 @@ describe("DIGIWF - Landing Page Testsuite", (): void => {
   it("#klr - open and finish one step task", () => {
     TasklistUtils.openAndFinishOneStepTask();
   });
+
+  // TODO: is in work, not finished yet
+  it.skip("#gbl - open and finish process", () => {
+    TasklistUtils.openAndFinishProcess("AntragDVMoHo");
+  });
 })
