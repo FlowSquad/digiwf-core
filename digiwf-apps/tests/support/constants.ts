@@ -53,70 +53,76 @@ export const API = {
     FILTER: "/api/digitalwf-backend-service/rest/filter"
   }
 }
-export const test_schema = `{
-    "type": "object",
-    "required": [
-      "age"
-    ],
-    "properties": {
-      "firstName": {
-        "type": "string",
-        "minLength": 2,
-        "maxLength": 20
-      },
-      "lastName": {
-        "type": "string",
-        "minLength": 5,
-        "maxLength": 15
-      },
-      "age": {
-        "type": "integer",
-        "minimum": 18,
-        "maximum": 100
-      },
-      "gender": {
-        "type": "string",
-        "enum": [
-          "Male",
-          "Female",
-          "Undisclosed"
-        ]
-      },
-      "height": {
-        "type": "number"
-      },
-      "dateOfBirth": {
-        "type": "string",
-        "format": "date"
-      },
-      "rating": {
-        "type": "integer"
-      },
-      "committer": {
-        "type": "boolean"
-      },
-      "address": {
-        "type": "object",
-        "properties": {
-          "street": {
-            "type": "string"
-          },
-          "streetnumber": {
-            "type": "string"
-          },
-          "postalCode": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          }
-        }
-      }
-    }
-  }`
 
-  export const test_data = `{
-    "firstName": "Maxi",
-    "lastName": "Power"
-  }`
+export const test_schema = `{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 3,
+      "description": "Please enter your name"
+    },
+    "vegetarian": {
+      "type": "boolean"
+    },
+    "birthDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "nationality": {
+      "type": "string",
+      "enum": [
+        "DE",
+        "IT",
+        "JP",
+        "US",
+        "RU",
+        "Other"
+      ]
+    },
+    "personalData": {
+      "type": "object",
+      "properties": {
+        "age": {
+          "type": "integer",
+          "description": "Please enter your age."
+        },
+        "height": {
+          "type": "number"
+        },
+        "drivingSkill": {
+          "type": "number",
+          "maximum": 10,
+          "minimum": 1,
+          "default": 7
+        }
+      },
+      "required": [
+        "age",
+        "height"
+      ]
+    },
+    "occupation": {
+      "type": "string"
+    },
+    "postalCode": {
+      "type": "string",
+      "maxLength": 5
+    }
+  },
+  "required": [
+    "occupation",
+    "nationality"
+  ]
+}`
+
+export const test_data = `{
+  "name": "John Doe",
+  "vegetarian": false,
+  "birthDate": "1985-06-02",
+  "personalData": {
+    "age": 34
+  },
+  "postalCode": "12345"
+}`
 

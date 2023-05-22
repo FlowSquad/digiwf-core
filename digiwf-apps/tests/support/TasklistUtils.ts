@@ -24,26 +24,47 @@ const getCurrentListItems = (drawer): Cypress.Chainable => {
   });
 }
 const importSchemas = (processName) => {
+  switch (processName) {
+    case "test":
+      break;
+  }
   return [JSON.parse(test_schema), JSON.parse(test_data)];
+}
+const parseSchema = (obj): void => {
+  if (obj.type === "object") {
+    for (let p in obj.properties) {
+      parseSchema(p);
+    }
+  } else {
+    //
+  }
 }
 const fillFormular = (name): void => {
   const formEntries = [];
   const formSchemas = importSchemas(name);
-  for (let p in formSchemas[0].properties) {
-    if (formSchemas[1][p]){
-      formEntries.push({type: formSchemas[0].properties[p].type, data: formSchemas[1][p]});
-    } else {
-      formEntries.push({type: formSchemas[0].properties[p].type, data: ""});
-    }
-  }
+  parseSchema(formSchemas[0]);
+  // if (formSchemas[0].type === "object") {
+  //   for (let p in formSchemas[0].properties) {
+  //     if (formSchemas[0].type === "object") {
+  //       parseProperties(formSchemas[0].properties);
+  //     } else {
+  //       if (formSchemas[1][p]) {
+  //         formEntries.push({type: formSchemas[0].properties[p].type, data: formSchemas[1][p]});
+  //       } else {
+  //         formEntries.push({type: formSchemas[0].properties[p].type, data: null});
+  //       }
+  //     }
+  //   }
+  // }
+
   // ensure created formular and schema do match at least in length
   cy.get("form input").as("formInputs");
-  cy.get("@formInputs").then    (($inputs: JQuery<HTMLElement>): void => {
+  cy.get("@formInputs").then(($inputs: JQuery<HTMLElement>): void => {
     expect($inputs.length).to.equal(formEntries.length);
   });
   // fill data into formular
   cy.get("@formInputs").each(($input: JQuery<HTMLElement>, $ind): void => {
-    switch($input.attr("type")) {
+    switch ($input.attr("type")) {
       case "text":
         $input.click();
         $input.val(formEntries[$ind].data);
@@ -72,6 +93,7 @@ const fillFormular = (name): void => {
     }
   });
 }
+
 export class TasklistUtils {
   /**
    * Opens a given process and asserts that the h1-HTMLElement of the opened process is visible.
