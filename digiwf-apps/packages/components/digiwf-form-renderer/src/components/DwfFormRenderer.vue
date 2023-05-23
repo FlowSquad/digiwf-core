@@ -1,5 +1,9 @@
 <template>
   <div>
+    <v-file-input
+      label="Data file upload"
+      data-cy="DwfFormRenderer-DataFileInput"
+    ></v-file-input>
     <Jsf @input="input" :value="value" :schema="currentSchema" :options="currentOptions">
       <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
         <slot :name="name" v-bind="data"></slot>

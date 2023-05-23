@@ -103,7 +103,8 @@ export class TasklistUtils {
   static openProcess(name: string): void {
     cy.drawer(DRAWERS.PROCESSES.DRAWER);
     cy.get(`[data-cy=${DRAWERS.PROCESSES.LIST.ROOT}]`).should("not.contain.text", DRAWERS.PROCESSES.LIST.MSG);
-    cy.get(`[data-cy=${DRAWERS.PROCESSES.LIST.ITEM}-${name}]`).click();
+    cy.get(`[data-cy=${DRAWERS.PROCESSES.SEARCH_FIELD}]`).type(name.split("-")[0]);
+    cy.get(`[data-cy=${DRAWERS.PROCESSES.LIST.ITEM}-${name}] a`).click();
     cy.get(`[data-cy=${DRAWERS.PROCESSES.LIST.ITEM_HEADLINE}]`).should("be.visible");
   }
 
@@ -116,22 +117,21 @@ export class TasklistUtils {
    * <b>(requires that the new process instance becomes added at the top of the instances list)</b>.
    *
    * @param {string} name - name of process
+   * @param {string} path - path to datafile
    */
-  static openAndFinishProcess(name: string): void {
-    const MIN_INPUT_ELEMENTS_TO_BE_EMPTY = 5;
+  static openAndStartProcess(name: string, path: string = ""): void {
     let currentInstancesBefore: Array<string> = [];
     getCurrentListItems(DRAWERS.INSTANCES).then((currentInstances: Array<string>): void => {
       currentInstancesBefore = currentInstances;
     });
-    cy.drawer(DRAWERS.PROCESSES.DRAWER);
-    cy.get(`[data-cy=${DRAWERS.PROCESSES.LIST.ITEM}-${name}]`).click();
-    cy.get(`[data-cy=${DRAWERS.PROCESSES.LIST.ITEM_HEADLINE}]`).should("be.visible");
-    // if empty do nothing else fill form
-    cy.get("form input").then(($inputs: JQuery<HTMLElement>): void => {
-      if ($inputs.length > MIN_INPUT_ELEMENTS_TO_BE_EMPTY) {
-        fillFormular(name);
-      }
-    });
+    TasklistUtils.openProcess(name);
+    if (path !== "") {
+      cy.get("[data-cy=DwfFormRenderer-DataFileInput]").selectFile(path, {force: true}).then(($input: JQuery<HTMLInputElement>) => {
+        const files = $input[0].files;
+        console.error(files);
+      });
+      cy.pause();
+    }
     cy.get("form button").last().click();
     // guard: page changed
     cy.get(`[data-cy=${DRAWERS.PROCESSES.LIST.ITEM_HEADLINE}]`).should("not.exist");
