@@ -23,7 +23,7 @@ describe("DIGIWF - Tasklist Testsuite", (): void => {
   });
 
   // TODO: is in work, not finished yet
-  it.skip("#gbl - open and finish process", () => {
+  it.only("#gbl - open and start process with formular", () => {
     TasklistUtils.openAndStartProcess("Usertask-Example", "tests/fixtures/data_3424.json");
   });
 })

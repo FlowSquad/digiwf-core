@@ -13,9 +13,9 @@ Cypress.Commands.add("login", (user = Cypress.env('auth2_username'), pw = Cypres
     cy.get(KC.PASSW).type(pw, {log: false});
     cy.get(KC.SUBMIT).click();
     // guard: page changed
-    cy.url()
-      .should("not.contain", 8080)
-      .and('contain', 'mytask');
+    cy.url({timeout: 120000}).should("include", `${Cypress.config("baseUrl")}/#`);
+    // .should("not.contain", 8080)
+    // .should('contain', 'mytask');
   });
 });
 

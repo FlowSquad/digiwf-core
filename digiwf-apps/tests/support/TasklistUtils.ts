@@ -126,10 +126,11 @@ export class TasklistUtils {
     });
     TasklistUtils.openProcess(name);
     if (path !== "") {
-      cy.get("[data-cy=DwfFormRenderer-DataFileInput]").selectFile(path, {force: true}).then(($input: JQuery<HTMLInputElement>) => {
-        const files = $input[0].files;
-        console.error(files);
-      });
+      cy.get("[data-cy=DwfFormRenderer-DataFileInput]").selectFile(path, {force: true})
+      //   .then(($input: JQuery<HTMLInputElement>) => {
+      //   const files = $input[0].files;
+      //   console.error(files);
+      // });
       cy.pause();
     }
     cy.get("form button").last().click();
