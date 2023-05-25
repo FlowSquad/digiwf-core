@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_02m23tv" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.0.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.15.0">
+  <bpmn:process id="Example-Antrag" name="Example Antrag" isExecutable="true">
+    <bpmn:startEvent id="Start_Form" name="Antrag eingegangen" camunda:formKey="antrag-starten">
+      <bpmn:outgoing>Flow_1fbmdks</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1fbmdks" sourceRef="Start_Form" targetRef="Task_UserTask" />
+    <bpmn:userTask id="Task_UserTask" name="Antrag pruefen" camunda:assignee="${starterOfInstance}">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="app_task_schema_key">antrag-antrag-pruefen</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1fbmdks</bpmn:incoming>
+      <bpmn:outgoing>Flow_091qwfe</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_091qwfe" sourceRef="Task_UserTask" targetRef="Gateway_15p1gze" />
+    <bpmn:endEvent id="Event_17q2n00" name="Antrag angenommen">
+      <bpmn:incoming>Flow_05rdy47</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="Gateway_15p1gze" name="Antrag OK?" default="Flow_1n80u7k">
+      <bpmn:incoming>Flow_091qwfe</bpmn:incoming>
+      <bpmn:outgoing>Flow_052bisf</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1n80u7k</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_052bisf" sourceRef="Gateway_15p1gze" targetRef="Activity_1fi0ef2">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${antragOK}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_05rdy47" sourceRef="Activity_1fi0ef2" targetRef="Event_17q2n00" />
+    <bpmn:userTask id="Activity_1fi0ef2" name="Antrag genehmigen" camunda:assignee="${starterOfInstance}">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="app_task_schema_key">antrag-antrag-abschliessen</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_052bisf</bpmn:incoming>
+      <bpmn:outgoing>Flow_05rdy47</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1n80u7k" sourceRef="Gateway_15p1gze" targetRef="Activity_149dplu" />
+    <bpmn:userTask id="Activity_149dplu" name="Antrag ablehnen" camunda:assignee="${starterOfInstance}">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="app_task_schema_key">antrag-antrag-abschliessen</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1n80u7k</bpmn:incoming>
+      <bpmn:outgoing>Flow_1mckh77</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_0h0d4fi" name="Antrag abgelehnt">
+      <bpmn:incoming>Flow_1mckh77</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1mckh77" sourceRef="Activity_149dplu" targetRef="Event_0h0d4fi" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_test-prozess">
+    <bpmndi:BPMNPlane id="BPMNPlane_test-prozess" bpmnElement="Example-Antrag">
+      <bpmndi:BPMNShape id="Event_1acjyv3_di" bpmnElement="Start_Form">
+        <dc:Bounds x="172" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="160" y="145" width="64" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0kt76qk_di" bpmnElement="Task_UserTask">
+        <dc:Bounds x="320" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_17q2n00_di" bpmnElement="Event_17q2n00">
+        <dc:Bounds x="842" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="827" y="145" width="68" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_15p1gze_di" bpmnElement="Gateway_15p1gze" isMarkerVisible="true">
+        <dc:Bounds x="525" y="95" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="521" y="71" width="58" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_116rhb0_di" bpmnElement="Activity_1fi0ef2">
+        <dc:Bounds x="670" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_19hxuc6_di" bpmnElement="Activity_149dplu">
+        <dc:Bounds x="670" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0h0d4fi_di" bpmnElement="Event_0h0d4fi">
+        <dc:Bounds x="842" y="212" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="818" y="255" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1fbmdks_di" bpmnElement="Flow_1fbmdks">
+        <di:waypoint x="208" y="120" />
+        <di:waypoint x="320" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_091qwfe_di" bpmnElement="Flow_091qwfe">
+        <di:waypoint x="420" y="120" />
+        <di:waypoint x="525" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_052bisf_di" bpmnElement="Flow_052bisf">
+        <di:waypoint x="575" y="120" />
+        <di:waypoint x="670" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05rdy47_di" bpmnElement="Flow_05rdy47">
+        <di:waypoint x="770" y="120" />
+        <di:waypoint x="842" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1n80u7k_di" bpmnElement="Flow_1n80u7k">
+        <di:waypoint x="550" y="145" />
+        <di:waypoint x="550" y="230" />
+        <di:waypoint x="670" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1mckh77_di" bpmnElement="Flow_1mckh77">
+        <di:waypoint x="770" y="230" />
+        <di:waypoint x="842" y="230" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

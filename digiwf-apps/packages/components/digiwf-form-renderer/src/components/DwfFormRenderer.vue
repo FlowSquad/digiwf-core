@@ -1,10 +1,7 @@
 <template>
   <div>
-    <v-file-input
-      label="Data file upload"
-      data-cy="DwfFormRenderer-DataFileInput"
-    ></v-file-input>
-    <Jsf @input="input" :value="value" :schema="currentSchema" :options="currentOptions">
+    <button data-cy="DwfFormRenderer-DataFileInput" type="button" @click="open">Choose file</button>
+    <Jsf v-if="showform" @input="input" :value="currentValue" :schema="currentSchema" :options="currentOptions">
       <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
         <slot :name="name" v-bind="data"></slot>
       </template>
@@ -15,12 +12,37 @@
 <script lang="ts">
 //@ts-ignore
 import deepmerge from "deepmerge";
-import {computed, defineComponent} from "vue";
+import {computed, defineComponent, nextTick, ref} from "vue";
+import { useFileDialog } from '@vueuse/core'
 
 export default defineComponent({
   props: ['options', 'buttonText', 'value', 'schema'],
   emits: ['input'],
   setup(props, {emit}) {
+
+    const currentValue = ref(props.value)
+    const showform = ref(true);
+
+    const { open, onChange } = useFileDialog()
+
+    const input = (value: any) => {
+      emit('input', value);
+    };
+
+    onChange((files) => {
+      const file = files?.item(0);
+      const reader = new FileReader();
+      reader.onload = ((e:any) => {
+        const fileAsString = e.target.result;
+        currentValue.value = JSON.parse(fileAsString);
+        input(currentValue.value);
+        showform.value = false;
+        nextTick(() => {
+          showform.value = true;
+        });
+      });
+      reader.readAsText(file);
+    })
 
     const defaultOptions = {
       "editMode": "inline",
@@ -73,14 +95,15 @@ export default defineComponent({
       }
     })
 
-    const input = (value: any) => {
-      emit('input', value);
-    };
+
 
     return {
       currentSchema,
       input,
-      currentOptions
+      open,
+      currentOptions,
+      currentValue,
+      showform
     }
   }
 })

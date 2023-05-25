@@ -1,0 +1,69 @@
+{
+    "key": "antrag-antrag-abschliessen",
+    "schema": {
+        "type": "object",
+        "x-display": "",
+        "allOf": [
+            {
+                "key": "sectionKey1",
+                "title": "Erster Abschnitt",
+                "type": "object",
+                "x-options": {
+                    "sectionsTitlesClasses": [
+                        "d-none"
+                    ]
+                },
+                "allOf": [
+                    {
+                        "key": "4ee909e5-9901-4e84-8e2b-0b9fd3142e8e",
+                        "title": "Daten",
+                        "x-options": {
+                            "childrenClass": "pr-5 pl-0"
+                        },
+                        "properties": {
+                            "name": {
+                                "fieldType": "text",
+                                "title": "Name",
+                                "type": "string",
+                                "key": "name",
+                                "readOnly": true,
+                                "x-options": {
+                                    "fieldColProps": {
+                                        "cols": 12,
+                                        "sm": 12,
+                                        "messages": {}
+                                    }
+                                },
+                                "x-props": {
+                                    "outlined": true,
+                                    "dense": true
+                                },
+                                "x-rules": []
+                            },
+                            "nachricht": {
+                                "fieldType": "textarea",
+                                "title": "Nachricht",
+                                "x-display": "textarea",
+                                "type": "string",
+                                "key": "nachricht",
+                                "readOnly": true,
+                                "x-options": {
+                                    "fieldColProps": {
+                                        "cols": 12,
+                                        "sm": 12,
+                                        "messages": {}
+                                    }
+                                },
+                                "x-props": {
+                                    "outlined": true,
+                                    "dense": true
+                                },
+                                "x-rules": []
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}
