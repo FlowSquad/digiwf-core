@@ -47,7 +47,7 @@ export default defineConfig({
   },
   // eslint-disable-next-line object-shorthand
   e2e: {
-    baseUrl: "http://keycloak:8082",
+    baseUrl: "http://localhost:8081",
     numTestsKeptInMemory: 5,
     specPattern: "tests/e2e/**/*.spec.{js,jsx,ts,tsx}",
     supportFile: "tests/support/e2e.ts",
