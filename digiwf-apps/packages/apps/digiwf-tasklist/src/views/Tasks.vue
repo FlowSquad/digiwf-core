@@ -1,13 +1,12 @@
 <template>
   <app-view-layout>
     <task-list
-      :tasks="data?.content || []"
-      :on-filter-change="onFilterChange"
       view-name="Meine Aufgaben"
+      :tasks="data?.content || []"
       :is-loading="isLoading"
-      :data-loading-error-message="errorMessage"
-      :filter.sync="filter"
-      pageId="tasks"
+      :errorMessage="errorMessage"
+      :filter="filter"
+      @changeFilter="onFilterChange"
       data-cy="Tasks-List"
       @loadTasks="reloadTasks"
     >
@@ -129,7 +128,7 @@ export default defineComponent({
         isNextPageButtonDisabled: () => page.value + 1 >= (data.value?.totalPages || 0),
         updateItemsPerPage: setSize
       },
-      onFilterChange: (newFilter: string | undefined) => {
+      onFilterChange: (newFilter?: string) => {
         setSearchQuery(newFilter || "");
         refetch();
       },
