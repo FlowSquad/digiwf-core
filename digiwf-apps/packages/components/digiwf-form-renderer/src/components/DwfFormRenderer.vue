@@ -1,7 +1,12 @@
 <template>
   <div>
-    <button data-cy="DwfFormRenderer-DataFileInput" type="button" @click="open">Choose file</button>
-    <Jsf v-if="showform" @input="input" :value="currentValue" :schema="currentSchema" :options="currentOptions">
+    <v-file-input
+      accept="application/json"
+      label="Daten Eingabe"
+      data-cy="DwfFormRenderer-DataFileInput"
+      @change="onChange">
+    </v-file-input>
+    <Jsf v-if="showForm" @input="input" :value="currentValue" :schema="currentSchema" :options="currentOptions">
       <template v-for="(index, name) in $scopedSlots" v-slot:[name]="data">
         <slot :name="name" v-bind="data"></slot>
       </template>
@@ -13,36 +18,31 @@
 //@ts-ignore
 import deepmerge from "deepmerge";
 import {computed, defineComponent, nextTick, ref} from "vue";
-import { useFileDialog } from '@vueuse/core'
 
 export default defineComponent({
   props: ['options', 'buttonText', 'value', 'schema'],
   emits: ['input'],
   setup(props, {emit}) {
-
     const currentValue = ref(props.value)
-    const showform = ref(true);
-
-    const { open, onChange } = useFileDialog()
+    const showForm = ref(true);
 
     const input = (value: any) => {
       emit('input', value);
     };
 
-    onChange((files) => {
-      const file = files?.item(0);
+    const onChange = (file: any) => {
       const reader = new FileReader();
-      reader.onload = ((e:any) => {
-        const fileAsString = e.target.result;
-        currentValue.value = JSON.parse(fileAsString);
-        input(currentValue.value);
-        showform.value = false;
-        nextTick(() => {
-          showform.value = true;
-        });
+      reader.onload = ((ev: any) => {
+        const fileAsString = ev.target.result;
+         currentValue.value = JSON.parse(atob(fileAsString.split(',')[1]));
+         input(currentValue.value);
+         showForm.value = false;
+         nextTick(() => {
+           showForm.value = true;
+         });
       });
-      reader.readAsText(file);
-    })
+      reader.readAsDataURL(file);
+    };
 
     const defaultOptions = {
       "editMode": "inline",
@@ -65,9 +65,10 @@ export default defineComponent({
     const formats = {
       "time": function (e: any, t: any) {
         const r = new Date("".concat((new Date).toISOString().split("T")[0], "T").concat(e));
-        return new Date(r.getTime() + 6e4 * r.getTimezoneOffset()).toLocaleTimeString(t)
+        return new Date(r.getTime() + 6e4 * r.getTimezoneOffset()).toLocaleTimeString(t);
       }
-    }
+    };
+
     const rules = {
       required: function (v: any) {
         return (!!v && v !== '' || v === 0) || 'Dieses Feld ist ein Pflichtfeld';
@@ -82,29 +83,27 @@ export default defineComponent({
         return {
           ...props.schema,
           readOnly: true
-        }
+        };
       }
-      return props.schema
-    })
+      return props.schema;
+    });
 
     const currentOptions = computed(() => {
       return {
         rules: rules,
         formats: formats,
         ...deepmerge(defaultOptions, props.options),
-      }
-    })
-
-
+      };
+    });
 
     return {
       currentSchema,
       input,
-      open,
       currentOptions,
       currentValue,
-      showform
-    }
+      showForm,
+      onChange
+    };
   }
 })
 
