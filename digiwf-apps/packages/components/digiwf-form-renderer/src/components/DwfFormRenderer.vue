@@ -33,8 +33,8 @@ export default defineComponent({
     const onChange = (file: any) => {
       const reader = new FileReader();
       reader.onload = ((ev: any) => {
-        const fileAsString = ev.target.result;
-         currentValue.value = JSON.parse(atob(fileAsString.split(',')[1]));
+        const fileAsBase64 = ev.target.result;
+         currentValue.value = JSON.parse(atob(fileAsBase64.split(',')[1]));
          input(currentValue.value);
          showForm.value = false;
          nextTick(() => {
