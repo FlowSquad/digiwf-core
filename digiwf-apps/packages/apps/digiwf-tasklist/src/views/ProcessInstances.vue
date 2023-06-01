@@ -53,6 +53,7 @@
             style="padding-left: 13px;"
             large
             text
+            data-cy="ProcessInstances-RefreshButton"
             color="primary"
             @click="loadMyProcessInstances(true)"
           >

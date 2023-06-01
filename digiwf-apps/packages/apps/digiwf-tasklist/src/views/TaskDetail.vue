@@ -81,7 +81,7 @@
         </loading-fab>
 
         <loading-fab
-          v-if="task.isCancelable"
+          v-if="task?.isCancelable"
           :is-loading="isCancelling"
           :has-error="hasCancelError"
           color="white"
