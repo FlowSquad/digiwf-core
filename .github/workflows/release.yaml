@@ -83,6 +83,7 @@ jobs:
           context: ./digiwf-connector/digiwf-camunda-connector-service
           push: true
           tags: itatm/digiwf-camunda-connector-service:${{ env.RELEASE_VERSION }},itatm/digiwf-camunda-connector-service:dev
+          platforms: linux/amd64, linux/arm64/v8
 
       - name: Build and push gateway
         uses: docker/build-push-action@v4
@@ -90,6 +91,7 @@ jobs:
           context: ./digiwf-gateway
           push: true
           tags: itatm/digiwf-gateway:${{ env.RELEASE_VERSION }},itatm/digiwf-gateway:dev
+          platforms: linux/amd64, linux/arm64/v8
 
       - name: Build and push cosys
         uses: docker/build-push-action@v4
@@ -97,6 +99,7 @@ jobs:
           context: ./digiwf-integrations/digiwf-cosys-integration/digiwf-cosys-integration-service
           push: true
           tags: itatm/digiwf-cosys-integration-service:${{ env.RELEASE_VERSION }},itatm/digiwf-cosys-integration-service:dev
+          platforms: linux/amd64, linux/arm64/v8
 
       - name: Build and push email integration
         uses: docker/build-push-action@v4
@@ -104,6 +107,7 @@ jobs:
           context: ./digiwf-integrations/digiwf-email-integration/digiwf-email-integration-service
           push: true
           tags: itatm/digiwf-email-integration-service:${{ env.RELEASE_VERSION }},itatm/digiwf-email-integration-service:dev
+          platforms: linux/amd64, linux/arm64/v8
 
       - name: Build and push alw-integration
         uses: docker/build-push-action@v4
@@ -111,6 +115,7 @@ jobs:
           context: ./digiwf-integrations/digiwf-alw-integration/digiwf-alw-integration-service
           push: true
           tags: itatm/digiwf-alw-integration-service:${{ env.RELEASE_VERSION }},itatm/digiwf-alw-integration-service:dev
+          platforms: linux/amd64, linux/arm64/v8
 
       - name: Build and push verification-integration
         uses: docker/build-push-action@v4
@@ -118,6 +123,7 @@ jobs:
           context: ./digiwf-integrations/digiwf-verification-integration/digiwf-verification-integration-service
           push: true
           tags: itatm/digiwf-verification-integration-service:${{ env.RELEASE_VERSION }},itatm/digiwf-verification-integration-service:dev
+          platforms: linux/amd64, linux/arm64/v8
 
       - name: Build and push s3-integration
         uses: docker/build-push-action@v4
@@ -125,6 +131,7 @@ jobs:
           context: ./digiwf-integrations/digiwf-s3-integration/digiwf-s3-integration-service
           push: true
           tags: itatm/digiwf-s3-integration-service:${{ env.RELEASE_VERSION }},itatm/digiwf-s3-integration-service:dev
+          platforms: linux/amd64, linux/arm64/v8
 
       - name: Build and push oss engine
         uses: docker/build-push-action@v4
@@ -132,6 +139,7 @@ jobs:
           context: ./digiwf-engine/digiwf-engine-service
           push: true
           tags: itatm/digiwf-engine-service-community:${{ env.RELEASE_VERSION }},itatm/digiwf-engine-service-community:dev
+          platforms: linux/amd64, linux/arm64/v8
 
       - name: Build and push tasklist backend
         uses: docker/build-push-action@v4
@@ -139,6 +147,7 @@ jobs:
           context: ./digiwf-task/digiwf-tasklist-service
           push: true
           tags: itatm/digiwf-tasklist-backend-service:${{ env.RELEASE_VERSION }},itatm/digiwf-tasklist-backend-service:dev
+          platforms: linux/amd64, linux/arm64/v8
 
   release-services-camunda-ee:
     if: github.event.inputs.services == 'y'
@@ -187,6 +196,7 @@ jobs:
           context: ./digiwf-engine/digiwf-engine-service
           push: true
           tags: itatm/digiwf-engine-service:${{ env.RELEASE_VERSION }},itatm/digiwf-engine-service:dev
+          platforms: linux/amd64, linux/arm64/v8
 
   release-apps:
     runs-on: ubuntu-latest
