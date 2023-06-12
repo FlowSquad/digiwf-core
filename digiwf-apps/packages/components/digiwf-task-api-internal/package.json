@@ -1,5 +1,5 @@
 {
-  "name": "@muenchen/digiwf-task-api-internal",
+  "name": "@miragon/digiwf-task-api-internal",
   "description": "Internal digiWF tasklist api",
   "version": "0.21.9",
   "module": "dist/digiwf-task-api-internal.mjs",

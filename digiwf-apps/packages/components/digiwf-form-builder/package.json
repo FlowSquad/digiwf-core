@@ -1,5 +1,5 @@
 {
-  "name": "@muenchen/digiwf-form-builder",
+  "name": "@miragon/digiwf-form-builder",
   "description": "Form Builder",
   "version": "0.21.9",
   "module": "dist/digiwf-form-builder.mjs",

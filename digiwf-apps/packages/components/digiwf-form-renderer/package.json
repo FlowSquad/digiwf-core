@@ -1,5 +1,5 @@
 {
-  "name": "@muenchen/digiwf-form-renderer",
+  "name": "@miragon/digiwf-form-renderer",
   "description": "Form renderer",
   "version": "0.21.9",
   "module": "dist/digiwf-form-renderer.mjs",
