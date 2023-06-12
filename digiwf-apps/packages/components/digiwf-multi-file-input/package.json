@@ -1,5 +1,5 @@
 {
-  "name": "@miragon/digiwf-multi-file-input",
+  "name": "@muenchen/digiwf-multi-file-input",
   "description": "Form renderer",
   "version": "0.21.9",
   "module": "dist/digiwf-multi-file-input.mjs",

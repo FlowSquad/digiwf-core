@@ -1,5 +1,5 @@
 {
-  "name": "@miragon/digiwf-engine-api-internal",
+  "name": "@muenchen/digiwf-engine-api-internal",
   "description": "Internal digiWF engine api",
   "version": "0.21.9",
   "module": "dist/digiwf-engine-api-internal.mjs",
