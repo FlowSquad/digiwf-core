@@ -24,10 +24,10 @@ on:
         description: 'Release Maven (y/n)?'
         required: true
         default: 'y'
-      docs:
-        description: 'Release docs (y/n)?'
-        required: true
-        default: 'y'
+#      docs:
+#        description: 'Release docs (y/n)?'
+#        required: true
+#        default: 'y'
 
 jobs:
   release-services:
@@ -41,7 +41,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: 11
-          distribution: 'adopt'
+          distribution: 'corretto'
 
       - name: Remove SNAPSHOT
         if: github.event.inputs.snapshot-build == 'n'
@@ -56,10 +56,10 @@ jobs:
         if: github.event.inputs.maven == 'y'
         uses: samuelmeuli/action-maven-publish@v1
         with:
-          gpg_private_key: ${{ secrets.gpg_private_key }}
-          gpg_passphrase: ${{ secrets.gpg_passphrase }}
-          nexus_username: ${{ secrets.nexus_username }}
-          nexus_password: ${{ secrets.nexus_password }}
+          gpg_private_key: ${{ secrets.PGP_PRIVATE_KEY }}
+          gpg_passphrase: ${{ secrets.PGP_PRIVATE_KEY_SECRET }}
+          nexus_username: ${{ secrets.NEXUS_USERNAME }}
+          nexus_password: ${{ secrets.NEXUS_PASSWORD }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -70,8 +70,8 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_KEY }}
+          username: ${{ secrets.DOCKER_MIRAGON_USERNAME }}
+          password: ${{ secrets.DOCKER_MIRAGON_PASSWORD }}
 
       - name: Set Release version env variable
         run: |
@@ -82,63 +82,63 @@ jobs:
         with:
           context: ./digiwf-connector/digiwf-camunda-connector-service
           push: true
-          tags: itatm/digiwf-camunda-connector-service:${{ env.RELEASE_VERSION }},itatm/digiwf-camunda-connector-service:dev
+          tags: miragon/digiwf-camunda-connector-service:${{ env.RELEASE_VERSION }},miragon/digiwf-camunda-connector-service:dev
 
       - name: Build and push gateway
         uses: docker/build-push-action@v4
         with:
           context: ./digiwf-gateway
           push: true
-          tags: itatm/digiwf-gateway:${{ env.RELEASE_VERSION }},itatm/digiwf-gateway:dev
+          tags: miragon/digiwf-gateway:${{ env.RELEASE_VERSION }},miragon/digiwf-gateway:dev
 
       - name: Build and push cosys
         uses: docker/build-push-action@v4
         with:
           context: ./digiwf-integrations/digiwf-cosys-integration/digiwf-cosys-integration-service
           push: true
-          tags: itatm/digiwf-cosys-integration-service:${{ env.RELEASE_VERSION }},itatm/digiwf-cosys-integration-service:dev
+          tags: miragon/digiwf-cosys-integration-service:${{ env.RELEASE_VERSION }},miragon/digiwf-cosys-integration-service:dev
 
       - name: Build and push email integration
         uses: docker/build-push-action@v4
         with:
           context: ./digiwf-integrations/digiwf-email-integration/digiwf-email-integration-service
           push: true
-          tags: itatm/digiwf-email-integration-service:${{ env.RELEASE_VERSION }},itatm/digiwf-email-integration-service:dev
+          tags: miragon/digiwf-email-integration-service:${{ env.RELEASE_VERSION }},miragon/digiwf-email-integration-service:dev
 
       - name: Build and push alw-integration
         uses: docker/build-push-action@v4
         with:
           context: ./digiwf-integrations/digiwf-alw-integration/digiwf-alw-integration-service
           push: true
-          tags: itatm/digiwf-alw-integration-service:${{ env.RELEASE_VERSION }},itatm/digiwf-alw-integration-service:dev
+          tags: miragon/digiwf-alw-integration-service:${{ env.RELEASE_VERSION }},miragon/digiwf-alw-integration-service:dev
 
       - name: Build and push verification-integration
         uses: docker/build-push-action@v4
         with:
           context: ./digiwf-integrations/digiwf-verification-integration/digiwf-verification-integration-service
           push: true
-          tags: itatm/digiwf-verification-integration-service:${{ env.RELEASE_VERSION }},itatm/digiwf-verification-integration-service:dev
+          tags: miragon/digiwf-verification-integration-service:${{ env.RELEASE_VERSION }},miragon/digiwf-verification-integration-service:dev
 
       - name: Build and push s3-integration
         uses: docker/build-push-action@v4
         with:
           context: ./digiwf-integrations/digiwf-s3-integration/digiwf-s3-integration-service
           push: true
-          tags: itatm/digiwf-s3-integration-service:${{ env.RELEASE_VERSION }},itatm/digiwf-s3-integration-service:dev
+          tags: miragon/digiwf-s3-integration-service:${{ env.RELEASE_VERSION }},miragon/digiwf-s3-integration-service:dev
 
       - name: Build and push oss engine
         uses: docker/build-push-action@v4
         with:
           context: ./digiwf-engine/digiwf-engine-service
           push: true
-          tags: itatm/digiwf-engine-service-community:${{ env.RELEASE_VERSION }},itatm/digiwf-engine-service-community:dev
+          tags: miragon/digiwf-engine-service-community:${{ env.RELEASE_VERSION }},miragon/digiwf-engine-service-community:dev
 
       - name: Build and push tasklist backend
         uses: docker/build-push-action@v4
         with:
           context: ./digiwf-task/digiwf-tasklist-service
           push: true
-          tags: itatm/digiwf-tasklist-backend-service:${{ env.RELEASE_VERSION }},itatm/digiwf-tasklist-backend-service:dev
+          tags: miragon/digiwf-tasklist-backend-service:${{ env.RELEASE_VERSION }},miragon/digiwf-tasklist-backend-service:dev
 
   release-services-camunda-ee:
     if: github.event.inputs.services == 'y'
@@ -174,8 +174,8 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_KEY }}
+          username: ${{ secrets.DOCKER_MIRAGON_USERNAME }}
+          password: ${{ secrets.DOCKER_MIRAGON_PASSWORD }}
 
       - name: Set release version env variable
         run: |
@@ -186,7 +186,7 @@ jobs:
         with:
           context: ./digiwf-engine/digiwf-engine-service
           push: true
-          tags: itatm/digiwf-engine-service:${{ env.RELEASE_VERSION }},itatm/digiwf-engine-service:dev
+          tags: miragon/digiwf-engine-service:${{ env.RELEASE_VERSION }},miragon/digiwf-engine-service:dev
 
   release-apps:
     runs-on: ubuntu-latest
@@ -207,7 +207,7 @@ jobs:
       - run: npm run test
       - run: lerna publish from-package --yes
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_SECRET }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -218,8 +218,8 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_KEY }}
+          username: ${{ secrets.DOCKER_MIRAGON_USERNAME }}
+          password: ${{ secrets.DOCKER_MIRAGON_PASSWORD }}
 
       - name: Set Release version env variable
         if: startsWith(github.ref, 'refs/tags/') || github.event.inputs.snapshot-build == 'n'
@@ -236,29 +236,29 @@ jobs:
         with:
           context: ./digiwf-apps/packages/apps/digiwf-tasklist
           push: true
-          tags: itatm/digiwf-tasklist:${{ env.RELEASE_VERSION }},itatm/digiwf-tasklist:dev
+          tags: miragon/digiwf-tasklist:${{ env.RELEASE_VERSION }},miragon/digiwf-tasklist:dev
 
-  release-docs:
-    runs-on: ubuntu-latest
-    if: github.event.inputs.docs == 'y'
-    defaults:
-      run:
-        working-directory: ./docs
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-          cache: 'npm'
-          registry-url: 'https://registry.npmjs.org'
-          cache-dependency-path: "./docs/package-lock.json"
-      - run: npm install
-      - run: npm run build
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/dist
+#  release-docs:
+#    runs-on: ubuntu-latest
+#    if: github.event.inputs.docs == 'y'
+#    defaults:
+#      run:
+#        working-directory: ./docs
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: actions/setup-node@v3
+#        with:
+#          node-version: '16'
+#          cache: 'npm'
+#          registry-url: 'https://registry.npmjs.org'
+#          cache-dependency-path: "./docs/package-lock.json"
+#      - run: npm install
+#      - run: npm run build
+#      - name: Deploy
+#        uses: peaceiris/actions-gh-pages@v3
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          publish_dir: ./docs/dist
 
   github-release:
     name: Create Release
