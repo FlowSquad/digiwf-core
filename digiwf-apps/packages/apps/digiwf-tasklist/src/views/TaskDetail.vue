@@ -22,14 +22,14 @@
         :form="task.form"
         :init-model="task.variables"
         @model-changed="modelChanged"
-        @complete-form="completeTask"
+        @complete-form="handleCompleteTask"
       />
       <app-json-form
         v-else
         :value="task.variables"
         :schema="task.schema"
         @input="modelChanged"
-        @complete-form="completeTask"
+        @complete-form="handleCompleteTask"
       />
     </v-flex>
     <v-flex class="buttonWrapper">
@@ -86,7 +86,7 @@
           :has-error="hasCancelError"
           color="white"
           :button-text="cancelText"
-          @on-click="cancelTask"
+          @on-click="handleCancelTask"
         >
           <v-icon> mdi-cancel</v-icon>
         </loading-fab>
@@ -151,7 +151,6 @@
 </style>
 
 <script lang="ts">
-
 import {Component, Prop, Provide} from "vue-property-decorator";
 import AppViewLayout from "@/components/UI/AppViewLayout.vue";
 import BaseForm from "@/components/form/BaseForm.vue";
@@ -163,15 +162,16 @@ import LoadingFab from "@/components/UI/LoadingFab.vue";
 import {FormContext} from "@muenchen/digiwf-multi-file-input";
 import {ApiConfig} from "../api/ApiConfig";
 import {
-  cancelTaskInEngine,
+  cancelTask,
   completeTask,
   downloadPDFFromEngine,
   loadTask,
   saveTask,
   deferTask
 } from "../middleware/tasks/taskMiddleware";
-import {HumanTaskDetails} from "../middleware/tasks/tasksModels";
-
+import {HumanTaskDetails} from "../middleware/tasks/tasksModels"
+import router from "../router";
+import { shouldUseTaskService } from "../utils/featureToggles";
 
 @Component({
   components: {TaskFollowUpDialog, BaseForm, AppToast, TaskForm: BaseForm, AppViewLayout, AppYesNoDialog, LoadingFab}
@@ -216,12 +216,18 @@ export default class TaskDetail extends SaveLeaveMixin {
   @Provide('apiEndpoint')
   apiEndpoint = ApiConfig.base;
 
+  @Provide('taskServiceApiEndpoint')
+  taskServiceApiEndpoint = ApiConfig.tasklistBase;
+
+  @Provide('shouldUseTaskService')
+  shouldUseTaskService = shouldUseTaskService();
+
   created() {
     loadTask(this.id).then(({data, error}) => {
       if (!!data) {
         this.task = data.task;
         this.model = data.model;
-        this.followUpDate = data.followUpDate;
+        this.followUpDate = data.followUpDate
         this.cancelText = data.cancelText
         this.hasDownloadButton = data.hasDownloadButton;
         this.downloadButtonText = data.downloadButtonText;
@@ -241,13 +247,15 @@ export default class TaskDetail extends SaveLeaveMixin {
       });
   }
 
-  completeTask(model: any) {
+  handleCompleteTask(model: any) {
     this.isCompleting = true;
     completeTask(this.id, model)
       .then(result => {
+        this.hasChanges = false;
         this.isCompleting = false;
         this.hasCompleteError = result.isError;
         this.errorMessage = result.errorMessage || "";
+        router.push({path: "/task"}); // TODO: copied from old source code. Question is why /task is called (path does not exist). check later
       })
   }
 
@@ -296,9 +304,9 @@ export default class TaskDetail extends SaveLeaveMixin {
       });
   }
 
-  cancelTask() {
+  handleCancelTask() {
     this.isCancelling = true;
-    cancelTaskInEngine(this.id).then(result => {
+    cancelTask(this.id).then(result => {
       this.isCancelling = false;
       this.hasCancelError = result.isError;
       this.errorMessage = result.errorMessage || ""

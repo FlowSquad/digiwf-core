@@ -25,14 +25,32 @@
       <span v-if="appInfo !== null">{{ appInfo.environment }}</span>
       <v-spacer/>
       {{ username }}
-      <v-btn
-        text
-        fab
-      >
-        <v-icon class="white--text">
-          mdi-account-circle
-        </v-icon>
-      </v-btn>
+
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            text
+            fab
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon class="white--text">
+              mdi-account-circle
+            </v-icon>
+          </v-btn>
+        </template>
+        <v-list v-if="showUseBetaButton">
+          <v-list-item>
+            <v-list-item-title>
+              <v-switch
+                v-model="isDigiWFClassicUsed"
+                @click.stop.prevent="switchBetaVersion"
+                label="DigiWF-Classic nutzen"
+              ></v-switch>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
 
     <v-navigation-drawer
@@ -172,6 +190,12 @@ import {InfoTO, ServiceInstanceTO, UserTO,} from "@muenchen/digiwf-engine-api-in
 import AppMenuList from "./components/UI/appMenu/AppMenuList.vue";
 import {apiGatewayUrl} from "./utils/envVariables";
 import {queryClient} from "./middleware/queryClient";
+import {
+  setShouldUseTaskService,
+  shouldShowBetaButton,
+  shouldUseTaskService,
+  switchShouldUseTaskService
+} from "./utils/featureToggles";
 
 @Component({
   components: {AppMenuList}
@@ -184,6 +208,9 @@ export default class App extends Vue {
   loginLoading = false;
   loggedIn = true;
 
+  showUseBetaButton = false;
+  isDigiWFClassicUsed = true;
+
   created(): void {
     this.loadData();
   }
@@ -193,12 +220,18 @@ export default class App extends Vue {
     this.$store.dispatch("user/getUserInfo", refresh);
     this.$store.dispatch("info/getInfo", refresh);
     this.drawer = this.$store.getters["menu/open"];
+    this.isDigiWFClassicUsed = !shouldUseTaskService();
+    this.showUseBetaButton = shouldShowBetaButton();
   }
 
   getUser(): void {
     this.loginLoading = true;
     this.$store.dispatch("user/getUserInfo", true);
     this.loginLoading = false;
+  }
+
+  switchBetaVersion(): void {
+    switchShouldUseTaskService()
   }
 
   @Watch("$store.state.menu.open")
