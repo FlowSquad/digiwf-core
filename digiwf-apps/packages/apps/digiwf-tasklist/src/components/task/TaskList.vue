@@ -114,7 +114,7 @@ export default {
       required: true
     },
     /**
-     * render the "Bearbeiter*in" column if true
+     * render the "Bearbeiter\*in" column if true
      */
     showAssignee: {
       type: Boolean,
