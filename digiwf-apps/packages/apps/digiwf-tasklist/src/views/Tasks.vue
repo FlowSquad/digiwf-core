@@ -4,7 +4,7 @@
       view-name="Meine Aufgaben"
       :tasks="data?.content || []"
       :is-loading="isLoading"
-      :errorMessage="errorMessage"
+      :error-message="errorMessage"
       :filter="filter"
       @changeFilter="onFilterChange"
       data-cy="Tasks-List"
@@ -22,7 +22,7 @@
     </task-list>
     <div style="margin-left: auto">
       <v-checkbox
-        v-model="followUp"
+        v-model="shouldIgnoreFollowUpTasks"
         label="Wiedervorlage anzeigen"
         hide-details
         dense
@@ -53,7 +53,6 @@
 </style>
 
 <script lang="ts">
-import AppToast from "@/components/UI/AppToast.vue";
 import AppViewLayout from "@/components/UI/AppViewLayout.vue";
 import TaskList from "@/components/task/TaskList.vue";
 import TaskItem from "@/components/task/TaskItem.vue";
@@ -65,39 +64,39 @@ import {useGetPaginationData} from "../middleware/paginationData";
 import {usePageId} from "../middleware/pageId";
 
 export default defineComponent({
+  components: {AppPaginationFooter, TaskItem, TaskList, AppViewLayout},
   props: [],
-  components: {AppPaginationFooter, TaskItem, TaskList, AppToast, AppViewLayout},
   setup() {
     const router = useRouter();
     const pageId = usePageId();
     const {searchQuery, size, page, setSize, setPage, setSearchQuery} = useGetPaginationData();
 
-    const getFollowOfUrl = (): boolean => router.currentRoute.query?.followUp === "true"
-    const followUp = ref<boolean>(getFollowOfUrl());
-    const {isLoading, data, error, refetch} = useMyTasksQuery(page, size, searchQuery, followUp);
+    const getFollowOfUrl = (): boolean => router.currentRoute.query?.followUp === "true";
+    const shouldIgnoreFollowUpTasks = ref<boolean>(getFollowOfUrl());
+    const {isLoading, data, error, refetch} = useMyTasksQuery(page, size, searchQuery, shouldIgnoreFollowUpTasks);
 
     watch(page, (newPage) => {
       setPage(newPage);
       refetch();
-    })
+    });
     watch(size, (newSize) => {
-      setSize(newSize)
+      setSize(newSize);
       refetch();
-    })
+    });
 
-    watch(followUp, (followUp) => {
+    watch(shouldIgnoreFollowUpTasks, (followUp) => {
       router.replace({
         query: {
           ...router.currentRoute.query,
           followUp: followUp ? "true" : "false"
         }
-      })
+      });
       refetch();
     });
 
     return {
       pageId,
-      followUp,
+      shouldIgnoreFollowUpTasks,
       isLoading,
       errorMessage: error,
       data,
@@ -113,8 +112,8 @@ export default defineComponent({
           if (page.value === 0) {
             return;
           }
-          setPage(page.value - 1)
-          refetch()
+          setPage(page.value - 1);
+          refetch();
         },
         nextPage: () => {
           const totalPages = data.value?.totalPages;
@@ -132,7 +131,7 @@ export default defineComponent({
         setSearchQuery(newFilter || "");
         refetch();
       },
-    }
+    };
   }
 });
 

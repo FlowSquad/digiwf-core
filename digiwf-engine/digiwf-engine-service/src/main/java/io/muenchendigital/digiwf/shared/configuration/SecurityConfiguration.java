@@ -24,7 +24,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @Profile("!no-security")
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
@@ -36,6 +36,9 @@ public class SecurityConfiguration {
       "/swagger-ui/index.html", // allow access to swagger
       "/swagger-ui*/*swagger-initializer.js", // allow access to swagger
       "/swagger-ui*/**", // allow access to swagger
+      "/v3/api-docs/*", // allow access to swagger
+      "/v3/api-docs", // allow access to swagger
+      "/camunda/**" // allow access to camunda cockpit
   };
 
   private final RestTemplateBuilder restTemplateBuilder;
@@ -58,7 +61,7 @@ public class SecurityConfiguration {
             .oauth2ResourceServer()
                 .jwt()
                     // This custom converter lazily fetches UserInfo Endpoint and reads the "authorities" configured in the
-                    // SSO. It COMPLETELY ignores the roles from "roles" claim of the token.
+                    // SSO. Also includes user_roles.
                     .jwtAuthenticationConverter(customCachingUserServiceConverter())
             .and();
         return http.build();

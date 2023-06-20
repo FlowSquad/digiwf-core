@@ -2,16 +2,18 @@ export interface HumanTask {
   readonly id: string;
   readonly createTime: string;
   readonly followUpDate?: string;
+  readonly followUpDateFormatted?: string;
   readonly processName?: string;
   readonly name: string
   readonly description?: string;
   readonly assigneeId?: string;
-  readonly assigneeFormatted?: string  // FIXME formatted assignee
+  readonly assigneeFormatted?: string;
+  readonly inFinishProcess: boolean;
 
 
 }
 
-export interface HumanTaskDetails extends HumanTask{
+export interface HumanTaskDetails extends HumanTask {
   /**
    * @deprecated old formular
    */

@@ -8,7 +8,8 @@
     "watch": "vite build --watch"
   },
   "dependencies": {
-    "@muenchen/digiwf-engine-api-internal": "^0.22.0"
+    "@muenchen/digiwf-engine-api-internal": "^0.22.0",
+    "@muenchen/digiwf-task-api-internal": "^0.22.0"
   },
   "peerDependencies": {
     "vue": "^2.7.0",
