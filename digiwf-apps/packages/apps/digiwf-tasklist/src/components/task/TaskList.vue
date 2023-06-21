@@ -15,6 +15,7 @@
           text
           color="primary"
           large
+          data-cy="Tasklist-RefreshButton"
           @click="$emit('loadTasks')"
         >
           <div style="min-width: 30px">
@@ -113,7 +114,7 @@ export default {
       required: true
     },
     /**
-     * render the "Bearbeiter*in" column if true
+     * render the "Bearbeiter\*in" column if true
      */
     showAssignee: {
       type: Boolean,
