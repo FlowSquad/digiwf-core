@@ -1,0 +1,23 @@
+{
+  "key": "Example-Antrag",
+  "statusDokument": "",
+  "statusConfig": [
+    {
+      "key": "Offen",
+      "label": "Offen",
+      "position": 1
+    },
+    {
+      "key": "inBear",
+      "label": "In Bearbeitung",
+      "position": 2
+    },
+    {
+      "key": "abgeschlossen",
+      "label": "Abgeschlossen",
+      "position": 3
+    }
+  ],
+  "configs": [
+  ]
+}
