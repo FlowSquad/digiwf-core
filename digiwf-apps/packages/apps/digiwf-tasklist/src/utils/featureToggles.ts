@@ -21,7 +21,7 @@ export const initShouldUseTaskServiceFeatureToggle = () => {
   }
 }
 export const shouldUseTaskService = (): boolean => {
-  return localStorage.getItem(LOCAL_STORAGE_USE_TASKSERVICE_KEY)?.trim().toLowerCase() === "true"
+  return true //localStorage.getItem(LOCAL_STORAGE_USE_TASKSERVICE_KEY)?.trim().toLowerCase() === "true"
 }
 
 export const setShouldUseTaskService = (newValue: boolean) => {
