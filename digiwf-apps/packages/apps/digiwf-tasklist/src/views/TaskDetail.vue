@@ -45,6 +45,7 @@
             fab
             :aria-label="fab ? 'Weitere Aktionen schließen' : 'Weitere Aktionen öffnen' "
             @click="switchFab"
+            data-cy="TaskDetail-Fab"
           >
             <v-icon v-if="fab">
               mdi-close
@@ -63,8 +64,9 @@
               v-bind="attrs"
               @click="openFollowUp"
               v-on="on"
+              data-cy="TaskDetail-FollowUp"
             >
-              <v-icon> mdi-calendar-arrow-right</v-icon>
+              <v-icon>mdi-calendar-arrow-right</v-icon>
             </v-btn>
           </template>
           <span>Wiedervorlage bearbeiten</span>
@@ -77,7 +79,13 @@
           button-text="Aufgabe zwischenspeichern"
           @on-click="saveTask"
         >
-          <v-icon> mdi-content-save</v-icon>
+          <v-btn
+            color="white"
+            fab
+            data-cy="TaskDetail-SaveTask"
+          >
+          <v-icon>mdi-content-save</v-icon>
+          </v-btn>
         </loading-fab>
 
         <loading-fab
@@ -88,7 +96,13 @@
           :button-text="cancelText"
           @on-click="handleCancelTask"
         >
-          <v-icon> mdi-cancel</v-icon>
+          <v-btn
+            color="white"
+            fab
+            data-cy="TaskDetail-CancelTask"
+          >
+          <v-icon>mdi-cancel</v-icon>
+          </v-btn>
         </loading-fab>
 
         <loading-fab
@@ -99,7 +113,13 @@
           :button-text="downloadButtonText"
           @on-click="downloadPDF"
         >
-          <v-icon> mdi-download</v-icon>
+          <v-btn
+            color="white"
+            fab
+            data-cy="TaskDetail-DownloadPDF"
+          >
+          <v-icon>mdi-download</v-icon>
+          </v-btn>
         </loading-fab>
       </v-speed-dial>
     </v-flex>
