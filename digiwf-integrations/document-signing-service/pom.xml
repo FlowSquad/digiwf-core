@@ -22,13 +22,10 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>de.muenchen.oss.digiwf</groupId>
-            <artifactId>digiwf-message-starter</artifactId>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
-        <dependency>
-            <groupId>de.muenchen.oss.digiwf</groupId>
-            <artifactId>digiwf-s3-integration-client-starter</artifactId>
-        </dependency>
+
         <!-- Security -->
         <dependency>
             <groupId>de.muenchen.oss.digiwf</groupId>

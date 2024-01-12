@@ -4,73 +4,7 @@ info:
     version: @project.version@
 server:
   port: "${SIGNING_INTEGRATION:8087}"
-spring:
-  cloud:
-    stream:
-      kafka:
-        binder:
-          brokers: ${KAFKA_BOOTSTRAP_SERVER:localhost}:${KAFKA_BOOTSTRAP_SERVER_PORT:29092}
-          producerProperties:
-            value:
-              serializer: org.springframework.kafka.support.serializer.JsonSerializer
-            key:
-              serializer: org.springframework.kafka.support.serializer.JsonSerializer
-          consumerProperties:
-            auto:
-              offset:
-                reset: latest
-            key:
-              deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-            value:
-              deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-          configuration:
-            security:
-              protocol: ${KAFKA_SECURITY_PROTOCOL:PLAINTEXT}
-      bindings:
-        functionRouter-in-0:
-          group: "dwf-signing-service"
-          destination: dwf-signing-${DIGIWF_ENV}
-        sendMessage-out-0:
-          destination: dwf-connector-${DIGIWF_ENV}
-      default:
-        consumer:
-          maxAttempts: '1'
-      default-binder: kafka
-      function:
-        routing:
-          enabled: 'true'
-    function:
-      definition: functionRouter;sendMessage;
-      routing-expression: "headers['type']"
-  kafka:
-    consumer:
-      properties:
-        spring:
-          json:
-            trusted:
-              packages: '*'
-  security:
-    oauth2:
-      client:
-        registration:
-          s3:
-            provider: keycloak
-            authorization-grant-type: client_credentials
-            client-id: ${SSO_SIGNING_CLIENT_ID}
-            client-secret: ${SSO_SIGNING_CLIENT_SECRET}
-            scope: email, profile, openid  # needed for userInfo endpoint
 digiwf:
   security:
     client-id: ${SSO_SIGNING_CLIENT_ID}
     client-secret: ${SSO_SIGNING_CLIENT_SECRET}
-io:
-  muenchendigital:
-    digiwf:
-      message:
-        incidentDestination: "dwf-connector-incident-${DIGIWF_ENV}"
-        bpmnErrorDestination: "dwf-connector-bpmnerror-${DIGIWF_ENV}"
-        correlateMessageDestination: "dwf-connector-${DIGIWF_ENV}"
-      s3:
-        client:
-          documentStorageUrl: "${DOCUMENT_STORAGE_HOST:http://localhost}:${DOCUMENT_STORAGE_PORT:8086}"
-          securityEnabled: true
