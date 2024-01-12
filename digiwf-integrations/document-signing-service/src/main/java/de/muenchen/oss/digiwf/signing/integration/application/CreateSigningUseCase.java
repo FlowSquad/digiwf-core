@@ -1,4 +1,4 @@
-package de.muenchen.oss.digiwf.signing.integration.application.port;
+package de.muenchen.oss.digiwf.signing.integration.application;
 
 import de.muenchen.oss.digiwf.signing.integration.application.port.in.CreateSigningInPort;
 import de.muenchen.oss.digiwf.signing.integration.application.port.out.SigningServiceOutPort;
