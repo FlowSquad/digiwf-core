@@ -1,0 +1,10 @@
+info:
+  application:
+    name: @project.artifactId@
+    version: @project.version@
+server:
+  port: "${SIGNING_INTEGRATION:8087}"
+digiwf:
+  security:
+    client-id: ${SSO_SIGNING_CLIENT_ID}
+    client-secret: ${SSO_SIGNING_CLIENT_SECRET}
