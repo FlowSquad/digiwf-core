@@ -129,6 +129,17 @@ export const formFieldPalette = [
     }
   ],
   [
+    "signing",
+    {
+      ...basicOptions,
+      "fieldType": "signing",
+      title: "doXisign",
+      "x-display": "custom-document-signing",
+      type: "object",
+      "properties": { }
+    }
+  ],
+  [
     "benutzerauswahl",
     {
       ...basicOptions,

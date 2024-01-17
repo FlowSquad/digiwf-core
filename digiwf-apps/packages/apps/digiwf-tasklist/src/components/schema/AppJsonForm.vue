@@ -25,6 +25,9 @@
           :readonly="readonly"
         />
       </template>
+      <template #custom-document-signing="context">
+        <document-signing v-bind="context"/>
+      </template>
     </dwf-form-renderer>
     <v-flex class="d-flex" style="width: 100%">
       <v-spacer/>
@@ -40,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Emit, Prop, Vue} from "vue-property-decorator";
+import { Component, Emit, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class AppJsonForm extends Vue {
