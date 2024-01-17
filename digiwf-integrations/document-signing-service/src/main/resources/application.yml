@@ -3,8 +3,11 @@ info:
     name: @project.artifactId@
     version: @project.version@
 server:
-  port: "${SIGNING_INTEGRATION:8087}"
+  port: "${SIGNING_INTEGRATION_PORT:8087}"
 digiwf:
   security:
     client-id: ${SSO_SIGNING_CLIENT_ID}
     client-secret: ${SSO_SIGNING_CLIENT_SECRET}
+  signing:
+    doxisign:
+      host: ${DOXISIGN_HOST}
