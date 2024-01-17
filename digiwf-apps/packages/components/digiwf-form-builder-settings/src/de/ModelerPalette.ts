@@ -135,8 +135,7 @@ export const formFieldPalette = [
         "fieldType": "signing",
         title: "doXisign",
         "x-display": "custom-document-signing",
-        type: "object",
-        "properties": { }
+        type: "object"
       }
     ],
     [

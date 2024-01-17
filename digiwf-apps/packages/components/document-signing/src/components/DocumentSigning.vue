@@ -9,9 +9,24 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  props: ['path', 'readonly'],
-  emits: [],
-  setup(props, {emit}) {
+  props: [
+    'valid',
+    'readonly',
+    'hasFocused',
+    'value',
+    'options',
+    'schema',
+    'fullKey',
+    'dense',
+    'label',
+    'disabled',
+    'rules',
+    'on'
+  ],
+  setup(props) {
+
+    const filePath = props.schema.filePath;
+    console.log(filePath);
 
   }
 

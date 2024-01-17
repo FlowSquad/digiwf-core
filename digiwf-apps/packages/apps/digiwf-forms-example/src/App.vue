@@ -101,7 +101,6 @@ export default defineComponent({
     })
 
     const settings = SettingsEN;
-    console.log(settings.modelerPalette.formFields);
 
     const validate = () => {
       (form.value as HTMLFormElement).validate();
@@ -144,6 +143,7 @@ export default defineComponent({
                       "outlined": true,
                       "dense": true
                     },
+                    "filePath": "test.pdf",
                     "fieldType": "signing",
                     "title": "doXisign",
                     "x-display": "custom-document-signing",

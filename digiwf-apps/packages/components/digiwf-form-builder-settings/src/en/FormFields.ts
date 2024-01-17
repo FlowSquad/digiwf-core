@@ -1012,7 +1012,7 @@ const documentSigningSchema = {
         },
         "filePath": {
           "type": "string",
-          "title": "Dateipfad",
+          "title": "Filepath",
           "x-props": {
             "outlined": true,
           },
@@ -1023,9 +1023,6 @@ const documentSigningSchema = {
               "sm": 12
             }
           }
-        },
-        "properties": {
-
         }
       }
     },
@@ -1335,7 +1332,7 @@ export const schemaMap: any = {
   "select": selectSchema,
   "multiselect": multiselectSchema,
   "file": fileSchema,
-  "document-signing": documentSigningSchema,
+  "signing": documentSigningSchema,
   "user-input": userinputSchema,
   "multi-user-input": multiUserinputSchema,
   "array": arrayInput,
