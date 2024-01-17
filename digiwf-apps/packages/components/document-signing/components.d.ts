@@ -6,5 +6,17 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     DocumentSigning: typeof import('./src/components/DocumentSigning.vue')['default']
+    VBtn: typeof import('vuetify/lib')['VBtn']
+    VCard: typeof import('vuetify/lib')['VCard']
+    VCardActions: typeof import('vuetify/lib')['VCardActions']
+    VCardText: typeof import('vuetify/lib')['VCardText']
+    VChip: typeof import('vuetify/lib')['VChip']
+    VDialog: typeof import('vuetify/lib')['VDialog']
+    VIcon: typeof import('vuetify/lib')['VIcon']
+    VRow: typeof import('vuetify/lib')['VRow']
+    VSpacer: typeof import('vuetify/lib')['VSpacer']
+    VToolbar: typeof import('vuetify/lib')['VToolbar']
+    VToolbarItems: typeof import('vuetify/lib')['VToolbarItems']
+    VToolbarTitle: typeof import('vuetify/lib')['VToolbarTitle']
   }
 }

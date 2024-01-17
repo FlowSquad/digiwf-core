@@ -95,6 +95,7 @@ export default defineComponent({
     };
 
     provide('apiEndpoint', import.meta.env.BASE_URL + 'api/digitalwf-backend-service');
+    provide('taskServiceApiEndpoint', import.meta.env.BASE_URL + 'api/digitalwf-tasklist-service');
     provide('formContext', {
       id: 'Task01',
       type: 'task'
@@ -143,7 +144,7 @@ export default defineComponent({
                       "outlined": true,
                       "dense": true
                     },
-                    "filePath": "test.pdf",
+                    "filePath": "test/Unbenannt.pdf",
                     "fieldType": "signing",
                     "title": "doXisign",
                     "x-display": "custom-document-signing",
