@@ -1,0 +1,58 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8087",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Signing",
+      "description": "REST API for signing documents with doXisign"
+    }
+  ],
+  "paths": {
+    "/signing": {
+      "get": {
+        "tags": [
+          "Signing"
+        ],
+        "summary": "Get a signing url for a document",
+        "description": "Get a signing url for a document",
+        "operationId": "createSigning",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SigningModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SigningModel": {
+        "type": "object",
+        "properties": {
+          "signingHost": {
+            "type": "string"
+          },
+          "signingUrl": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

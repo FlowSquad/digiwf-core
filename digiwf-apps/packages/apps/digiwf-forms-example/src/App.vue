@@ -96,6 +96,7 @@ export default defineComponent({
 
     provide('apiEndpoint', import.meta.env.BASE_URL + 'api/digitalwf-backend-service');
     provide('taskServiceApiEndpoint', import.meta.env.BASE_URL + 'api/digitalwf-tasklist-service');
+    provide('integrationServicesApiEndpoint', import.meta.env.BASE_URL + 'api/integration');
     provide('formContext', {
       id: 'Task01',
       type: 'task'

@@ -23,7 +23,7 @@ class CreateSigningUseCaseTest {
                 .build());
 
         // Act
-        final SigningModel result = createSigningUseCase.createSigning("documentPath");
+        final SigningModel result = createSigningUseCase.createSigning();
 
         // Assert
         assertThat(result)

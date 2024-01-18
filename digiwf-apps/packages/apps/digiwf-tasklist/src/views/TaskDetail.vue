@@ -149,7 +149,7 @@
 </style>
 
 <script lang="ts">
-import {Component, Prop, Provide} from "vue-property-decorator";
+import { Component, Prop, Provide } from "vue-property-decorator";
 import AppViewLayout from "@/components/UI/AppViewLayout.vue";
 import BaseForm from "@/components/form/BaseForm.vue";
 import AppToast from "@/components/UI/AppToast.vue";
@@ -157,17 +157,17 @@ import SaveLeaveMixin from "../mixins/saveLeaveMixin";
 import AppYesNoDialog from "@/components/common/AppYesNoDialog.vue";
 import TaskFollowUpDialog from "@/components/task/TaskFollowUpDialog.vue";
 import LoadingFab from "@/components/UI/LoadingFab.vue";
-import {FormContext} from "@muenchen/digiwf-multi-file-input";
-import {ApiConfig} from "../api/ApiConfig";
+import { FormContext } from "@muenchen/digiwf-multi-file-input";
+import { ApiConfig } from "../api/ApiConfig";
 import {
   cancelTask,
   completeTask,
+  deferTask,
   downloadPDFFromEngine,
   loadTask,
-  saveTask,
-  deferTask
+  saveTask
 } from "../middleware/tasks/taskMiddleware";
-import {HumanTaskDetails} from "../middleware/tasks/tasksModels"
+import { HumanTaskDetails } from "../middleware/tasks/tasksModels"
 import router from "../router";
 
 @Component({
@@ -215,6 +215,9 @@ export default class TaskDetail extends SaveLeaveMixin {
 
   @Provide('taskServiceApiEndpoint')
   taskServiceApiEndpoint = ApiConfig.tasklistBase;
+
+  @Provide('integrationServicesApiEndpoint')
+  integrationServicesApiEndpoint = ApiConfig.integrationBase;
 
   created() {
     loadTask(this.id).then(({data, error}) => {

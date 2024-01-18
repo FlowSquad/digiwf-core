@@ -110,16 +110,16 @@
 
 <script lang="ts">
 
-import {Component, Prop, Provide, Vue} from "vue-property-decorator";
+import { Component, Prop, Provide, Vue } from "vue-property-decorator";
 import AppViewLayout from "@/components/UI/AppViewLayout.vue";
 import BaseForm from "@/components/form/BaseForm.vue";
 import AppToast from "@/components/UI/AppToast.vue";
 import router from "../router";
-import {UserTO} from '@muenchen/digiwf-engine-api-internal';
-import {FormContext} from "@muenchen/digiwf-multi-file-input";
-import {ApiConfig} from "../api/ApiConfig";
-import {assignTask, loadTask} from "../middleware/tasks/taskMiddleware";
-import {HumanTaskDetails} from "../middleware/tasks/tasksModels";
+import { UserTO } from '@muenchen/digiwf-engine-api-internal';
+import { FormContext } from "@muenchen/digiwf-multi-file-input";
+import { ApiConfig } from "../api/ApiConfig";
+import { assignTask, loadTask } from "../middleware/tasks/taskMiddleware";
+import { HumanTaskDetails } from "../middleware/tasks/tasksModels";
 import AssignTaskDialog from "../components/task/AssignTaskDialog.vue";
 
 @Component({
@@ -147,6 +147,9 @@ export default class GroupTaskDetail extends Vue {
 
   @Provide('taskServiceApiEndpoint')
   taskServiceApiEndpoint = ApiConfig.tasklistBase;
+
+  @Provide('integrationServicesApiEndpoint')
+  integrationServicesApiEndpoint = ApiConfig.integrationBase;
 
   created() {
     this.isLoading = true;
