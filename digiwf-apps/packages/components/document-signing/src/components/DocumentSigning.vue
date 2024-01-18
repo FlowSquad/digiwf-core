@@ -49,7 +49,7 @@
           <v-card-text>
             <div style="height: 90vh">
               <!-- Todo use signingUrl -->
-<!--              <iframe title="Dokument unterschreiben" width="100%" height="100%" :src="getIframeUrl()"></iframe>-->
+              <iframe title="Dokument unterschreiben" width="100%" height="100%" :src="getIframeUrl()"></iframe>
             </div>
           </v-card-text>
         </v-card>
