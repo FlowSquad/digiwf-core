@@ -13,7 +13,7 @@ public class CreateSigningUseCase implements CreateSigningInPort {
     private final SigningServiceOutPort signingServiceOutPort;
 
     @Override
-    public SigningModel createSigning(String documentPath) {
+    public SigningModel createSigning() {
         return signingServiceOutPort.createSigningUrl();
     }
 }

@@ -49,7 +49,7 @@
           <v-card-text>
             <div style="height: 90vh">
               <!-- Todo use signingUrl -->
-              <iframe title="Dokument unterschreiben" width="100%" height="100%" :src="getIframeUrl()"></iframe>
+<!--              <iframe title="Dokument unterschreiben" width="100%" height="100%" :src="getIframeUrl()"></iframe>-->
             </div>
           </v-card-text>
         </v-card>
@@ -63,6 +63,7 @@
 import { computed, defineComponent, inject, onMounted, ref } from "vue";
 import { FormContext } from "../../types";
 import { getFilenames, getPresignedUrlForGet } from "@/middleware/presignedUrls";
+import { getSigningUrl } from "@/apiClient/signingServiceCalls";
 
 export default defineComponent({
   props: [
@@ -92,6 +93,7 @@ export default defineComponent({
 
     const apiEndpoint = inject<string>('apiEndpoint');
     const taskServiceApiEndpoint = inject<string>('taskServiceApiEndpoint');
+    const integrationServicesApiEndpoint = inject<string>('integrationServicesApiEndpoint');
     const formContext = inject<FormContext>('formContext');
 
     const init = async () => {
@@ -103,6 +105,7 @@ export default defineComponent({
       });
       const fileName = filesInFolder[0];
 
+      // presginedUrls
       const getPresignedUrl = await getPresignedUrlForGet(fileName, {
         filePath,
         apiEndpoint: apiEndpoint || "",
@@ -119,8 +122,14 @@ export default defineComponent({
       });
       updateFilePresignedUrl.value = putPresignedUrl;
 
-      const sgnUrl = "http://localhost:10000/doxiview";
-      signingUrl.value = sgnUrl;
+      // signingUrl
+      const sgn = await getSigningUrl(integrationServicesApiEndpoint || "");
+      signingUrl.value = sgn.signingUrl;
+
+      // debugging
+      console.log('signingUrl', signingUrl.value);
+      console.log('downloadFilePresignedUrl', downloadFilePresignedUrl.value);
+      console.log('updateFilePresignedUrl', updateFilePresignedUrl.value);
     }
 
     const openSignDocumentDialog = () => {
@@ -133,9 +142,6 @@ export default defineComponent({
     }
 
     const getIframeUrl = () => {
-      // TODO do we need both urls
-      // return `${signingUrl.value}?getPresignedUrl=${downloadFilePresignedUrl.value}&putPresignedUrl=${updateFilePresignedUrl`;
-      console.log(downloadFilePresignedUrl.value);
       return "https://doxiview.com/showcase/?locale=de#de&feature=sign";
     }
 

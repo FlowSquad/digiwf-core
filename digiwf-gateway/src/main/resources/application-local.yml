@@ -58,7 +58,7 @@ spring:
         - id: signing-integration
           uri: http://${SIGNING_INTEGRATION_HOST:localhost}:${SIGNING_INTEGRATION_PORT}/
           predicates:
-            - Path=/api/integration/signing/**
+            - Path=/api/integration/**
           filters:
             - RewritePath=/api/integration/(?<urlsegments>.*), /$\{urlsegments}
             - RemoveResponseHeader=WWW-Authenticate

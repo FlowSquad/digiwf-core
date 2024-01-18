@@ -5,7 +5,8 @@
   "module": "dist/document-signing.mjs",
   "scripts": {
     "build": "vite build",
-    "watch": "vite build --watch"
+    "watch": "vite build --watch",
+    "api": "openapi-generator-cli generate -i ./api/api-docs.json -o src/api/ -g typescript-axios --additional-properties=supportsES6=true,npmVersion=6.9.0,typescriptThreePlus=true,useSingleRequestParameter=true"
   },
   "dependencies": {
     "@muenchen/digiwf-engine-api-internal": "^1.6.0",
@@ -16,6 +17,7 @@
     "vuetify": "^2.6.0"
   },
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.5.1",
     "axios": "^1.6.0",
     "uuid": "^8.3.2"
   },
