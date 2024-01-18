@@ -62,6 +62,7 @@
 
 import { computed, defineComponent, inject, onMounted, ref } from "vue";
 import { FormContext } from "../../types";
+import { getFilenames, getPresignedUrlForGet } from "@/middleware/presignedUrls";
 
 export default defineComponent({
   props: [
@@ -79,7 +80,8 @@ export default defineComponent({
     'on'
   ],
   setup(props) {
-    let presignedUrlToFile = ref<string>();
+    let downloadFilePresignedUrl = ref<string>();
+    let updateFilePresignedUrl = ref<string>();
     let signingUrl = ref<string>();
     let isDocumentSigned = ref<boolean>(false);
     let isDocumentSignDialogOpen = ref<boolean>(true);
@@ -93,14 +95,29 @@ export default defineComponent({
     const formContext = inject<FormContext>('formContext');
 
     const init = async () => {
-      const presignedUrl = "http://127.0.0.1:9000/digiwf-bucket/test/Unbenannt.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=83MTG3HYDUH9HEVLCPDM%2F20240117%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240117T160511Z&X-Amz-Expires=43200&X-Amz-Security-Token=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NLZXkiOiI4M01URzNIWURVSDlIRVZMQ1BETSIsImV4cCI6MTcwNTU0OTU2NiwicGFyZW50IjoibWluaW8ifQ.buyYAnnm9tnEhCHWd0aGKpGpTteQWANWEtnxHY26KtuJ9ZkjFuVBUbzffROyGlKLP_ce4erUNFrm4eSyjP5qQA&X-Amz-SignedHeaders=host&versionId=null&X-Amz-Signature=8b8850057866292673751669a4b7e41d308be5ee4fdad43d06de8a19325b2c7e";
-      // const presignedUrl = await getPresignedUrlForGet(filePath.value, {
-      //   filePath,
-      //   apiEndpoint: apiEndpoint || "",
-      //   formContext,
-      //   taskServiceApiEndpoint: taskServiceApiEndpoint || ""
-      // });
-      presignedUrlToFile.value = presignedUrl;
+      const filesInFolder = await getFilenames( {
+        filePath,
+        apiEndpoint: apiEndpoint || "",
+        formContext,
+        taskServiceApiEndpoint: taskServiceApiEndpoint || ""
+      });
+      const fileName = filesInFolder[0];
+
+      const getPresignedUrl = await getPresignedUrlForGet(fileName, {
+        filePath,
+        apiEndpoint: apiEndpoint || "",
+        formContext,
+        taskServiceApiEndpoint: taskServiceApiEndpoint || ""
+      });
+      downloadFilePresignedUrl.value = getPresignedUrl;
+
+      const putPresignedUrl = await getPresignedUrlForGet(fileName, {
+        filePath,
+        apiEndpoint: apiEndpoint || "",
+        formContext,
+        taskServiceApiEndpoint: taskServiceApiEndpoint || ""
+      });
+      updateFilePresignedUrl.value = putPresignedUrl;
 
       const sgnUrl = "http://localhost:10000/doxiview";
       signingUrl.value = sgnUrl;
@@ -117,7 +134,8 @@ export default defineComponent({
 
     const getIframeUrl = () => {
       // TODO do we need both urls
-      // return `${signingUrl.value}?presignedUrl=${presignedUrlToFile.value}`;
+      // return `${signingUrl.value}?getPresignedUrl=${downloadFilePresignedUrl.value}&putPresignedUrl=${updateFilePresignedUrl`;
+      console.log(downloadFilePresignedUrl.value);
       return "https://doxiview.com/showcase/?locale=de#de&feature=sign";
     }
 

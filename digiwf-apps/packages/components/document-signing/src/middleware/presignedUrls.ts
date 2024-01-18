@@ -6,6 +6,7 @@ import {
 import { FetchUtils } from "@muenchen/digiwf-task-api-internal";
 import { Ref } from "vue";
 import {
+  getFileNamesFromTaskservice,
   getPresignedUrlForFileDownloadFromTaskservice,
   getPresignedUrlForFileUploadFromTaskservice
 } from "@/apiClient/taskServiceCalls";
@@ -76,6 +77,38 @@ export const getPresignedUrlForGet = async (filename: string, config: EngineInte
     );
   }
 
+  return res.data;
+}
+
+export const getFilenames = async (config: EngineInteractionConfig): Promise<string[]> => {
+  const {apiEndpoint, filePath, formContext, taskServiceApiEndpoint} = config;
+  const engineAxiosConfig = axiosConfig(apiEndpoint);
+  console.log("called");
+
+  const taskServiceAxiosConfig = axiosConfig(taskServiceApiEndpoint);
+
+  let res: any;
+  if (formContext!.type === "start") {
+    res = await ServiceStartFileRestControllerApiFactory(engineAxiosConfig).getFileNames(
+      formContext!.id,
+      filePath.value
+    );
+  } else if (formContext!.type == "task") {
+
+    res = await getFileNamesFromTaskservice(
+      taskServiceAxiosConfig,
+      formContext!.id,
+      filePath.value
+    );
+    // res.data does not exist
+    return res;
+  } else {
+    //type "instance"
+    res = await ServiceInstanceFileRestControllerApiFactory(engineAxiosConfig).getFileNames1(
+      formContext!.id,
+      filePath.value
+    );
+  }
   return res.data;
 }
 
