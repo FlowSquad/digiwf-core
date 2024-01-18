@@ -1,4 +1,4 @@
-package de.muenchen.oss.digiwf.signing.integration.adapter.in.rest;
+package de.muenchen.oss.digiwf.signing.integration.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SigningResponse {
-        private String signingUrl;
+public class SigningModel {
+    private String signingHost;
+    private String signingUrl;
 }

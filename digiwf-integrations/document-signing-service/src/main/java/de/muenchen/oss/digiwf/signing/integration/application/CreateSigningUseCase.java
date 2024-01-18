@@ -2,6 +2,7 @@ package de.muenchen.oss.digiwf.signing.integration.application;
 
 import de.muenchen.oss.digiwf.signing.integration.application.port.in.CreateSigningInPort;
 import de.muenchen.oss.digiwf.signing.integration.application.port.out.SigningServiceOutPort;
+import de.muenchen.oss.digiwf.signing.integration.domain.model.SigningModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,7 @@ public class CreateSigningUseCase implements CreateSigningInPort {
     private final SigningServiceOutPort signingServiceOutPort;
 
     @Override
-    public String createSigning(String documentPath) {
+    public SigningModel createSigning(String documentPath) {
         return signingServiceOutPort.createSigningUrl();
     }
 }

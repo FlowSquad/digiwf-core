@@ -1,6 +1,7 @@
 package de.muenchen.oss.digiwf.signing.integration.adapter.in.rest;
 
 import de.muenchen.oss.digiwf.signing.integration.application.port.in.CreateSigningInPort;
+import de.muenchen.oss.digiwf.signing.integration.domain.model.SigningModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -26,11 +27,8 @@ public class SigningInAdapter {
             @ApiResponse(responseCode = "200", description = "successful operation")
     })
     @GetMapping("/{documentPath}")
-    public SigningResponse createSigning(@PathVariable final String documentPath) {
-        final String signingUrl = createSigningInPort.createSigning(documentPath);
-        return SigningResponse.builder()
-                .signingUrl(signingUrl)
-                .build();
+    public SigningModel createSigning(@PathVariable final String documentPath) {
+        return this.createSigningInPort.createSigning(documentPath);
     }
 
 }
