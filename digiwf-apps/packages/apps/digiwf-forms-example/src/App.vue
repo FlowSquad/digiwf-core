@@ -34,6 +34,9 @@
               <template #custom-time-input="context">
                 <dwf-time-input v-bind="context"/>
               </template>
+              <template #custom-document-signing="context">
+                <document-signing v-bind="context"/>
+              </template>
             </dwf-form-renderer>
           </v-form>
           <v-btn @click="validate">Validate</v-btn>
@@ -69,14 +72,15 @@ html, body {
 </style>
 
 <script lang="ts">
-import {DwfFormRenderer} from "@muenchen/digiwf-form-renderer";
-import {DwfFormBuilder} from "@muenchen/digiwf-form-builder";
-import {DwfDateInput, DwfTimeInput} from "@muenchen/digiwf-date-input";
-import {SettingsEN} from "@muenchen/digiwf-form-builder-settings";
-import {defineComponent, provide, ref} from "vue";
+import { DwfFormRenderer } from "@muenchen/digiwf-form-renderer";
+import { DwfFormBuilder } from "@muenchen/digiwf-form-builder";
+import { DwfDateInput, DwfTimeInput } from "@muenchen/digiwf-date-input";
+import { DocumentSigning } from "@muenchen/document-signing";
+import { SettingsEN } from "@muenchen/digiwf-form-builder-settings";
+import { defineComponent, provide, ref } from "vue";
 
 export default defineComponent({
-  components: {DwfFormRenderer, DwfFormBuilder, DwfDateInput, DwfTimeInput},
+  components: {DwfFormRenderer, DwfFormBuilder, DwfDateInput, DwfTimeInput, DocumentSigning},
   setup() {
     const componentKey = ref(0);
 
@@ -91,6 +95,7 @@ export default defineComponent({
     };
 
     provide('apiEndpoint', import.meta.env.BASE_URL + 'api/digitalwf-backend-service');
+    provide('taskServiceApiEndpoint', import.meta.env.BASE_URL + 'api/digitalwf-tasklist-service');
     provide('formContext', {
       id: 'Task01',
       type: 'task'
@@ -128,25 +133,23 @@ export default defineComponent({
                   "childrenClass": "pl-0"
                 },
                 "properties": {
-                  "dateval": {
-                    "fieldType": "date",
-                    "title": "Date",
-                    "x-display": "custom-date-input",
-                    "type": "string",
-                    "format": "date",
-                    "key": "dateval",
+                  "247eecec-4c92-49d0-97bd-8e422a9af970": {
                     "x-options": {
                       "fieldColProps": {
                         "cols": 12,
                         "sm": 12
-                      },
-                      "messages": {}
+                      }
                     },
                     "x-props": {
                       "outlined": true,
                       "dense": true
                     },
-                    "x-rules": []
+                    "filePath": "test/Unbenannt.pdf",
+                    "fieldType": "signing",
+                    "title": "doXisign",
+                    "x-display": "custom-document-signing",
+                    "type": "object",
+                    "properties": {}
                   }
                 },
                 "key": "28656bcf-8add-4f52-a0b1-4d3b68696f3a"

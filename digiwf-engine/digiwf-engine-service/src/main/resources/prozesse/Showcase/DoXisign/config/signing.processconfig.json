@@ -1,0 +1,17 @@
+{
+  "key": "DoXisign_22cae8ab-02ad-492b-a2b1-56341f44ffa2",
+  "configs": [
+    {
+      "key": "app_file_paths_readonly",
+      "value": "test"
+    },
+    {
+      "key": "app_file_paths",
+      "value": "test"
+    },
+    {
+      "key": "app_instance_schema_key",
+      "value": "DokumentHochladen"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+    "key": "DokumentHochladen",
+    "schema": {
+        "key": "MyStartForm",
+        "type": "object",
+        "x-display": "stepper",
+        "allOf": [
+            {
+                "title": "Abschnitt",
+                "description": "",
+                "type": "object",
+                "key": "afe9a544-f3da-4dcf-96e7-53fcac3c54ca",
+                "x-options": {
+                    "sectionsTitlesClasses": [
+                        "d-none"
+                    ]
+                },
+                "allOf": [
+                    {
+                        "containerType": "group",
+                        "title": "Group",
+                        "description": "",
+                        "x-options": {
+                            "childrenClass": "pl-0"
+                        },
+                        "properties": {
+                            "0ec7e5a9-9b42-4fc3-a6c9-d14de9113f6b": {
+                                "fieldType": "file",
+                                "title": "Files",
+                                "x-display": "custom-multi-file-input",
+                                "type": "object",
+                                "properties": {
+                                    "key": {
+                                        "type": "string"
+                                    },
+                                    "amount": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "key": "0ec7e5a9-9b42-4fc3-a6c9-d14de9113f6b",
+                                "uuidEnabled": false,
+                                "filePath": "test",
+                                "x-options": {
+                                    "fieldColProps": {
+                                        "cols": 12,
+                                        "sm": 12,
+                                        "messages": {}
+                                    }
+                                },
+                                "x-props": {
+                                    "outlined": true,
+                                    "dense": true
+                                },
+                                "x-rules": [],
+                                "maxFiles": 1
+                            }
+                        },
+                        "key": "c5eddcbf-b115-4158-85a9-feeec3208b83"
+                    }
+                ]
+            }
+        ]
+    }
+}

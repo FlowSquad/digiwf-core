@@ -10,6 +10,7 @@ export const iconMap: any = {
   "user-input": "mdi-account",
   "multi-user-input": "mdi-account-multiple",
   "file": "mdi-file",
+  "signing": "mdi-file",
   "switch": "mdi-toggle-switch",
   "array": "mdi-format-list-bulleted-square",
   "group": "mdi-crop-free",

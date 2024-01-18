@@ -999,6 +999,57 @@ const fileSchema = {
   ]
 };
 
+const documentSigningSchema = {
+  ...basicSchema,
+  allOf: [
+    {
+      ...basicAttributes,
+      properties: {
+        ...basicAttributes.properties,
+        "x-display": {
+          "const": "custom-document-signing"
+        },
+        "filePath": {
+          "type": "string",
+          "title": "Dateipfad",
+          "x-props": {
+            "outlined": true,
+          },
+          "x-rules": [],
+          "x-options": {
+            "fieldColProps": {
+              "cols": 12,
+              "sm": 12
+            }
+          }
+        },
+        "properties": {
+
+        }
+      }
+    },
+    {
+      ...basicOptions
+    },
+    {
+      ...basicValidation,
+      properties: {
+        "x-rules": {
+          "type": "array",
+          "title": "Regeln",
+          "items": {
+            "type": "string",
+            "enum": [
+              "requiredObject",
+            ]
+          },
+          "x-display": "checkbox"
+        }
+      }
+    }
+  ]
+};
+
 const userinputSchema = {
   ...basicSchema,
   allOf: [
@@ -1283,6 +1334,7 @@ export const schemaMap: any = {
   "select": selectSchema,
   "multiselect": multiselectSchema,
   "file": fileSchema,
+  "signing": documentSigningSchema,
   "user-input": userinputSchema,
   "multi-user-input": multiUserinputSchema,
   "array": arrayInput,
