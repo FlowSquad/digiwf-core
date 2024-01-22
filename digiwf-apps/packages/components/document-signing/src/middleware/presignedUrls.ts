@@ -7,7 +7,7 @@ import { FetchUtils } from "@muenchen/digiwf-task-api-internal";
 import { Ref } from "vue";
 import {
   getFileNamesFromTaskservice,
-  getPresignedUrlForFileDownloadFromTaskservice,
+  getPresignedUrlForFileDownloadFromTaskservice, getPresignedUrlForFileUpdateFromTaskservice,
   getPresignedUrlForFileUploadFromTaskservice
 } from "@/apiClient/taskServiceCalls";
 
@@ -18,7 +18,7 @@ interface EngineInteractionConfig {
   readonly taskServiceApiEndpoint: string;
 }
 
-export const getPresignedUrlForPost = async (file: File, config: EngineInteractionConfig): Promise<string> => {
+export const getPresignedUrlForPost = async (filename: string, config: EngineInteractionConfig): Promise<string> => {
   const {filePath, formContext, apiEndpoint, taskServiceApiEndpoint} = config;
   const engineAxiosConfig = axiosConfig(apiEndpoint);
   const taskServiceAxiosConfig = axiosConfig(taskServiceApiEndpoint);
@@ -27,16 +27,36 @@ export const getPresignedUrlForPost = async (file: File, config: EngineInteracti
   if (formContext!.type === "start") {
     res = await ServiceStartFileRestControllerApiFactory(engineAxiosConfig).getPresignedUrlForFileUpload(
       formContext!.id,
-      file!.name,
+      filename,
       filePath.value
     );
   } else if (formContext!.type == "task") {
-    return await getPresignedUrlForFileUploadFromTaskservice(taskServiceAxiosConfig, formContext!.id, file!.name, filePath.value)
+    return await getPresignedUrlForFileUploadFromTaskservice(taskServiceAxiosConfig, formContext!.id, filename, filePath.value)
   } else {
     //type "instance"
     res = await ServiceInstanceFileRestControllerApiFactory(engineAxiosConfig).getPresignedUrlForFileUpload1(
       formContext!.id,
-      file!.name,
+      filename,
+      filePath.value
+    );
+  }
+
+  return res.data;
+}
+
+export const getPresignedUrlForPut = async (filename: string, config: EngineInteractionConfig): Promise<string> => {
+  const {filePath, formContext, apiEndpoint, taskServiceApiEndpoint} = config;
+  const engineAxiosConfig = axiosConfig(apiEndpoint);
+  const taskServiceAxiosConfig = axiosConfig(taskServiceApiEndpoint);
+
+  let res: any;
+  if (formContext!.type == "task") {
+    return await getPresignedUrlForFileUpdateFromTaskservice(taskServiceAxiosConfig, formContext!.id, filename, filePath.value)
+  } else {
+    //type "instance"
+    res = await ServiceInstanceFileRestControllerApiFactory(engineAxiosConfig).getPresignedUrlForFileUpload1(
+      formContext!.id,
+      filename,
       filePath.value
     );
   }

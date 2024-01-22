@@ -19,6 +19,18 @@ export const getPresignedUrlForFileUploadFromTaskservice = (cfg: Configuration, 
  * @param fileName
  * @param filePath
  */
+export const getPresignedUrlForFileUpdateFromTaskservice = (cfg: Configuration, formContextId: string, fileName: string, filePath: string): Promise<string> => {
+  return FileApiFactory(cfg)
+    .getPresignedUrlForFile(formContextId,fileName,filePath,"PUT")
+    .then((response: AxiosResponse<string>) => Promise.resolve(response.data));
+}
+
+/**
+ * @param cfg
+ * @param formContextId
+ * @param fileName
+ * @param filePath
+ */
 export const getPresignedUrlForFileDownloadFromTaskservice = (cfg: Configuration, formContextId: string, fileName: string, filePath: string): Promise<string> => {
   return FileApiFactory(cfg)
     .getPresignedUrlForFile(formContextId,fileName,filePath,"GET")

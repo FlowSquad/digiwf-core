@@ -36,20 +36,10 @@
             </v-btn>
             <v-toolbar-title>Dokument {{ filePath }} unterschreiben</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-toolbar-items>
-              <v-btn
-                dark
-                text
-                @click="signDocument()"
-              >
-                Fertig
-              </v-btn>
-            </v-toolbar-items>
           </v-toolbar>
           <v-card-text>
             <div style="height: 90vh">
-              <!-- Todo use signingUrl -->
-              <iframe title="Dokument unterschreiben" width="100%" height="100%" :src="getIframeUrl()"></iframe>
+              <iframe ref="doxiview" title="Dokument unterschreiben" width="100%" height="100%" style="border: none"></iframe>
             </div>
           </v-card-text>
         </v-card>
@@ -60,9 +50,10 @@
 
 <script lang="ts">
 
+import globalAxios from "axios";
 import { computed, defineComponent, inject, onMounted, ref } from "vue";
 import { FormContext } from "../../types";
-import { getFilenames, getPresignedUrlForGet } from "@/middleware/presignedUrls";
+import {getFilenames, getPresignedUrlForGet, getPresignedUrlForPut} from "@/middleware/presignedUrls";
 import { getSigningUrl } from "@/apiClient/signingServiceCalls";
 
 export default defineComponent({
@@ -81,9 +72,14 @@ export default defineComponent({
     'on'
   ],
   setup(props) {
+    const doxiview = ref(null);
+    const doxiviewMaster = new window.CibGetMasterController().createMaster()
+
     let downloadFilePresignedUrl = ref<string>();
     let updateFilePresignedUrl = ref<string>();
+    let fileName = ref<string>();
     let signingUrl = ref<string>();
+    let signingHost = ref<string>();
     let isDocumentSigned = ref<boolean>(false);
     let isDocumentSignDialogOpen = ref<boolean>(true);
 
@@ -103,10 +99,10 @@ export default defineComponent({
         formContext,
         taskServiceApiEndpoint: taskServiceApiEndpoint || ""
       });
-      const fileName = filesInFolder[0];
+      fileName.value = filesInFolder[0];
 
       // presginedUrls
-      const getPresignedUrl = await getPresignedUrlForGet(fileName, {
+      const getPresignedUrl = await getPresignedUrlForGet(fileName.value, {
         filePath,
         apiEndpoint: apiEndpoint || "",
         formContext,
@@ -114,7 +110,7 @@ export default defineComponent({
       });
       downloadFilePresignedUrl.value = getPresignedUrl;
 
-      const putPresignedUrl = await getPresignedUrlForGet(fileName, {
+      const putPresignedUrl = await getPresignedUrlForPut(fileName.value, {
         filePath,
         apiEndpoint: apiEndpoint || "",
         formContext,
@@ -125,24 +121,77 @@ export default defineComponent({
       // signingUrl
       const sgn = await getSigningUrl(integrationServicesApiEndpoint || "");
       signingUrl.value = sgn.signingUrl;
+      signingHost.value = sgn.signingHost;
 
       // debugging
       console.log('signingUrl', signingUrl.value);
       console.log('downloadFilePresignedUrl', downloadFilePresignedUrl.value);
       console.log('updateFilePresignedUrl', updateFilePresignedUrl.value);
+      initDoxiviewMaster();
+    }
+
+    const initDoxiviewMaster = () => {
+      doxiviewMaster.registerFunction("getStartParameters", getStartParameters, false)
+      doxiviewMaster.registerFunction("terminate", onTerminate, false)
+      doxiviewMaster.registerFunction("onDocumentVersionUpdated", onDocumentVersionUpdated, false)
+      doxiviewMaster.registerFunction("onSignatureFieldSigned", onSignatureFieldSigned, false)
+      doxiviewMaster.openURLInFrame(doxiview.value, signingUrl.value)
+      console.log('doxiview master initialized');
+    }
+
+    var getStartParameters = () => {
+      console.log('doxiview getStartParameters')
+      return {
+        doxiview: {
+          urlField: downloadFilePresignedUrl.value,
+          docName: fileName.value,
+          ext: 'pdf',
+          repo_alias: 'http-repository',
+          useUniqueCache: true,
+          formEnabled: true,
+          checkSignatureInfoEnabled: false,
+          optionsbarVisible: true,
+          enableAllFunctions: true,
+          optionsbarContent: 'form_creation',
+          defaultFormFieldType: 'Signature',
+          formCreationSignatureDefaultHeight: 24,
+          formCreationSignatureDefaultWidth: 84,
+/*          documentVersionUpdateMode: 'UND',
+          applyDocumentVersionUpdate: true*/
+        }
+      }
+    }
+
+    const onTerminate = () => {
+      console.log('doxiview terminate')
+      isDocumentSignDialogOpen.value = false;
+    }
+
+    const onDocumentVersionUpdated = () => {
+      console.log("doxiview onDocumentVersionUpdated")
+    }
+
+    const onSignatureFieldSigned = (evt: { processId: any; }) => {
+      console.log("doxiview onSignatureFieldSigned")
+      const downloadUrl = signingHost.value + '/doxisign/rest/process/' + evt.processId + '/document?fileName=' + fileName.value
+      downloadSignedDocument(downloadUrl);
     }
 
     const openSignDocumentDialog = () => {
       isDocumentSignDialogOpen.value = true;
     }
 
-    const signDocument = () => {
+    const downloadSignedDocument = async (downloadUrl: string) => {
+      const res = await globalAxios.get(downloadUrl, {
+        responseType: "arraybuffer",
+      });
+      // update s3
+      if (updateFilePresignedUrl.value)
+        await globalAxios.put(updateFilePresignedUrl.value, res.data);
+
+      // closes the iFrame
       isDocumentSigned.value = true;
       isDocumentSignDialogOpen.value = false;
-    }
-
-    const getIframeUrl = () => {
-      return "https://doxiview.com/showcase/?locale=de#de&feature=sign";
     }
 
     onMounted(() => {
@@ -154,8 +203,8 @@ export default defineComponent({
       isDocumentSigned,
       isDocumentSignDialogOpen,
       openSignDocumentDialog,
-      getIframeUrl,
-      signDocument
+      doxiview,
+      doxiviewMaster
     };
   }
 
