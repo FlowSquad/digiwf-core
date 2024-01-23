@@ -14,7 +14,7 @@
           <camunda:inputParameter name="app_file_paths_readonly">test</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0da6fri</bpmn:incoming>
+      <bpmn:incoming>Flow_0t4xbs6</bpmn:incoming>
       <bpmn:outgoing>Flow_1y0n45e</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:exclusiveGateway id="Gateway_18azdk0" name="Soll eine weitere Person unterzeichnen?">
@@ -31,7 +31,7 @@
     <bpmn:sequenceFlow id="Flow_08x2urt" name="nein" sourceRef="Gateway_18azdk0" targetRef="Event_08288ow">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${weitere_unterschrift != true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="Flow_0da6fri" name="Ja" sourceRef="Gateway_18azdk0" targetRef="Activity_0qnhors">
+    <bpmn:sequenceFlow id="Flow_0da6fri" name="Ja" sourceRef="Gateway_18azdk0" targetRef="Activity_1sp5q6t">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${weitere_unterschrift}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:exclusiveGateway id="Gateway_18ivrio" default="Flow_0u1m4w3">
@@ -40,6 +40,16 @@
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_1y0n45e" sourceRef="Activity_0qnhors" targetRef="Gateway_18ivrio" />
     <bpmn:sequenceFlow id="Flow_0u1m4w3" sourceRef="Gateway_18ivrio" targetRef="Gateway_18azdk0" />
+    <bpmn:scriptTask id="Activity_1sp5q6t" name="Reset weitere Unterschrift" scriptFormat="javascript">
+      <bpmn:incoming>Flow_0da6fri</bpmn:incoming>
+      <bpmn:outgoing>Flow_0t4xbs6</bpmn:outgoing>
+      <bpmn:script>execution.setVariable('weitere_unterschrift', false);</bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_0t4xbs6" sourceRef="Activity_1sp5q6t" targetRef="Activity_0qnhors" />
+    <bpmn:textAnnotation id="TextAnnotation_0w9rz20">
+      <bpmn:text>Reset variable weitere Unterschrift to avoid unchecking the checkbox in the following user task</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_19k6l2u" sourceRef="Activity_1sp5q6t" targetRef="TextAnnotation_0w9rz20" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="DoXisign_22cae8ab-02ad-492b-a2b1-56341f44ffa2">
@@ -50,20 +60,27 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0gkezo2_di" bpmnElement="Activity_0qnhors">
-        <dc:Bounds x="90" y="57" width="100" height="80" />
+        <dc:Bounds x="280" y="57" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_18azdk0_di" bpmnElement="Gateway_18azdk0" isMarkerVisible="true">
         <dc:Bounds x="-25" y="72" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="-40" y="129" width="81" height="40" />
+          <dc:Bounds x="-40.5" y="130" width="81" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_08288ow_di" bpmnElement="Event_08288ow">
         <dc:Bounds x="-18" y="-28" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_18ivrio_di" bpmnElement="Gateway_18ivrio" isMarkerVisible="true">
-        <dc:Bounds x="245" y="72" width="50" height="50" />
+        <dc:Bounds x="435" y="72" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1si83s3_di" bpmnElement="Activity_1sp5q6t">
+        <dc:Bounds x="110" y="57" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0w9rz20_di" bpmnElement="TextAnnotation_0w9rz20">
+        <dc:Bounds x="190" y="-80" width="100" height="127" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0wuu5tu_di" bpmnElement="Flow_0wuu5tu">
         <di:waypoint x="-82" y="97" />
@@ -78,20 +95,28 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0da6fri_di" bpmnElement="Flow_0da6fri">
         <di:waypoint x="25" y="97" />
-        <di:waypoint x="90" y="97" />
+        <di:waypoint x="110" y="97" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="51" y="79" width="13" height="14" />
+          <dc:Bounds x="62" y="79" width="13" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1y0n45e_di" bpmnElement="Flow_1y0n45e">
-        <di:waypoint x="190" y="97" />
-        <di:waypoint x="245" y="97" />
+        <di:waypoint x="380" y="97" />
+        <di:waypoint x="435" y="97" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0u1m4w3_di" bpmnElement="Flow_0u1m4w3">
-        <di:waypoint x="270" y="122" />
-        <di:waypoint x="270" y="210" />
+        <di:waypoint x="460" y="122" />
+        <di:waypoint x="460" y="210" />
         <di:waypoint x="0" y="210" />
         <di:waypoint x="0" y="122" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0t4xbs6_di" bpmnElement="Flow_0t4xbs6">
+        <di:waypoint x="210" y="97" />
+        <di:waypoint x="280" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_19k6l2u_di" bpmnElement="Association_19k6l2u">
+        <di:waypoint x="180" y="57" />
+        <di:waypoint x="190" y="36" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

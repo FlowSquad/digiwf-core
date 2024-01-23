@@ -2,11 +2,11 @@
     "key": "DokumentUnterschreiben",
     "schema": {
         "type": "object",
-        "x-display": "",
+        "x-display": "tabs",
         "allOf": [
             {
                 "key": "sectionKey1",
-                "title": "Allgemeine Angaben",
+                "title": "Dokument hochladen",
                 "type": "object",
                 "x-options": {
                     "sectionsTitlesClasses": []
@@ -53,7 +53,20 @@
                                 "accept": "application/pdf"
                             }
                         }
-                    },
+                    }
+                ]
+            },
+            {
+                "title": "Dokument unterschreiben",
+                "description": "",
+                "type": "object",
+                "key": "549089f0-b2e4-4ba6-a3ad-49c795984021",
+                "x-options": {
+                    "sectionsTitlesClasses": [
+                        "d-none"
+                    ]
+                },
+                "allOf": [
                     {
                         "containerType": "group",
                         "title": "Dokument unterschreiben",
@@ -82,7 +95,20 @@
                                 "properties": {}
                             }
                         }
-                    },
+                    }
+                ]
+            },
+            {
+                "title": "Weitere Unterschriften",
+                "description": "",
+                "type": "object",
+                "key": "39fe15d9-b373-40b8-a587-a2a83c82b324",
+                "x-options": {
+                    "sectionsTitlesClasses": [
+                        "d-none"
+                    ]
+                },
+                "allOf": [
                     {
                         "containerType": "group",
                         "title": "Weitere Unterschrift",
