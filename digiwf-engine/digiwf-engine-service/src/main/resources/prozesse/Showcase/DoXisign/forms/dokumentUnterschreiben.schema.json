@@ -5,17 +5,21 @@
         "x-display": "tabs",
         "allOf": [
             {
-                "key": "sectionKey1",
-                "title": "Allgemeine Angaben",
+                "title": "Dokument unterschreiben",
+                "description": "",
                 "type": "object",
+                "key": "549089f0-b2e4-4ba6-a3ad-49c795984021",
                 "x-options": {
-                    "sectionsTitlesClasses": []
+                    "sectionsTitlesClasses": [
+                        "d-none"
+                    ]
                 },
                 "allOf": [
                     {
                         "containerType": "group",
-                        "title": "Group",
+                        "title": "Dokument unterschreiben",
                         "description": "",
+                        "key": "28656bcf-8add-4f52-a0b1-4d3b68696f3a",
                         "x-options": {
                             "childrenClass": "pl-0"
                         },
@@ -38,8 +42,69 @@
                                 "type": "object",
                                 "properties": {}
                             }
+                        }
+                    }
+                ]
+            },
+            {
+                "title": "Weitere Unterschriften",
+                "description": "",
+                "type": "object",
+                "key": "39fe15d9-b373-40b8-a587-a2a83c82b324",
+                "x-options": {
+                    "sectionsTitlesClasses": [
+                        "d-none"
+                    ]
+                },
+                "allOf": [
+                    {
+                        "containerType": "group",
+                        "title": "Weitere Unterschrift",
+                        "description": "",
+                        "key": "28656bcf-8add-4f52-a0b1-4d3b68696f3a",
+                        "x-options": {
+                            "childrenClass": "pl-0"
                         },
-                        "key": "28656bcf-8add-4f52-a0b1-4d3b68696f3a"
+                        "properties": {
+                            "weitere_unterschrift": {
+                                "fieldType": "boolean",
+                                "title": "Soll eine weitere Person das Dokument unterschreiben?",
+                                "default": false,
+                                "type": "boolean",
+                                "key": "weitere_unterschrift",
+                                "x-options": {
+                                    "fieldColProps": {
+                                        "cols": 12,
+                                        "sm": 12,
+                                        "messages": {}
+                                    }
+                                },
+                                "x-props": {
+                                    "outlined": true,
+                                    "dense": true
+                                },
+                                "x-rules": []
+                            },
+                            "user_weitere_unterschrift": {
+                                "fieldType": "user-input",
+                                "title": "Weitere Unterschrift von",
+                                "x-display": "custom-user-input",
+                                "type": "string",
+                                "key": "user_weitere_unterschrift",
+                                "x-options": {
+                                    "fieldColProps": {
+                                        "cols": 12,
+                                        "sm": 12,
+                                        "messages": {}
+                                    }
+                                },
+                                "x-props": {
+                                    "outlined": true,
+                                    "dense": true
+                                },
+                                "x-rules": []
+                            }
+                        }
                     }
                 ]
             }

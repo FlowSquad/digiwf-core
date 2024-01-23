@@ -1,18 +1,19 @@
 <template>
-  <div>
-    <v-card>
-      <v-card-text>
-        <h3>Status</h3>
+  <div class="pa-0">
+    <div style="margin-bottom: 30px">
+      <h3>Status</h3>
+      <div v-if="fileName">
         <p>
-          Dokument: {{ filePath }}
+          Dokument: {{ fileName }}
           <v-chip v-if="isDocumentSigned" color="green">Erfolgreich unterschrieben</v-chip>
-          <v-chip v-else color="red">Wartet auf Unterschrift</v-chip>
+          <v-chip v-else color="orange">Wartet auf Unterschrift</v-chip>
         </p>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn color="primary" @click="openSignDocumentDialog()" v-if="!isDocumentSigned">Dokument Unterschreiben</v-btn>
-      </v-card-actions>
-    </v-card>
+        <v-btn color="secondary" @click="openSignDocumentDialog()" v-if="!isDocumentSigned">Dokument Unterschreiben</v-btn>
+      </div>
+      <div v-else>
+        <p>Bitte laden Sie ein Dokument hoch.</p>
+      </div>
+    </div>
 
     <!-- Dialog -->
     <v-row justify="center" v-if="!isDocumentSigned">
@@ -34,13 +35,13 @@
             >
               <v-icon>mdi-close</v-icon>
             </v-btn>
-            <v-toolbar-title>Dokument {{ filePath }} unterschreiben</v-toolbar-title>
+            <v-toolbar-title>Signaturfeld aufbringen oder Dokument digital signieren</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items>
               <v-btn
                 dark
                 text
-                @click="updatePresignedUrl()" v-show="undUpdatedFileLocation"
+                @click="signDocument()" v-show="undUpdatedFileLocation"
               >
                 Abschließen
               </v-btn>
@@ -62,7 +63,7 @@
 import globalAxios from "axios";
 import { computed, defineComponent, inject, onMounted, ref } from "vue";
 import { FormContext } from "../../types";
-import {getFilenames, getPresignedUrlForGet, getPresignedUrlForPut} from "@/middleware/presignedUrls";
+import { getFilenames, getPresignedUrlForGet, getPresignedUrlForPut } from "@/middleware/presignedUrls";
 import { getSigningUrl } from "@/apiClient/signingServiceCalls";
 
 export default defineComponent({
@@ -92,7 +93,9 @@ export default defineComponent({
     let undFileLocation = ref<string>();
     let undUpdatedFileLocation = ref<string>();
     let isDocumentSigned = ref<boolean>(false);
-    let isDocumentSignDialogOpen = ref<boolean>(true);
+    let isDocumentSignDialogOpen = ref<boolean>(false);
+
+    let doxiviewDownloadUrl = ref<string>();
 
     const filePath = computed(() => {
       return props.schema.filePath ? props.schema.filePath : '';
@@ -110,34 +113,35 @@ export default defineComponent({
         formContext,
         taskServiceApiEndpoint: taskServiceApiEndpoint || ""
       });
-      fileName.value = filesInFolder[0];
 
-      // presginedUrls
-      downloadFilePresignedUrl.value = await getPresignedUrlForGet(fileName.value, {
-        filePath,
-        apiEndpoint: apiEndpoint || "",
-        formContext,
-        taskServiceApiEndpoint: taskServiceApiEndpoint || ""
-      });
+      console.log('filesInFolder', filesInFolder);
+      if (filesInFolder.length > 0) {
+        fileName.value = filesInFolder[0];
 
-      updateFilePresignedUrl.value = await getPresignedUrlForPut(fileName.value, {
-        filePath,
-        apiEndpoint: apiEndpoint || "",
-        formContext,
-        taskServiceApiEndpoint: taskServiceApiEndpoint || ""
-      });
+        // presginedUrls
+        downloadFilePresignedUrl.value = await getPresignedUrlForGet(fileName.value, {
+          filePath,
+          apiEndpoint: apiEndpoint || "",
+          formContext,
+          taskServiceApiEndpoint: taskServiceApiEndpoint || ""
+        });
 
-      // signingUrl
-      const sgn = await getSigningUrl(integrationServicesApiEndpoint || "");
-      signingUrl.value = sgn.signingUrl;
-      signingHost.value = sgn.signingHost;
+        updateFilePresignedUrl.value = await getPresignedUrlForPut(fileName.value, {
+          filePath,
+          apiEndpoint: apiEndpoint || "",
+          formContext,
+          taskServiceApiEndpoint: taskServiceApiEndpoint || ""
+        });
 
-      // debugging
-      console.log('signingUrl', signingUrl.value);
-      console.log('downloadFilePresignedUrl', downloadFilePresignedUrl.value);
-      console.log('updateFilePresignedUrl', updateFilePresignedUrl.value);
-      initDoxiviewMaster();
-      openDoxiview();
+        // signingUrl
+        const sgn = await getSigningUrl(integrationServicesApiEndpoint || "");
+        signingUrl.value = sgn.signingUrl;
+        signingHost.value = sgn.signingHost;
+
+        // debugging
+        initDoxiviewMaster();
+        openDoxiview();
+      }
     }
 
     const initDoxiviewMaster = () => {
@@ -206,18 +210,20 @@ export default defineComponent({
       isDocumentSignDialogOpen.value = true;
     }
 
-    const updatePresignedUrl = async () => {
-      // download from UnD service
-      globalAxios.get(undUpdatedFileLocation.value!, {
-        responseType: "arraybuffer",
-      }).then( res => {
+    const signDocument = async () => {
+      if (doxiviewDownloadUrl.value && isDocumentSigned) {
+        const res = await globalAxios.get(downloadFilePresignedUrl.value, {
+          responseType: "arraybuffer",
+        });
         // update s3
-        return globalAxios.put(updateFilePresignedUrl.value!, res.data);
-      }).then( () => {
+        if (updateFilePresignedUrl.value) {
+          await globalAxios.put(updateFilePresignedUrl.value, res.data);
+        }
+
         // closes the iFrame
         isDocumentSigned.value = true;
-        isDocumentSignDialogOpen.value = false
-      });
+      }
+      isDocumentSignDialogOpen.value = false;
     }
 
     onMounted(() => {
@@ -226,13 +232,14 @@ export default defineComponent({
 
     return {
       filePath,
+      fileName,
       isDocumentSigned,
       isDocumentSignDialogOpen,
-      openSignDocumentDialog,
-      updatePresignedUrl,
-      undUpdatedFileLocation,
       doxiview,
-      doxiviewMaster
+      doxiviewMaster,
+      undUpdatedFileLocation,
+      openSignDocumentDialog,
+      signDocument
     };
   }
 

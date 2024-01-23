@@ -1,30 +1,27 @@
 {
     "key": "DokumentHochladen",
     "schema": {
-        "key": "MyStartForm",
         "type": "object",
-        "x-display": "stepper",
+        "x-display": "",
         "allOf": [
             {
-                "title": "Abschnitt",
-                "description": "",
+                "key": "sectionKey1",
+                "title": "Dokument hochladen",
                 "type": "object",
-                "key": "afe9a544-f3da-4dcf-96e7-53fcac3c54ca",
                 "x-options": {
-                    "sectionsTitlesClasses": [
-                        "d-none"
-                    ]
+                    "sectionsTitlesClasses": []
                 },
                 "allOf": [
                     {
                         "containerType": "group",
-                        "title": "Group",
+                        "title": "Dokument hochladen",
                         "description": "",
+                        "key": "8b486bd8-1a88-4caf-9433-0be5397b7f1b",
                         "x-options": {
                             "childrenClass": "pl-0"
                         },
                         "properties": {
-                            "0ec7e5a9-9b42-4fc3-a6c9-d14de9113f6b": {
+                            "ac310b9d-4c60-4838-828d-f68f522fc7d2": {
                                 "fieldType": "file",
                                 "title": "Files",
                                 "x-display": "custom-multi-file-input",
@@ -37,7 +34,7 @@
                                         "type": "integer"
                                     }
                                 },
-                                "key": "0ec7e5a9-9b42-4fc3-a6c9-d14de9113f6b",
+                                "key": "ac310b9d-4c60-4838-828d-f68f522fc7d2",
                                 "uuidEnabled": false,
                                 "filePath": "test",
                                 "x-options": {
@@ -52,10 +49,29 @@
                                     "dense": true
                                 },
                                 "x-rules": [],
-                                "maxFiles": 1
+                                "maxFiles": 1,
+                                "accept": "application/pdf"
+                            },
+                            "user_weitere_unterschrift": {
+                                "fieldType": "user-input",
+                                "title": "Weitere Unterschrift von",
+                                "x-display": "custom-user-input",
+                                "type": "string",
+                                "key": "user_weitere_unterschrift",
+                                "x-options": {
+                                    "fieldColProps": {
+                                        "cols": 12,
+                                        "sm": 12,
+                                        "messages": {}
+                                    }
+                                },
+                                "x-props": {
+                                    "outlined": true,
+                                    "dense": true
+                                },
+                                "x-rules": []
                             }
-                        },
-                        "key": "c5eddcbf-b115-4158-85a9-feeec3208b83"
+                        }
                     }
                 ]
             }

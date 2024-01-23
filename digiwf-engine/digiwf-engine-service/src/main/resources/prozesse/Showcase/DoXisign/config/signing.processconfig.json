@@ -10,6 +10,10 @@
       "value": "test"
     },
     {
+      "key": "app_instance_file_paths_readonly",
+      "value": "test"
+    },
+    {
       "key": "app_instance_schema_key",
       "value": "DokumentHochladen"
     }
