@@ -36,6 +36,15 @@
             </v-btn>
             <v-toolbar-title>Dokument {{ filePath }} unterschreiben</v-toolbar-title>
             <v-spacer></v-spacer>
+            <v-toolbar-items>
+              <v-btn
+                dark
+                text
+                @click="updatePresignedUrl()" v-show="undUpdatedFileLocation"
+              >
+                Abschließen
+              </v-btn>
+            </v-toolbar-items>
           </v-toolbar>
           <v-card-text>
             <div style="height: 90vh">
@@ -80,6 +89,8 @@ export default defineComponent({
     let fileName = ref<string>();
     let signingUrl = ref<string>();
     let signingHost = ref<string>();
+    let undFileLocation = ref<string>();
+    let undUpdatedFileLocation = ref<string>();
     let isDocumentSigned = ref<boolean>(false);
     let isDocumentSignDialogOpen = ref<boolean>(true);
 
@@ -102,21 +113,19 @@ export default defineComponent({
       fileName.value = filesInFolder[0];
 
       // presginedUrls
-      const getPresignedUrl = await getPresignedUrlForGet(fileName.value, {
+      downloadFilePresignedUrl.value = await getPresignedUrlForGet(fileName.value, {
         filePath,
         apiEndpoint: apiEndpoint || "",
         formContext,
         taskServiceApiEndpoint: taskServiceApiEndpoint || ""
       });
-      downloadFilePresignedUrl.value = getPresignedUrl;
 
-      const putPresignedUrl = await getPresignedUrlForPut(fileName.value, {
+      updateFilePresignedUrl.value = await getPresignedUrlForPut(fileName.value, {
         filePath,
         apiEndpoint: apiEndpoint || "",
         formContext,
         taskServiceApiEndpoint: taskServiceApiEndpoint || ""
       });
-      updateFilePresignedUrl.value = putPresignedUrl;
 
       // signingUrl
       const sgn = await getSigningUrl(integrationServicesApiEndpoint || "");
@@ -128,22 +137,38 @@ export default defineComponent({
       console.log('downloadFilePresignedUrl', downloadFilePresignedUrl.value);
       console.log('updateFilePresignedUrl', updateFilePresignedUrl.value);
       initDoxiviewMaster();
+      openDoxiview();
     }
 
     const initDoxiviewMaster = () => {
       doxiviewMaster.registerFunction("getStartParameters", getStartParameters, false)
       doxiviewMaster.registerFunction("terminate", onTerminate, false)
       doxiviewMaster.registerFunction("onDocumentVersionUpdated", onDocumentVersionUpdated, false)
-      doxiviewMaster.registerFunction("onSignatureFieldSigned", onSignatureFieldSigned, false)
-      doxiviewMaster.openURLInFrame(doxiview.value, signingUrl.value)
-      console.log('doxiview master initialized');
+      console.log('doxiview IWC initialized');
     }
 
-    var getStartParameters = () => {
+    const openDoxiview = async () => {
+      console.log('open doxiview iFrame');
+      // download from s3
+      globalAxios.get(downloadFilePresignedUrl.value!, {
+        responseType: "arraybuffer",
+      }).then( res => {
+        // upload to UnD service
+        const formData = new FormData()
+        formData.append('file', new Blob([res.data], { type: 'application/pdf' }));
+        return globalAxios.post(signingHost.value + '/und-service/file', formData)})
+      .then( res => {
+        // build UnD download URL and open the doxiview iframe
+        undFileLocation.value = signingHost.value + '/und-service/file/' + res.data
+        doxiviewMaster.openURLInFrame(doxiview.value, signingUrl.value)
+      });
+    }
+
+    const getStartParameters = () => {
       console.log('doxiview getStartParameters')
       return {
         doxiview: {
-          urlField: downloadFilePresignedUrl.value,
+          urlField: undFileLocation.value,
           docName: fileName.value,
           ext: 'pdf',
           repo_alias: 'http-repository',
@@ -156,8 +181,8 @@ export default defineComponent({
           defaultFormFieldType: 'Signature',
           formCreationSignatureDefaultHeight: 24,
           formCreationSignatureDefaultWidth: 84,
-/*          documentVersionUpdateMode: 'UND',
-          applyDocumentVersionUpdate: true*/
+          documentVersionUpdateMode: 'UND',
+          applyDocumentVersionUpdate: true
         }
       }
     }
@@ -165,33 +190,34 @@ export default defineComponent({
     const onTerminate = () => {
       console.log('doxiview terminate')
       isDocumentSignDialogOpen.value = false;
+      // TODO remove close option in doxiview
+      // reload doxiview
+      openDoxiview();
     }
 
-    const onDocumentVersionUpdated = () => {
+    const onDocumentVersionUpdated = (evt: { location: string; }) => {
       console.log("doxiview onDocumentVersionUpdated")
-    }
-
-    const onSignatureFieldSigned = (evt: { processId: any; }) => {
-      console.log("doxiview onSignatureFieldSigned")
-      const downloadUrl = signingHost.value + '/doxisign/rest/process/' + evt.processId + '/document?fileName=' + fileName.value
-      downloadSignedDocument(downloadUrl);
+      // TODO adjust doxiview config on https://lhm-digital4finance.dev.cib.de/ to get the correct ingress URL
+      let id = evt.location.substring(evt.location.lastIndexOf('/') + 1);
+      undUpdatedFileLocation.value = signingHost.value + '/und-service/file/' + id;
     }
 
     const openSignDocumentDialog = () => {
       isDocumentSignDialogOpen.value = true;
     }
 
-    const downloadSignedDocument = async (downloadUrl: string) => {
-      const res = await globalAxios.get(downloadUrl, {
+    const updatePresignedUrl = async () => {
+      // download from UnD service
+      globalAxios.get(undUpdatedFileLocation.value!, {
         responseType: "arraybuffer",
+      }).then( res => {
+        // update s3
+        return globalAxios.put(updateFilePresignedUrl.value!, res.data);
+      }).then( () => {
+        // closes the iFrame
+        isDocumentSigned.value = true;
+        isDocumentSignDialogOpen.value = false
       });
-      // update s3
-      if (updateFilePresignedUrl.value)
-        await globalAxios.put(updateFilePresignedUrl.value, res.data);
-
-      // closes the iFrame
-      isDocumentSigned.value = true;
-      isDocumentSignDialogOpen.value = false;
     }
 
     onMounted(() => {
@@ -203,6 +229,8 @@ export default defineComponent({
       isDocumentSigned,
       isDocumentSignDialogOpen,
       openSignDocumentDialog,
+      updatePresignedUrl,
+      undUpdatedFileLocation,
       doxiview,
       doxiviewMaster
     };
