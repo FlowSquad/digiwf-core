@@ -2,7 +2,7 @@
     "key": "DokumentUnterschreiben",
     "schema": {
         "type": "object",
-        "x-display": "tabs",
+        "x-display": "",
         "allOf": [
             {
                 "key": "sectionKey1",
@@ -14,8 +14,51 @@
                 "allOf": [
                     {
                         "containerType": "group",
-                        "title": "Group",
+                        "title": "Dokument hochladen",
                         "description": "",
+                        "key": "8b486bd8-1a88-4caf-9433-0be5397b7f1b",
+                        "x-options": {
+                            "childrenClass": "pl-0"
+                        },
+                        "properties": {
+                            "ac310b9d-4c60-4838-828d-f68f522fc7d2": {
+                                "fieldType": "file",
+                                "title": "Files",
+                                "x-display": "custom-multi-file-input",
+                                "type": "object",
+                                "properties": {
+                                    "key": {
+                                        "type": "string"
+                                    },
+                                    "amount": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "key": "ac310b9d-4c60-4838-828d-f68f522fc7d2",
+                                "uuidEnabled": false,
+                                "filePath": "test",
+                                "x-options": {
+                                    "fieldColProps": {
+                                        "cols": 12,
+                                        "sm": 12,
+                                        "messages": {}
+                                    }
+                                },
+                                "x-props": {
+                                    "outlined": true,
+                                    "dense": true
+                                },
+                                "x-rules": [],
+                                "maxFiles": 1,
+                                "accept": "application/pdf"
+                            }
+                        }
+                    },
+                    {
+                        "containerType": "group",
+                        "title": "Dokument unterschreiben",
+                        "description": "",
+                        "key": "28656bcf-8add-4f52-a0b1-4d3b68696f3a",
                         "x-options": {
                             "childrenClass": "pl-0"
                         },
@@ -38,8 +81,56 @@
                                 "type": "object",
                                 "properties": {}
                             }
+                        }
+                    },
+                    {
+                        "containerType": "group",
+                        "title": "Weitere Unterschrift",
+                        "description": "",
+                        "key": "28656bcf-8add-4f52-a0b1-4d3b68696f3a",
+                        "x-options": {
+                            "childrenClass": "pl-0"
                         },
-                        "key": "28656bcf-8add-4f52-a0b1-4d3b68696f3a"
+                        "properties": {
+                            "weitere_unterschrift": {
+                                "fieldType": "boolean",
+                                "title": "Soll eine weitere Person das Dokument unterschreiben?",
+                                "default": false,
+                                "type": "boolean",
+                                "key": "weitere_unterschrift",
+                                "x-options": {
+                                    "fieldColProps": {
+                                        "cols": 12,
+                                        "sm": 12,
+                                        "messages": {}
+                                    }
+                                },
+                                "x-props": {
+                                    "outlined": true,
+                                    "dense": true
+                                },
+                                "x-rules": []
+                            },
+                            "user_weitere_unterschrift": {
+                                "fieldType": "user-input",
+                                "title": "Weitere Unterschrift von",
+                                "x-display": "custom-user-input",
+                                "type": "string",
+                                "key": "user_weitere_unterschrift",
+                                "x-options": {
+                                    "fieldColProps": {
+                                        "cols": 12,
+                                        "sm": 12,
+                                        "messages": {}
+                                    }
+                                },
+                                "x-props": {
+                                    "outlined": true,
+                                    "dense": true
+                                },
+                                "x-rules": []
+                            }
+                        }
                     }
                 ]
             }
