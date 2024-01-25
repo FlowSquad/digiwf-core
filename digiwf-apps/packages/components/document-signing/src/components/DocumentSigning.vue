@@ -41,7 +41,7 @@
               <v-btn
                 dark
                 text
-                @click="signDocument()" v-show="undUpdatedFileLocation"
+                @click="signDocument()" :disabled="!undUpdatedFileLocation"
               >
                 Abschließen
               </v-btn>
@@ -93,9 +93,8 @@ export default defineComponent({
     let undFileLocation = ref<string>();
     let undUpdatedFileLocation = ref<string>();
     let isDocumentSigned = ref<boolean>(false);
-    let isDocumentSignDialogOpen = ref<boolean>(false);
-
-    let doxiviewDownloadUrl = ref<string>();
+    // can't be false -> iframe doesn't load
+    let isDocumentSignDialogOpen = ref<boolean>(true);
 
     const filePath = computed(() => {
       return props.schema.filePath ? props.schema.filePath : '';
@@ -165,6 +164,7 @@ export default defineComponent({
         // build UnD download URL and open the doxiview iframe
         undFileLocation.value = signingHost.value + '/und-service/file/' + res.data
         doxiviewMaster.openURLInFrame(doxiview.value, signingUrl.value)
+        console.log('open doxiview iFrame success');
       });
     }
 
@@ -211,18 +211,13 @@ export default defineComponent({
     }
 
     const signDocument = async () => {
-      if (doxiviewDownloadUrl.value && isDocumentSigned) {
-        const res = await globalAxios.get(downloadFilePresignedUrl.value, {
-          responseType: "arraybuffer",
-        });
-        // update s3
-        if (updateFilePresignedUrl.value) {
-          await globalAxios.put(updateFilePresignedUrl.value, res.data);
-        }
-
-        // closes the iFrame
-        isDocumentSigned.value = true;
-      }
+      const res = await globalAxios.get(undUpdatedFileLocation.value!, {
+        responseType: "arraybuffer",
+      });
+      // update s3
+      await globalAxios.put(updateFilePresignedUrl.value!, res.data);
+      // closes the iFrame
+      isDocumentSigned.value = true;
       isDocumentSignDialogOpen.value = false;
     }
 
