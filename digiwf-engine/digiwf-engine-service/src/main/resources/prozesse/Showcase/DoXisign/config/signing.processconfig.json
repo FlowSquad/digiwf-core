@@ -1,5 +1,22 @@
 {
   "key": "DoXisign_22cae8ab-02ad-492b-a2b1-56341f44ffa2",
+  "statusConfig": [
+    {
+      "key": "Start",
+      "label": "Dokument signieren",
+      "position": 1
+    },
+    {
+      "key": "WeitereUnterSchrift",
+      "label": "Es wird eine weitere Unterschrift benötigt",
+      "position": 2
+    },
+    {
+      "key": "Abgeschlossen",
+      "label": "Dokument wurde erfolgreich signiert",
+      "position": 3
+    }
+  ],
   "configs": [
     {
       "key": "app_file_paths_readonly",
@@ -15,7 +32,7 @@
     },
     {
       "key": "app_instance_schema_key",
-      "value": "DokumentHochladen"
+      "value": "DokumentHerunterladen"
     }
   ]
 }

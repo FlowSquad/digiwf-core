@@ -2,7 +2,7 @@
     "key": "DokumentUnterschreiben",
     "schema": {
         "type": "object",
-        "x-display": "tabs",
+        "x-display": "",
         "allOf": [
             {
                 "title": "Dokument unterschreiben",
@@ -43,20 +43,7 @@
                                 "properties": {}
                             }
                         }
-                    }
-                ]
-            },
-            {
-                "title": "Weitere Unterschriften",
-                "description": "",
-                "type": "object",
-                "key": "39fe15d9-b373-40b8-a587-a2a83c82b324",
-                "x-options": {
-                    "sectionsTitlesClasses": [
-                        "d-none"
-                    ]
-                },
-                "allOf": [
+                    },
                     {
                         "containerType": "group",
                         "title": "Weitere Unterschrift",

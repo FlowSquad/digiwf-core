@@ -1,18 +1,45 @@
 <template>
   <div class="pa-0">
     <div style="margin-bottom: 30px">
-      <h3>Status</h3>
-      <div v-if="fileName">
-        <p>
-          Dokument: {{ fileName }}
-          <v-chip v-if="isDocumentSigned" color="green">Erfolgreich unterschrieben</v-chip>
-          <v-chip v-else color="orange">Wartet auf Unterschrift</v-chip>
-        </p>
-        <v-btn color="secondary" @click="openSignDocumentDialog()" v-if="!isDocumentSigned">Dokument Unterschreiben</v-btn>
-      </div>
-      <div v-else>
-        <p>Bitte laden Sie ein Dokument hoch.</p>
-      </div>
+      <v-row>
+        <v-col cols="12" v-if="fileName">
+          <p>
+            Dokument: {{ fileName }}
+            <v-chip v-if="isDocumentSigned" color="green">Erfolgreich unterschrieben</v-chip>
+            <v-chip v-else color="orange">Wartet auf Unterschrift</v-chip>
+          </p>
+          <!-- Dokument unterschreiben -->
+          <v-tooltip bottom v-if="!isDocumentSigned">
+            <template v-slot:activator="{ on }">
+              <v-btn v-on="on" color="secondary" @click="openSignDocumentDialog()" :style="buttonStyles">
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+            </template>
+            Dokument unterschreiben
+          </v-tooltip>
+          <!-- Unterschriebenes Dokument ansehen -->
+          <v-tooltip bottom v-if="isDocumentSigned">
+            <template v-slot:activator="{ on }">
+              <v-btn v-on="on" color="secondary" @click="openSignDocumentDialog()" :style="buttonStyles">
+                <v-icon>mdi-eye</v-icon>
+              </v-btn>
+            </template>
+            Unterschriebenes Dokument ansehen
+          </v-tooltip>
+          <!-- Unterschriebenes Dokument herunterladen -->
+          <v-tooltip bottom v-if="isDocumentSigned">
+            <template v-slot:activator="{ on }">
+              <v-btn v-on="on" @click="downloadSignedFile()" :style="buttonStyles">
+                <v-icon>mdi-download</v-icon>
+              </v-btn>
+            </template>
+            Unterschriebenes Dokument herunterladen
+          </v-tooltip>
+        </v-col>
+        <v-col cols="12" v-else>
+          <p>Bitte laden Sie ein Dokument hoch.</p>
+        </v-col>
+      </v-row>
     </div>
 
     <!-- Dialog -->
@@ -105,6 +132,10 @@ export default defineComponent({
     const taskServiceApiEndpoint = inject<string>('taskServiceApiEndpoint');
     const integrationServicesApiEndpoint = inject<string>('integrationServicesApiEndpoint');
     const formContext = inject<FormContext>('formContext');
+
+    const buttonStyles = {
+      margin: "15px"
+    }
 
     const init = async () => {
       const filesInFolder = await getFilenames( {
@@ -226,6 +257,16 @@ export default defineComponent({
       isDocumentSignDialogOpen.value = false;
     }
 
+    const downloadSignedFile = async () => {
+      const downloadFile = await getPresignedUrlForGet(fileName.value, {
+        filePath,
+        apiEndpoint: apiEndpoint || "",
+        formContext,
+        taskServiceApiEndpoint: taskServiceApiEndpoint || ""
+      });
+      window.open(downloadFile, '_blank');
+    }
+
     onMounted(() => {
       init();
     })
@@ -239,7 +280,9 @@ export default defineComponent({
       doxiviewMaster,
       undUpdatedFileLocation,
       openSignDocumentDialog,
-      signDocument
+      signDocument,
+      downloadSignedFile,
+      buttonStyles
     };
   }
 
