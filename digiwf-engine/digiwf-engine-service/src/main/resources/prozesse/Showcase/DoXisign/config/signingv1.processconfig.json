@@ -1,25 +1,20 @@
 {
-  "key": "DoXisign_Stufe2",
+  "key": "DoXisign_Stufe1",
   "statusConfig": [
     {
       "key": "Start",
-      "label": "Dokument wird erzeugt",
+      "label": "Dokument signieren",
       "position": 1
-    },
-    {
-      "key": "dokumentUnterschreiben",
-      "label": "Dokument unterschreiben",
-      "position": 2
     },
     {
       "key": "WeitereUnterSchrift",
       "label": "Es wird eine weitere Unterschrift benötigt",
-      "position": 3
+      "position": 2
     },
     {
       "key": "Abgeschlossen",
       "label": "Dokument wurde erfolgreich signiert",
-      "position": 4
+      "position": 3
     }
   ],
   "configs": [

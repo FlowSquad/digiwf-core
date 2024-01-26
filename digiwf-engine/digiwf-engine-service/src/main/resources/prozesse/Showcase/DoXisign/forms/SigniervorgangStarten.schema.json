@@ -1,0 +1,53 @@
+{
+    "key": "SigniervorgangStarten",
+    "schema": {
+        "key": "MyStartForm",
+        "type": "object",
+        "x-display": "",
+        "allOf": [
+            {
+                "title": "Dokument Signieren Vorgang starten",
+                "description": "",
+                "type": "object",
+                "key": "90bc9c7c-f1a3-4c42-a7f9-42325d04d3c0",
+                "x-options": {
+                    "sectionsTitlesClasses": [
+                        "d-none"
+                    ]
+                },
+                "allOf": [
+                    {
+                        "containerType": "group",
+                        "title": "Dokument-Ersteller",
+                        "description": "",
+                        "key": "4cbee473-572b-4657-bfe4-4ef4788d05be",
+                        "x-options": {
+                            "childrenClass": "pl-0"
+                        },
+                        "properties": {
+                            "user_weitere_unterschrift": {
+                                "fieldType": "user-input",
+                                "title": "Wer soll das Dokument erstellen?",
+                                "x-display": "custom-user-input",
+                                "type": "string",
+                                "key": "user_weitere_unterschrift",
+                                "x-options": {
+                                    "fieldColProps": {
+                                        "cols": 12,
+                                        "sm": 12,
+                                        "messages": {}
+                                    }
+                                },
+                                "x-props": {
+                                    "outlined": true,
+                                    "dense": true
+                                },
+                                "x-rules": []
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}
