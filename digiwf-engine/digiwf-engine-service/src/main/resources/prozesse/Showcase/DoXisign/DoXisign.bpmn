@@ -4,6 +4,7 @@
     <bpmn:documentation>Digital Signing Made Easy - Use doxysign to securely sign your documents and automate your workflow</bpmn:documentation>
     <bpmn:extensionElements />
     <bpmn:startEvent id="StartEvent_1" name="Dokument unterzeichnen" camunda:formKey="DokumentHochladen">
+      <bpmn:extensionElements />
       <bpmn:outgoing>Flow_08qtfvk</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:userTask id="Activity_0qnhors" name="Dokument unterzeichnen" camunda:assignee="${user_weitere_unterschrift}">
@@ -24,6 +25,9 @@
       <bpmn:outgoing>Flow_0da6fri</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:endEvent id="Event_08288ow">
+      <bpmn:extensionElements>
+        <camunda:executionListener expression="${process.setStatus(&#39;Abgeschlossen&#39;)}" event="start" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_08x2urt</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_08x2urt" name="nein" sourceRef="Gateway_18azdk0" targetRef="Event_08288ow">
@@ -36,11 +40,13 @@
     <bpmn:scriptTask id="Activity_1sp5q6t" name="Reset weitere Unterschrift" scriptFormat="javascript">
       <bpmn:incoming>Flow_0da6fri</bpmn:incoming>
       <bpmn:outgoing>Flow_0guhrfy</bpmn:outgoing>
-      <bpmn:script>execution.setVariable('weitere_unterschrift', false);</bpmn:script>
+      <bpmn:script>execution.setVariable('weitere_unterschrift', false);
+
+process.setStatus('WeitereUnterSchrift');</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:exclusiveGateway id="Gateway_14b9el5">
-      <bpmn:incoming>Flow_08qtfvk</bpmn:incoming>
       <bpmn:incoming>Flow_0guhrfy</bpmn:incoming>
+      <bpmn:incoming>Flow_08qtfvk</bpmn:incoming>
       <bpmn:outgoing>Flow_0vc1b8f</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_0vc1b8f" sourceRef="Gateway_14b9el5" targetRef="Activity_0qnhors" />
@@ -53,16 +59,6 @@
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="DoXisign_22cae8ab-02ad-492b-a2b1-56341f44ffa2">
-      <bpmndi:BPMNShape id="TextAnnotation_0w9rz20_di" bpmnElement="TextAnnotation_0w9rz20">
-        <dc:Bounds x="550" y="80" width="100" height="127" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="172" y="392" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="156" y="435" width="70" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0gkezo2_di" bpmnElement="Activity_0qnhors">
         <dc:Bounds x="440" y="370" width="100" height="80" />
         <bpmndi:BPMNLabel />
@@ -82,22 +78,16 @@
       <bpmndi:BPMNShape id="Gateway_14b9el5_di" bpmnElement="Gateway_14b9el5" isMarkerVisible="true">
         <dc:Bounds x="285" y="385" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Association_19k6l2u_di" bpmnElement="Association_19k6l2u">
-        <di:waypoint x="520" y="220" />
-        <di:waypoint x="550" y="179" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_08qtfvk_di" bpmnElement="Flow_08qtfvk">
-        <di:waypoint x="208" y="410" />
-        <di:waypoint x="285" y="410" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0vc1b8f_di" bpmnElement="Flow_0vc1b8f">
-        <di:waypoint x="335" y="410" />
-        <di:waypoint x="440" y="410" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1y0n45e_di" bpmnElement="Flow_1y0n45e">
-        <di:waypoint x="540" y="410" />
-        <di:waypoint x="645" y="410" />
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_0w9rz20_di" bpmnElement="TextAnnotation_0w9rz20">
+        <dc:Bounds x="550" y="80" width="100" height="127" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="392" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="136" y="435" width="70" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_08x2urt_di" bpmnElement="Flow_08x2urt">
         <di:waypoint x="695" y="410" />
         <di:waypoint x="812" y="410" />
@@ -113,10 +103,26 @@
           <dc:Bounds x="652" y="313" width="13" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1y0n45e_di" bpmnElement="Flow_1y0n45e">
+        <di:waypoint x="540" y="410" />
+        <di:waypoint x="645" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vc1b8f_di" bpmnElement="Flow_0vc1b8f">
+        <di:waypoint x="335" y="410" />
+        <di:waypoint x="440" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_08qtfvk_di" bpmnElement="Flow_08qtfvk">
+        <di:waypoint x="188" y="410" />
+        <di:waypoint x="285" y="410" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0guhrfy_di" bpmnElement="Flow_0guhrfy">
         <di:waypoint x="440" y="260" />
         <di:waypoint x="310" y="260" />
         <di:waypoint x="310" y="385" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_19k6l2u_di" bpmnElement="Association_19k6l2u">
+        <di:waypoint x="520" y="220" />
+        <di:waypoint x="550" y="179" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

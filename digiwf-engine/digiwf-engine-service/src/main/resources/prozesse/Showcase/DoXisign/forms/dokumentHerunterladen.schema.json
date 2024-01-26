@@ -1,29 +1,30 @@
 {
-    "key": "DokumentHochladen",
+    "key": "DokumentHerunterladen",
     "schema": {
+        "key": "MyStartForm",
         "type": "object",
         "x-display": "",
         "allOf": [
             {
                 "key": "sectionKey1",
-                "title": "Dokument hochladen",
+                "title": "Signiertes Dokument herunterladen",
                 "type": "object",
                 "x-options": {
-                    "sectionsTitlesClasses": []
+                    "sectionsTitlesClasses": [
+                        "d-none"
+                    ]
                 },
                 "allOf": [
                     {
-                        "containerType": "group",
-                        "title": "Dokument hochladen",
-                        "description": "",
-                        "key": "8b486bd8-1a88-4caf-9433-0be5397b7f1b",
+                        "key": "group1",
+                        "title": "Dokument herunterladen",
                         "x-options": {
                             "childrenClass": "pl-0"
                         },
                         "properties": {
-                            "ac310b9d-4c60-4838-828d-f68f522fc7d2": {
+                            "1a7c5054-e0fd-4984-8ad8-5d6b46360381": {
                                 "fieldType": "file",
-                                "title": "Dokument",
+                                "title": "Signiertes Dokument",
                                 "x-display": "custom-multi-file-input",
                                 "type": "object",
                                 "properties": {
@@ -34,8 +35,9 @@
                                         "type": "integer"
                                     }
                                 },
-                                "key": "ac310b9d-4c60-4838-828d-f68f522fc7d2",
+                                "key": "1a7c5054-e0fd-4984-8ad8-5d6b46360381",
                                 "uuidEnabled": false,
+                                "readOnly": true,
                                 "filePath": "test",
                                 "x-options": {
                                     "fieldColProps": {
@@ -51,25 +53,6 @@
                                 "x-rules": [],
                                 "maxFiles": 1,
                                 "accept": "application/pdf"
-                            },
-                            "user_weitere_unterschrift": {
-                                "fieldType": "user-input",
-                                "title": "Unterschrift von",
-                                "x-display": "custom-user-input",
-                                "type": "string",
-                                "key": "user_weitere_unterschrift",
-                                "x-options": {
-                                    "fieldColProps": {
-                                        "cols": 12,
-                                        "sm": 12,
-                                        "messages": {}
-                                    }
-                                },
-                                "x-props": {
-                                    "outlined": true,
-                                    "dense": true
-                                },
-                                "x-rules": []
                             }
                         }
                     }
