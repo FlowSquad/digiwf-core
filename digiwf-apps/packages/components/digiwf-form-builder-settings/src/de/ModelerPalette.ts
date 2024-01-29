@@ -139,6 +139,16 @@ export const formFieldPalette = [
       }
     ],
     [
+      "document-creation",
+      {
+        ...basicOptions,
+        "fieldType": "document-creation",
+        title: "Webform",
+        "x-display": "custom-document-creation",
+        type: "string"
+      }
+    ],
+    [
         "benutzerauswahl",
         {
           ...basicOptions,

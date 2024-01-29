@@ -14,6 +14,7 @@
     "@muenchen/digiwf-form-renderer": "^1.6.0",
     "@muenchen/digiwf-multi-file-input": "^1.6.0",
     "@muenchen/document-signing": "^1.6.0",
+    "@muenchen/document-creation": "^1.6.0",
     "@muenchen/vjsf": "^2.21.9",
     "vue": "^2.7.10",
     "vuetify": "^2.6.9"

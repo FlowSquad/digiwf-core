@@ -37,6 +37,9 @@
               <template #custom-document-signing="context">
                 <document-signing v-bind="context"/>
               </template>
+              <template #custom-document-creation="context">
+                <document-creation v-bind="context"/>
+              </template>
             </dwf-form-renderer>
           </v-form>
           <v-btn @click="validate">Validate</v-btn>
@@ -76,11 +79,12 @@ import { DwfFormRenderer } from "@muenchen/digiwf-form-renderer";
 import { DwfFormBuilder } from "@muenchen/digiwf-form-builder";
 import { DwfDateInput, DwfTimeInput } from "@muenchen/digiwf-date-input";
 import { DocumentSigning } from "@muenchen/document-signing";
+import { DocumentCreation } from "@muenchen/document-creation";
 import { SettingsEN } from "@muenchen/digiwf-form-builder-settings";
 import { defineComponent, provide, ref } from "vue";
 
 export default defineComponent({
-  components: {DwfFormRenderer, DwfFormBuilder, DwfDateInput, DwfTimeInput, DocumentSigning},
+  components: {DwfFormRenderer, DwfFormBuilder, DwfDateInput, DwfTimeInput, DocumentSigning, DocumentCreation},
   setup() {
     const componentKey = ref(0);
 
@@ -134,23 +138,23 @@ export default defineComponent({
                   "childrenClass": "pl-0"
                 },
                 "properties": {
-                  "247eecec-4c92-49d0-97bd-8e422a9af970": {
+                  "9920d4cd-fa05-41a9-9568-cad827c55495": {
+                    "fieldType": "document-creation",
+                    "title": "Webform",
+                    "x-display": "custom-document-creation",
+                    "type": "string",
+                    "key": "9920d4cd-fa05-41a9-9568-cad827c55495",
                     "x-options": {
                       "fieldColProps": {
                         "cols": 12,
                         "sm": 12
-                      }
+                      },
+                      "messages": {}
                     },
                     "x-props": {
                       "outlined": true,
                       "dense": true
-                    },
-                    "filePath": "test/Unbenannt.pdf",
-                    "fieldType": "signing",
-                    "title": "doXisign",
-                    "x-display": "custom-document-signing",
-                    "type": "object",
-                    "properties": {}
+                    }
                   }
                 },
                 "key": "28656bcf-8add-4f52-a0b1-4d3b68696f3a"

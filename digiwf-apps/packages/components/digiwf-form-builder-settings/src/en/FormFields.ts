@@ -1048,6 +1048,27 @@ const documentSigningSchema = {
   ]
 };
 
+const documentCreationSchema = {
+  ...basicSchema,
+  allOf: [
+    {
+      ...basicAttributes,
+      properties: {
+        ...basicAttributes.properties,
+        "x-display": {
+          "const": "custom-document-creation"
+        }
+      }
+    },
+    {
+      ...basicOptions
+    },
+    {
+      ...basicValidation
+    }
+  ]
+};
+
 const userinputSchema = {
   ...basicSchema,
   allOf: [
@@ -1333,6 +1354,7 @@ export const schemaMap: any = {
   "multiselect": multiselectSchema,
   "file": fileSchema,
   "signing": documentSigningSchema,
+  "document-creation": documentCreationSchema,
   "user-input": userinputSchema,
   "multi-user-input": multiUserinputSchema,
   "array": arrayInput,
