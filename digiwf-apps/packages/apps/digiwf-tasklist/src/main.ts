@@ -20,6 +20,7 @@ import { initStatusCodeHandling } from "./api/statusCodeHandling";
 import { startSessionReloading } from "./api/sessionReloadHandler";
 import { PageBasedPaginationProvider } from "./middleware/PageBasedPaginationProvider";
 import { DocumentSigning } from "@muenchen/document-signing";
+import { DocumentCreation } from "@muenchen/document-creation";
 
 initStatusCodeHandling();
 startSessionReloading();
@@ -44,6 +45,7 @@ Vue.component('VMultiUserInput', VMultiUserInput);
 Vue.component('DwfFormRenderer', DwfFormRenderer);
 Vue.component('DwfMultiFileInput', DwfMultiFileInput);
 Vue.component('DocumentSigning', DocumentSigning);
+Vue.component('DocumentCreation', DocumentCreation);
 Vue.component('Vue2PdfEmbed', Vue2PdfEmbed);
 Vue.component('DwfDateInput', DwfDateInput);
 Vue.component('DwfTimeInput', DwfTimeInput);

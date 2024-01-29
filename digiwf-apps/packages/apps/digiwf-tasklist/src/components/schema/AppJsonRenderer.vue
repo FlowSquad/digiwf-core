@@ -27,6 +27,9 @@
       <template #custom-document-signing="context">
         <document-signing v-bind="context"/>
       </template>
+      <template #custom-document-creation="context">
+        <document-creation v-bind="context"/>
+      </template>
     </dwf-form-renderer>
   </v-form>
 </template>
