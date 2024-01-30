@@ -5,8 +5,8 @@
         <v-col cols="12" v-if="fileName">
           <p>
             Dokument: {{ fileName }}
-            <v-chip v-if="isDocumentSigned" color="green">Erfolgreich unterschrieben</v-chip>
-            <v-chip v-else color="orange">Wartet auf Unterschrift</v-chip>
+            <v-chip v-if="isDocumentSigned" color="green">Erfolgreich signiert</v-chip>
+            <v-chip v-else color="orange">Wartet auf Signatur</v-chip>
           </p>
           <!-- Dokument unterschreiben -->
           <v-tooltip bottom v-if="!isDocumentSigned">
@@ -15,7 +15,7 @@
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
             </template>
-            Dokument unterschreiben
+            PDF-Dokument signieren
           </v-tooltip>
           <!-- Unterschriebenes Dokument ansehen -->
           <v-tooltip bottom v-if="isDocumentSigned">
@@ -24,7 +24,7 @@
                 <v-icon>mdi-eye</v-icon>
               </v-btn>
             </template>
-            Unterschriebenes Dokument ansehen
+            Signiertes PDF-Dokument ansehen
           </v-tooltip>
           <!-- Unterschriebenes Dokument herunterladen -->
           <v-tooltip bottom v-if="isDocumentSigned">
@@ -33,17 +33,17 @@
                 <v-icon>mdi-download</v-icon>
               </v-btn>
             </template>
-            Unterschriebenes Dokument herunterladen
+            Signiertes PDF-Dokument herunterladen
           </v-tooltip>
         </v-col>
         <v-col cols="12" v-else>
-          <p>Bitte laden Sie ein Dokument hoch.</p>
+          <p>Bitte laden Sie ein PDF-Dokument hoch.</p>
         </v-col>
       </v-row>
     </div>
 
     <!-- Dialog -->
-    <v-row justify="center" v-if="!isDocumentSigned">
+    <v-row justify="center">
       <v-dialog
         v-model="isDocumentSignDialogOpen"
         fullscreen
@@ -62,13 +62,14 @@
             >
               <v-icon>mdi-close</v-icon>
             </v-btn>
-            <v-toolbar-title>Signaturfeld aufbringen oder Dokument digital signieren</v-toolbar-title>
+            <v-toolbar-title v-if="!isDocumentSigned">Signaturfeld aufbringen oder PDF-Dokument digital signieren</v-toolbar-title>
+            <v-toolbar-title v-else>Signiertes PDF-Dokument ansehen</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items>
               <v-btn
                 dark
                 text
-                @click="signDocument()" :disabled="!undUpdatedFileLocation"
+                @click="signDocument()" :disabled="!undUpdatedFileLocation " v-show="!isDocumentSigned"
               >
                 Abschließen
               </v-btn>
@@ -76,7 +77,7 @@
           </v-toolbar>
           <v-card-text>
             <div style="height: 90vh">
-              <iframe ref="doxiview" title="Dokument unterschreiben" width="100%" height="100%" style="border: none"></iframe>
+              <iframe ref="doxiview" title="PDF-Dokument signieren" width="100%" height="100%" style="border: none"></iframe>
             </div>
           </v-card-text>
         </v-card>
