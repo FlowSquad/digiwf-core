@@ -7,7 +7,7 @@ camunda:
     authorization:
       enabled: true
     job-executor-acquire-by-priority: true
-    deployment-resource-pattern: "prozesse/**/*.bpmn, bausteine/**/*.bpmn, bausteine/**/*.dmn"
+    deployment-resource-pattern: "prozesse/Showcase/DoXisign/**/*.bpmn, bausteine/**/*.bpmn, bausteine/**/*.dmn"
     generic-properties:
       properties:
         history-time-to-live: '185'

@@ -39,7 +39,7 @@ class MessageProcessorTest {
 
     @BeforeEach
     void setup() {
-        this.messageProcessor = new MessageProcessor(createDocumentMock,errorApiMock);
+        this.messageProcessor = new MessageProcessor(createDocumentMock,null, errorApiMock, null);
         this.message = new Message<GenerateDocument>() {
             @Override
             public GenerateDocument getPayload() {

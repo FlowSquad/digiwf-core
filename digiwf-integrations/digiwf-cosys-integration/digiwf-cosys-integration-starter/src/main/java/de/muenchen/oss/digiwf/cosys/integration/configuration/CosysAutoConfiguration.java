@@ -2,18 +2,23 @@ package de.muenchen.oss.digiwf.cosys.integration.configuration;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.muenchen.oss.digiwf.cosys.integration.ApiClient;
+import de.muenchen.oss.digiwf.cosys.integration.adapter.in.CreateWebformUrlDto;
 import de.muenchen.oss.digiwf.cosys.integration.adapter.in.MessageProcessor;
 import de.muenchen.oss.digiwf.cosys.integration.adapter.out.CosysAdapter;
 import de.muenchen.oss.digiwf.cosys.integration.adapter.out.ProcessAdapter;
 import de.muenchen.oss.digiwf.cosys.integration.adapter.out.S3Adapter;
+import de.muenchen.oss.digiwf.cosys.integration.api.GenerationApi;
+import de.muenchen.oss.digiwf.cosys.integration.api.WebformApi;
 import de.muenchen.oss.digiwf.cosys.integration.application.port.in.CreateDocument;
-import de.muenchen.oss.digiwf.cosys.integration.model.GenerateDocument;
+import de.muenchen.oss.digiwf.cosys.integration.application.port.in.CreateWebformUrlInPort;
 import de.muenchen.oss.digiwf.cosys.integration.application.port.out.CorrelateMessagePort;
 import de.muenchen.oss.digiwf.cosys.integration.application.port.out.GenerateDocumentPort;
+import de.muenchen.oss.digiwf.cosys.integration.application.port.out.GenerateWebformUrlPort;
 import de.muenchen.oss.digiwf.cosys.integration.application.port.out.SaveFileToStoragePort;
 import de.muenchen.oss.digiwf.cosys.integration.application.usecase.CreateDocumentUseCase;
-import de.muenchen.oss.digiwf.cosys.integration.ApiClient;
-import de.muenchen.oss.digiwf.cosys.integration.api.GenerationApi;
+import de.muenchen.oss.digiwf.cosys.integration.application.usecase.CreateWebformUrlUseCase;
+import de.muenchen.oss.digiwf.cosys.integration.model.GenerateDocument;
 import de.muenchen.oss.digiwf.message.process.api.ErrorApi;
 import de.muenchen.oss.digiwf.message.process.api.ProcessApi;
 import de.muenchen.oss.digiwf.s3.integration.client.configuration.S3IntegrationClientAutoConfiguration;
@@ -25,13 +30,13 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.Message;
 import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.messaging.Message;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,12 +67,19 @@ public class CosysAutoConfiguration {
 
         cosysConfiguration.setMergeOptions(json.getBytes());
 
+        cosysConfiguration.setWebformUrl(this.cosysProperties.getWebformUrl());
+
         return cosysConfiguration;
     }
 
     @Bean
     public GenerationApi generationApi(final ApiClient apiClient) {
         return new GenerationApi(apiClient);
+    }
+
+    @Bean
+    public WebformApi webformApi(final ApiClient apiClient) {
+        return new WebformApi(apiClient);
     }
 
     @Bean
@@ -107,6 +119,12 @@ public class CosysAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    public CreateWebformUrlInPort getCreateWebformIdInPort(final GenerateWebformUrlPort generateWebformUrlPort) {
+        return new CreateWebformUrlUseCase(generateWebformUrlPort);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
     public CorrelateMessagePort getCorrelateMessagePort(final ProcessApi processApi) {
         return new ProcessAdapter(processApi);
     }
@@ -119,15 +137,21 @@ public class CosysAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GenerateDocumentPort getGenerateDocumentPort(final CosysConfiguration cosysConfiguration, final GenerationApi generationApi) {
-        return new CosysAdapter(cosysConfiguration, generationApi);
+    public CosysAdapter getGenerateDocumentPort(final CosysConfiguration cosysConfiguration, final GenerationApi generationApi, final WebformApi webformApi) {
+        return new CosysAdapter(cosysConfiguration, generationApi, webformApi);
     }
 
     // Function call had to be renamed for message routing
     @Bean
-    public Consumer<Message<GenerateDocument>> createCosysDocument(final CreateDocument documentUseCase, final ErrorApi errorApi) {
-        final MessageProcessor messageProcessor = new MessageProcessor(documentUseCase, errorApi);
+    public Consumer<Message<GenerateDocument>> createCosysDocument(final CreateDocument documentUseCase, final CreateWebformUrlInPort createWebformIdInPort, final ErrorApi errorApi, final ProcessApi processApi) {
+        final MessageProcessor messageProcessor = new MessageProcessor(documentUseCase, createWebformIdInPort, errorApi, processApi);
         return messageProcessor.cosysIntegration();
+    }
+
+    @Bean
+    public Consumer<Message<CreateWebformUrlDto>> createWebformUrl(final CreateDocument documentUseCase, final CreateWebformUrlInPort createWebformUrlInPort, final ErrorApi errorApi, final ProcessApi processApi) {
+        final MessageProcessor messageProcessor = new MessageProcessor(documentUseCase, createWebformUrlInPort, errorApi, processApi);
+        return messageProcessor.createWebformId();
     }
 
 

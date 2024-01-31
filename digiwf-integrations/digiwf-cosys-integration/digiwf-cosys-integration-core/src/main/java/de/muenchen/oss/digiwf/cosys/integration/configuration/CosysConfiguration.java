@@ -11,4 +11,6 @@ public class CosysConfiguration {
 
     private String url;
 
+    private String webformUrl;
+
 }

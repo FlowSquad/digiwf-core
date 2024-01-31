@@ -45,7 +45,7 @@ public class JsonSchemaAutodeploymentHandler {
 
     @PostConstruct
     public void autoDeploy() throws IOException {
-        final Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(this.resourceLoader).getResources("classpath:**/*.schema.json");
+        final Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(this.resourceLoader).getResources("classpath:**/*.form");
         final List<JsonSchema> schemas = new ArrayList<>();
         for (final Resource resource : resources) {
             try {

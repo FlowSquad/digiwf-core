@@ -21,6 +21,9 @@ public class CosysProperties {
     private String url;
 
     @NotBlank
+    private String webformUrl;
+
+    @NotBlank
     private String messageTopic;
 
     @NotBlank

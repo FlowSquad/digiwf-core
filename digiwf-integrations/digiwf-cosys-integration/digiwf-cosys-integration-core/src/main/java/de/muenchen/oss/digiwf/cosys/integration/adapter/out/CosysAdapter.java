@@ -1,30 +1,37 @@
 package de.muenchen.oss.digiwf.cosys.integration.adapter.out;
 
 import de.muenchen.oss.digiwf.cosys.integration.api.GenerationApi;
+import de.muenchen.oss.digiwf.cosys.integration.api.WebformApi;
 import de.muenchen.oss.digiwf.cosys.integration.application.port.out.GenerateDocumentPort;
+import de.muenchen.oss.digiwf.cosys.integration.application.port.out.GenerateWebformUrlPort;
 import de.muenchen.oss.digiwf.cosys.integration.configuration.CosysConfiguration;
 import de.muenchen.oss.digiwf.cosys.integration.model.GenerateDocument;
+import de.muenchen.oss.digiwf.cosys.integration.model.Generator;
 import de.muenchen.oss.digiwf.message.process.api.error.BpmnError;
 import de.muenchen.oss.digiwf.message.process.api.error.IncidentError;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.http.HttpStatusCode;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import static de.muenchen.oss.digiwf.cosys.integration.adapter.out.FileUtils.createFile;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CosysAdapter implements GenerateDocumentPort {
+public class CosysAdapter implements GenerateDocumentPort, GenerateWebformUrlPort {
 
     public static final String DATA_FILE_NAME = "data";
     public static final String MERGE_FILE_NAME = "merge";
 
     private final CosysConfiguration configuration;
     private final GenerationApi generationApi;
+
+    private final WebformApi webformApi;
 
 
     /**
@@ -63,5 +70,12 @@ public class CosysAdapter implements GenerateDocumentPort {
         }
     }
 
-
+    @Override
+    public String generateWebformUrl(String webformGuid, String role, String client) {
+        final Generator generator = new Generator();
+        generator.setType("de.cib.cosys.rest.DynamicJsGenerator");
+        generator.headIncludes(List.of("<script src=\"../../webjars/webform/postmessage.js\"></script>"));
+        val response = this.webformApi.prepareWebform(webformGuid, client, role, generator, null, null).block();
+        return this.configuration.getWebformUrl() + response.getFormId() + "/html";
+    }
 }
