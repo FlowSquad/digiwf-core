@@ -1,0 +1,111 @@
+{
+  "name": "Cosys: Webform erstellen",
+  "id": "de.muenchen.digitalwf.templates.GenerateWebform",
+  "appliesTo": [
+    "bpmn:CallActivity"
+  ],
+  "properties": [
+    {
+      "label": "Template",
+      "type": "String",
+      "editable": false,
+      "value": "StreamingTemplateV01",
+      "binding": {
+        "type": "property",
+        "name": "calledElement"
+      }
+    },
+    {
+      "label": "Event Topic",
+      "type": "String",
+      "editable": false,
+      "value": "dwf-cosys-local-01",
+      "binding": {
+        "type": "camunda:in",
+        "target": "app_topic_name",
+        "expression": true
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Event Message",
+      "type": "String",
+      "editable": false,
+      "value": "cosysMessage",
+      "binding": {
+        "type": "camunda:in",
+        "expression": true,
+        "target": "app_message_name"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Event Type",
+      "editable": false,
+      "type": "String",
+      "value": "createWebformUrl",
+      "binding": {
+        "type": "camunda:in",
+        "expression": true,
+        "target": "app_type_name"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Client",
+      "type": "String",
+      "value": "9001",
+      "binding": {
+        "type": "camunda:in",
+        "expression": true,
+        "target": "client"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Role",
+      "type": "String",
+      "value": "TESTER",
+      "binding": {
+        "type": "camunda:in",
+        "expression": true,
+        "target": "role"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Guid",
+      "type": "String",
+      "value": "519650b7-87c2-41a6-8527-7b095675b13f",
+      "binding": {
+        "type": "camunda:in",
+        "expression": true,
+        "target": "guid"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "label": "Out: WebformUrl",
+      "type": "String",
+      "binding": {
+        "type": "camunda:out",
+        "source": "url"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+    "key": "DokumentHochladen",
+    "schema": {
+        "type": "object",
+        "x-display": "",
+        "allOf": [
+            {
+                "key": "sectionKey1",
+                "title": "Dokument hochladen",
+                "type": "object",
+                "x-options": {
+                    "sectionsTitlesClasses": []
+                },
+                "allOf": [
+                    {
+                        "containerType": "group",
+                        "title": "Dokument hochladen",
+                        "description": "",
+                        "key": "8b486bd8-1a88-4caf-9433-0be5397b7f1b",
+                        "x-options": {
+                            "childrenClass": "pl-0"
+                        },
+                        "properties": {
+                            "ac310b9d-4c60-4838-828d-f68f522fc7d2": {
+                                "fieldType": "file",
+                                "title": "Dokument",
+                                "x-display": "custom-multi-file-input",
+                                "type": "object",
+                                "properties": {
+                                    "key": {
+                                        "type": "string"
+                                    },
+                                    "amount": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "key": "ac310b9d-4c60-4838-828d-f68f522fc7d2",
+                                "uuidEnabled": false,
+                                "filePath": "test",
+                                "x-options": {
+                                    "fieldColProps": {
+                                        "cols": 12,
+                                        "sm": 12,
+                                        "messages": {}
+                                    }
+                                },
+                                "x-props": {
+                                    "outlined": true,
+                                    "dense": true
+                                },
+                                "x-rules": [],
+                                "maxFiles": 1,
+                                "accept": "application/pdf"
+                            },
+                            "user_weitere_unterschrift": {
+                                "fieldType": "user-input",
+                                "title": "Unterschrift von",
+                                "x-display": "custom-user-input",
+                                "type": "string",
+                                "key": "user_weitere_unterschrift",
+                                "x-options": {
+                                    "fieldColProps": {
+                                        "cols": 12,
+                                        "sm": 12,
+                                        "messages": {}
+                                    }
+                                },
+                                "x-props": {
+                                    "outlined": true,
+                                    "dense": true
+                                },
+                                "x-rules": []
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}
