@@ -11,7 +11,6 @@ public class CreateWebformUrlUseCase implements CreateWebformUrlInPort {
 
     @Override
     public String createWebformUrl(String webformGuid, String role, String client) {
-        //return generateWebformUrlPort.generateWebformUrl(webformGuid, role, client);
-        return "https://cosys4lhm-dev.cib.de/webtom/webform/test2143/html";
+        return generateWebformUrlPort.generateWebformUrl(webformGuid, role, client);
     }
 }

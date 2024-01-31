@@ -40,7 +40,7 @@ export default defineComponent({
     const getWebformUrl = () => {
       try {
         const jsonValue = JSON.parse(props.value);
-        return jsonValue.webformId;
+        return jsonValue.webformUrl;
       } catch (e) {
         return props.value
       }
@@ -84,7 +84,7 @@ export default defineComponent({
       webform.value!.contentWindow.postMessage({type: 'submit'}, '*')
 
       props.on.input(JSON.stringify({
-        webformId: getWebformUrl(),
+        webformUrl: getWebformUrl(),
         data: {
           "myField": "myValue",
           "myField2": "myValue2",

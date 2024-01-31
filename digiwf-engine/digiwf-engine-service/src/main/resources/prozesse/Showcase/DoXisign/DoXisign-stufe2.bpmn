@@ -114,9 +114,9 @@ process.setStatus('WeitereUnterSchrift');</bpmn:script>
         <camunda:in sourceExpression="createCosysDocument" target="app_type_name" />
         <camunda:in sourceExpression="9001" target="client" />
         <camunda:in sourceExpression="TESTER" target="role" />
-        <camunda:in sourceExpression="519650b7-87c2-41a6-8527-7b095675b13f" target="guid" />
         <camunda:in sourceExpression="${cosysData}" target="variables" />
         <camunda:in sourceExpression="${presignedUrl}" target="documentStorageUrls" />
+        <camunda:in sourceExpression="${template}" target="guid" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0j0hopg</bpmn:incoming>
       <bpmn:outgoing>Flow_11nhpd4</bpmn:outgoing>

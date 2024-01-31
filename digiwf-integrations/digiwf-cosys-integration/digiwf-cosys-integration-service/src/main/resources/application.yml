@@ -3,8 +3,8 @@ server:
 
 digiwf:
   security:
-    client-id: ${SSO_ENGINE_CLIENT_ID}
-    client-secret: ${SSO_ENGINE_CLIENT_SECRET}
+    client-id: ${SSO_COSYS_CLIENT_ID}
+    client-secret: ${SSO_COSYS_CLIENT_SECRET}
 
 io:
   muenchendigital:
@@ -18,7 +18,7 @@ io:
           inputLanguage: Deutsch
           outputLanguage: Deutsch
           keepFields: unresolved-ref
-        webform-url: "https://cosys4lhm-dev.cib.de/webtom/webform/"
+        webform-url: ${COSYS_WEBFORM_URL}
       s3:
         client:
           documentStorageUrl: '${DIGIWF_S3_HTTPAPI:http://localhost:8086}'
