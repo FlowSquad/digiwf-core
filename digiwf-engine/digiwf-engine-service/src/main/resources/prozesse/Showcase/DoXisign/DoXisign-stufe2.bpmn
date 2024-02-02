@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0sduois" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.9.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0">
-  <bpmn:process id="DoXisign_Stufe2" name="doXisign - Stufe 2" isExecutable="true">
-    <bpmn:documentation>Signaturfeld aufbringen oder PDF-Dokument digital signieren</bpmn:documentation>
+  <bpmn:process id="doXisign_Stufe2" name="doXisign - Erfassungsbeleg auswählen und digital signieren" isExecutable="true">
     <bpmn:extensionElements />
     <bpmn:startEvent id="StartEvent_1" camunda:formKey="SigniervorgangStarten">
       <bpmn:extensionElements />
       <bpmn:outgoing>Flow_08qtfvk</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:userTask id="Activity_0qnhors" name="Dokument unterzeichnen" camunda:assignee="${user_weitere_unterschrift}">
+    <bpmn:userTask id="Activity_0qnhors" name="PDF-Dokument digital signieren" camunda:assignee="${user_weitere_unterschrift}">
+      <bpmn:documentation>${templateName}</bpmn:documentation>
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:inputParameter name="app_task_schema_key">DokumentUnterschreiben</camunda:inputParameter>
@@ -53,7 +53,8 @@ process.setStatus('WeitereUnterSchrift');</bpmn:script>
     <bpmn:sequenceFlow id="Flow_08qtfvk" sourceRef="StartEvent_1" targetRef="Event_0gaam8u" />
     <bpmn:sequenceFlow id="Flow_0guhrfy" sourceRef="Activity_1sp5q6t" targetRef="Gateway_14b9el5" />
     <bpmn:sequenceFlow id="Flow_1cv4221" sourceRef="Activity_1bkozpm" targetRef="Activity_0t0a67d" />
-    <bpmn:userTask id="Activity_1bkozpm" name="Webform ausfüllen" camunda:assignee="${user_weitere_unterschrift}">
+    <bpmn:userTask id="Activity_1bkozpm" name="Belegdaten erfassen" camunda:assignee="${user_weitere_unterschrift}">
+      <bpmn:documentation>${templateName}</bpmn:documentation>
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:inputParameter name="app_task_schema_key">DokumentErstellen</camunda:inputParameter>
@@ -70,8 +71,8 @@ process.setStatus('WeitereUnterSchrift');</bpmn:script>
         <camunda:in sourceExpression="createPresignedUrl" target="app_message_name" />
         <camunda:in sourceExpression="createPresignedUrl" target="app_type_name" />
         <camunda:in sourceExpression="POST" target="action" />
-        <camunda:in sourceExpression="test/mein-dokument.pdf" target="path" />
         <camunda:out source="presignedUrls" target="presignedUrl" />
+        <camunda:in sourceExpression="${app_file_context}/test/${templateName}.pdf" target="path" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1cv4221</bpmn:incoming>
       <bpmn:outgoing>Flow_1i48rtc</bpmn:outgoing>
@@ -91,56 +92,56 @@ process.setStatus('WeitereUnterSchrift');</bpmn:script>
       <bpmn:incoming>Flow_08qtfvk</bpmn:incoming>
       <bpmn:outgoing>Flow_0ewfggj</bpmn:outgoing>
     </bpmn:intermediateThrowEvent>
-    <bpmn:sequenceFlow id="Flow_0ewfggj" sourceRef="Event_0gaam8u" targetRef="Activity_1g0mn32" />
+    <bpmn:sequenceFlow id="Flow_0ewfggj" sourceRef="Event_0gaam8u" targetRef="Activity_035a9t2" />
     <bpmn:sequenceFlow id="Flow_15kkz59" sourceRef="Activity_1g0mn32" targetRef="Activity_1bkozpm" />
     <bpmn:callActivity id="Activity_1g0mn32" name="Webform erstellen" camunda:modelerTemplate="de.muenchen.digitalwf.templates.GenerateWebform" calledElement="StreamingTemplateV01">
       <bpmn:extensionElements>
         <camunda:in sourceExpression="dwf-cosys-local-01" target="app_topic_name" />
         <camunda:in sourceExpression="cosysMessage" target="app_message_name" />
         <camunda:in sourceExpression="createWebformUrl" target="app_type_name" />
-        <camunda:in sourceExpression="9001" target="client" />
         <camunda:in sourceExpression="TESTER" target="role" />
-        <camunda:in sourceExpression="${template}" target="guid" />
-        <camunda:out source="url" target="webformUrl" />
+        <camunda:in sourceExpression="0200" target="client" />
+        <camunda:out source="url" target="webform" />
+        <camunda:in sourceExpression="${guid}" target="guid" />
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0ewfggj</bpmn:incoming>
+      <bpmn:incoming>Flow_0uv9xw7</bpmn:incoming>
       <bpmn:outgoing>Flow_15kkz59</bpmn:outgoing>
     </bpmn:callActivity>
-    <bpmn:sequenceFlow id="Flow_1i48rtc" sourceRef="Activity_0t0a67d" targetRef="Activity_1xu9jfb" />
+    <bpmn:sequenceFlow id="Flow_1i48rtc" sourceRef="Activity_0t0a67d" targetRef="Activity_1qwy9ap" />
     <bpmn:callActivity id="Activity_1qwy9ap" name="CoSys dokument erstellen" camunda:modelerTemplate="de.muenchen.digitalwf.templates.GenerateDocument" calledElement="StreamingTemplateV01">
       <bpmn:extensionElements>
         <camunda:in sourceExpression="dwf-cosys-local-01" target="app_topic_name" />
         <camunda:in sourceExpression="cosysMessage" target="app_message_name" />
         <camunda:in sourceExpression="createCosysDocument" target="app_type_name" />
-        <camunda:in sourceExpression="9001" target="client" />
         <camunda:in sourceExpression="TESTER" target="role" />
-        <camunda:in sourceExpression="${cosysData}" target="variables" />
+        <camunda:in sourceExpression="FormatPdfFormular" target="outputFormat" />
         <camunda:in sourceExpression="${presignedUrl}" target="documentStorageUrls" />
-        <camunda:in sourceExpression="${template}" target="guid" />
+        <camunda:in sourceExpression="0200" target="client" />
+        <camunda:in sourceExpression="${webform}" target="variables" />
+        <camunda:in sourceExpression="${guid}" target="guid" />
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_0j0hopg</bpmn:incoming>
+      <bpmn:incoming>Flow_1i48rtc</bpmn:incoming>
       <bpmn:outgoing>Flow_11nhpd4</bpmn:outgoing>
     </bpmn:callActivity>
     <bpmn:sequenceFlow id="Flow_11nhpd4" sourceRef="Activity_1qwy9ap" targetRef="Event_0g4qhx7" />
-    <bpmn:sequenceFlow id="Flow_0j0hopg" sourceRef="Activity_1xu9jfb" targetRef="Activity_1qwy9ap" />
-    <bpmn:scriptTask id="Activity_1xu9jfb" name="Parse Webform" scriptFormat="javascript">
-      <bpmn:incoming>Flow_1i48rtc</bpmn:incoming>
-      <bpmn:outgoing>Flow_0j0hopg</bpmn:outgoing>
-      <bpmn:script>var content = execution.getVariable("webformUrl")
+    <bpmn:scriptTask id="Activity_035a9t2" name="Parse Template" scriptFormat="JavaScript">
+      <bpmn:incoming>Flow_0ewfggj</bpmn:incoming>
+      <bpmn:outgoing>Flow_0uv9xw7</bpmn:outgoing>
+      <bpmn:script>let template = execution.getVariable("template")
 
-var value = S(content)
+let value = JSON.parse(template)
 
-execution.setVariable("cosysData", value.prop("data"))
-
-</bpmn:script>
+execution.setVariable("guid", value.guid)
+execution.setVariable("templateName", value.templateName)</bpmn:script>
     </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_0uv9xw7" sourceRef="Activity_035a9t2" targetRef="Activity_1g0mn32" />
     <bpmn:textAnnotation id="TextAnnotation_0w9rz20">
       <bpmn:text>Reset variable weitere Unterschrift to avoid unchecking the checkbox in the following user task</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Association_19k6l2u" sourceRef="Activity_1sp5q6t" targetRef="TextAnnotation_0w9rz20" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="DoXisign_Stufe2">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="doXisign_Stufe2">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="-288" y="392" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -167,11 +168,11 @@ execution.setVariable("cosysData", value.prop("data"))
         <dc:Bounds x="835" y="385" width="50" height="50" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1gl3em4_di" bpmnElement="Activity_1bkozpm">
-        <dc:Bounds x="100" y="370" width="100" height="80" />
+        <dc:Bounds x="200" y="370" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1lsf91r_di" bpmnElement="Activity_0t0a67d">
-        <dc:Bounds x="270" y="370" width="100" height="80" />
+        <dc:Bounds x="370" y="370" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0g4qhx7_di" bpmnElement="Event_0g4qhx7">
         <dc:Bounds x="732" y="392" width="36" height="36" />
@@ -186,14 +187,14 @@ execution.setVariable("cosysData", value.prop("data"))
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_143hlyo_di" bpmnElement="Activity_1g0mn32">
-        <dc:Bounds x="-80" y="370" width="100" height="80" />
+        <dc:Bounds x="40" y="370" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1xmnbxs_di" bpmnElement="Activity_1qwy9ap">
-        <dc:Bounds x="580" y="370" width="100" height="80" />
+        <dc:Bounds x="550" y="370" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1p4vr2b_di" bpmnElement="Activity_1xu9jfb">
-        <dc:Bounds x="430" y="370" width="100" height="80" />
+      <bpmndi:BPMNShape id="Activity_1c2avc0_di" bpmnElement="Activity_035a9t2">
+        <dc:Bounds x="-100" y="370" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_0w9rz20_di" bpmnElement="TextAnnotation_0w9rz20">
@@ -233,8 +234,8 @@ execution.setVariable("cosysData", value.prop("data"))
         <di:waypoint x="860" y="385" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1cv4221_di" bpmnElement="Flow_1cv4221">
-        <di:waypoint x="200" y="410" />
-        <di:waypoint x="270" y="410" />
+        <di:waypoint x="300" y="410" />
+        <di:waypoint x="370" y="410" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1smg0hb_di" bpmnElement="Flow_1smg0hb">
         <di:waypoint x="768" y="410" />
@@ -242,23 +243,23 @@ execution.setVariable("cosysData", value.prop("data"))
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0ewfggj_di" bpmnElement="Flow_0ewfggj">
         <di:waypoint x="-152" y="410" />
-        <di:waypoint x="-80" y="410" />
+        <di:waypoint x="-100" y="410" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_15kkz59_di" bpmnElement="Flow_15kkz59">
-        <di:waypoint x="20" y="410" />
-        <di:waypoint x="100" y="410" />
+        <di:waypoint x="140" y="410" />
+        <di:waypoint x="200" y="410" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1i48rtc_di" bpmnElement="Flow_1i48rtc">
-        <di:waypoint x="370" y="410" />
-        <di:waypoint x="430" y="410" />
+        <di:waypoint x="470" y="410" />
+        <di:waypoint x="550" y="410" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_11nhpd4_di" bpmnElement="Flow_11nhpd4">
-        <di:waypoint x="680" y="410" />
+        <di:waypoint x="650" y="410" />
         <di:waypoint x="732" y="410" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0j0hopg_di" bpmnElement="Flow_0j0hopg">
-        <di:waypoint x="530" y="410" />
-        <di:waypoint x="580" y="410" />
+      <bpmndi:BPMNEdge id="Flow_0uv9xw7_di" bpmnElement="Flow_0uv9xw7">
+        <di:waypoint x="0" y="410" />
+        <di:waypoint x="40" y="410" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_19k6l2u_di" bpmnElement="Association_19k6l2u">
         <di:waypoint x="1023" y="220" />

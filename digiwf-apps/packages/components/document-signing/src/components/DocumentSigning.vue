@@ -3,38 +3,37 @@
     <div style="margin-bottom: 30px">
       <v-row>
         <v-col cols="12" v-if="fileName">
-          <p>
-            Dokument: {{ fileName }}
-            <v-chip v-if="isDocumentSigned" color="green">Erfolgreich signiert</v-chip>
-            <v-chip v-else color="orange">Wartet auf Signatur</v-chip>
-          </p>
           <!-- Dokument unterschreiben -->
-          <v-tooltip bottom v-if="!isDocumentSigned">
+          <v-tooltip bottom>
             <template v-slot:activator="{ on }">
               <v-btn v-on="on" color="secondary" @click="openSignDocumentDialog()" :style="buttonStyles">
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
             </template>
-            PDF-Dokument signieren
-          </v-tooltip>
-          <!-- Unterschriebenes Dokument ansehen -->
-          <v-tooltip bottom v-if="isDocumentSigned">
-            <template v-slot:activator="{ on }">
-              <v-btn v-on="on" color="secondary" @click="openSignDocumentDialog()" :style="buttonStyles">
-                <v-icon>mdi-eye</v-icon>
-              </v-btn>
-            </template>
-            Signiertes PDF-Dokument ansehen
+            PDF-Dokument bearbeiten oder ansehen
           </v-tooltip>
           <!-- Unterschriebenes Dokument herunterladen -->
-          <v-tooltip bottom v-if="isDocumentSigned">
+          <v-tooltip bottom v-if="isDocumentUpdated">
             <template v-slot:activator="{ on }">
               <v-btn v-on="on" @click="downloadSignedFile()" :style="buttonStyles">
                 <v-icon>mdi-download</v-icon>
+                Herunterladen
               </v-btn>
             </template>
             Signiertes PDF-Dokument herunterladen
           </v-tooltip>
+<!--          &lt;!&ndash; Unterschriebenes Dokument ansehen &ndash;&gt;
+          <v-tooltip bottom v-if="isDocumentUpdated">
+            <template v-slot:activator="{ on }">
+              <v-btn v-on="on" @click="openSignDocumentDialog()" :style="buttonStyles">
+                <v-icon>mdi-eye</v-icon>
+              </v-btn>
+            </template>
+            Signiertes PDF-Dokument ansehen
+          </v-tooltip>-->
+          <v-chip v-if="isDocumentSigned" color="green">Erfolgreich signiert</v-chip>
+          <v-chip v-else-if="isDocumentUpdated" color="green">Erfolgreich gespeichert</v-chip>
+          <v-chip v-else color="orange">Wartet auf Signatur</v-chip>
         </v-col>
         <v-col cols="12" v-else>
           <p>Bitte laden Sie ein PDF-Dokument hoch.</p>
@@ -62,16 +61,15 @@
             >
               <v-icon>mdi-close</v-icon>
             </v-btn>
-            <v-toolbar-title v-if="!isDocumentSigned">Signaturfeld aufbringen oder PDF-Dokument digital signieren</v-toolbar-title>
-            <v-toolbar-title v-else>Signiertes PDF-Dokument ansehen</v-toolbar-title>
+            <v-toolbar-title>Signaturfeld aufbringen oder PDF-Dokument digital signieren</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items>
               <v-btn
                 dark
                 text
-                @click="signDocument()" :disabled="!undUpdatedFileLocation " v-show="!isDocumentSigned"
+                @click="signDocument()" :disabled="!undUpdatedFileLocation"
               >
-                Abschließen
+                Speichern
               </v-btn>
             </v-toolbar-items>
           </v-toolbar>
@@ -121,6 +119,7 @@ export default defineComponent({
     let undFileLocation = ref<string>();
     let undUpdatedFileLocation = ref<string>();
     let isDocumentSigned = ref<boolean>(false);
+    let isDocumentUpdated = ref<boolean>(false);
     // can't be false -> iframe doesn't load
     let isDocumentSignDialogOpen = ref<boolean>(true);
 
@@ -179,6 +178,7 @@ export default defineComponent({
       doxiviewMaster.registerFunction("getStartParameters", getStartParameters, false)
       doxiviewMaster.registerFunction("terminate", onTerminate, false)
       doxiviewMaster.registerFunction("onDocumentVersionUpdated", onDocumentVersionUpdated, false)
+      doxiviewMaster.registerFunction("onSignatureFieldSigned", onSignatureFieldSigned, false)
       console.log('doxiview IWC initialized');
     }
 
@@ -231,6 +231,11 @@ export default defineComponent({
       openDoxiview();
     }
 
+    const onSignatureFieldSigned = () => {
+      console.log("doxiview onSignatureFieldSigned")
+      isDocumentSigned.value = true;
+    }
+
     const onDocumentVersionUpdated = (evt: { location: string; }) => {
       console.log("doxiview onDocumentVersionUpdated")
       // TODO adjust doxiview config on https://lhm-digital4finance.dev.cib.de/ to get the correct ingress URL
@@ -249,8 +254,9 @@ export default defineComponent({
       // update s3
       await globalAxios.put(updateFilePresignedUrl.value!, res.data);
       // closes the iFrame
-      isDocumentSigned.value = true;
+      isDocumentUpdated.value = true;
       isDocumentSignDialogOpen.value = false;
+      undUpdatedFileLocation.value = "";
     }
 
     const downloadSignedFile = async () => {
@@ -271,6 +277,7 @@ export default defineComponent({
       filePath,
       fileName,
       isDocumentSigned,
+      isDocumentUpdated,
       isDocumentSignDialogOpen,
       doxiview,
       doxiviewMaster,

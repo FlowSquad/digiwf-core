@@ -48,7 +48,7 @@ public class CosysAdapter implements GenerateDocumentPort, GenerateWebformUrlPor
                             generateDocument.getClient(),
                             generateDocument.getRole(),
                             createFile(DATA_FILE_NAME, generateDocument.getVariables().toString().getBytes(StandardCharsets.UTF_8)),
-                            null,
+                            generateDocument.getOutputFormat(),
                             null,
                             null,
                             null,

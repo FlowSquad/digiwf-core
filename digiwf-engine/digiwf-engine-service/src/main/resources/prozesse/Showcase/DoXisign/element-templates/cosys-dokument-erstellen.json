@@ -84,6 +84,19 @@
       }
     },
     {
+      "label": "OutputFormat",
+      "type": "String",
+      "value": "FormatPdfFormular",
+      "binding": {
+        "type": "camunda:in",
+        "expression": true,
+        "target": "outputFormat"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
       "label": "Guid",
       "type": "String",
       "value": "519650b7-87c2-41a6-8527-7b095675b13f",

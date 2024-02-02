@@ -4,9 +4,14 @@
         "key": "MyStartForm",
         "type": "object",
         "x-display": "",
+		"x-options": {
+            "sectionsTitlesClasses": [
+				"d-none"
+            ]
+        },
         "allOf": [
             {
-                "title": "Dokument erstellen",
+                "title": "Belegdaten erfassen und übernehmen",
                 "description": "",
                 "type": "object",
                 "key": "008e8f69-c94b-44d5-8b9c-527f95f6f376",
@@ -25,42 +30,11 @@
                             "childrenClass": "pl-0"
                         },
                         "properties": {
-                            "ac310b9d-4c60-4838-828d-f68f522fc7d2": {
-                                "fieldType": "file",
-                                "title": "Dokument",
-                                "x-display": "custom-multi-file-input",
-                                "type": "object",
-                                "properties": {
-                                    "key": {
-                                        "type": "string"
-                                    },
-                                    "amount": {
-                                        "type": "integer"
-                                    }
-                                },
-                                "key": "ac310b9d-4c60-4838-828d-f68f522fc7d2",
-                                "uuidEnabled": false,
-                                "filePath": "test",
-                                "x-options": {
-                                    "fieldColProps": {
-                                        "cols": 12,
-                                        "sm": 12,
-                                        "messages": {}
-                                    }
-                                },
-                                "x-props": {
-                                    "outlined": true,
-                                    "dense": true
-                                },
-                                "x-rules": [],
-                                "maxFiles": 1,
-                                "accept": "application/pdf"
-                            },
-                            "webformUrl": {
+                            "webform": {
                                 "fieldType": "document-creation",
                                 "title": "Webform",
                                 "type": "string",
-                                "key": "webformUrl",
+                                "key": "webform",
                                 "x-display": "custom-document-creation",
                                 "x-options": {
                                     "fieldColProps": {

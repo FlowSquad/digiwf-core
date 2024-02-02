@@ -3,9 +3,14 @@
     "schema": {
         "type": "object",
         "x-display": "",
+		"x-options": {
+            "sectionsTitlesClasses": [
+				"d-none"
+            ]
+        },
         "allOf": [
             {
-                "title": "Dokument unterschreiben",
+                "title": "Signaturfeld aufbringen oder PDF-Dokument signieren und herunterladen",
                 "description": "",
                 "type": "object",
                 "key": "549089f0-b2e4-4ba6-a3ad-49c795984021",

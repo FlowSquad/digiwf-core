@@ -4,9 +4,14 @@
         "key": "MyStartForm",
         "type": "object",
         "x-display": "",
+		"x-options": {
+            "sectionsTitlesClasses": [
+				"d-none"
+            ]
+        },
         "allOf": [
             {
-                "title": "Dokument Signieren Vorgang starten",
+                "title": "Erfassungsbeleg auswählen",
                 "description": "",
                 "type": "object",
                 "key": "90bc9c7c-f1a3-4c42-a7f9-42325d04d3c0",
@@ -27,17 +32,21 @@
                         "properties": {
                             "template": {
                                 "fieldType": "select",
-                                "title": "Template auswählen",
+                                "title": "Beleg auswählen",
                                 "type": "string",
                                 "key": "template",
                                 "anyOf": [
                                     {
-                                        "title": "Template 1",
-                                        "const": "abc"
+                                        "title": "Erfassungsbeleg zur Auszahlungsanordnung",
+                                        "const": "{\"guid\": \"15bef522-8ba8-41b1-9487-1a28bf6300fa\", \"templateName\": \"Erfassungsbeleg zur Auszahlungsanordnung\", \"documentName\": \"Erfassungsbeleg_zur_Auszahlungsanordnung.pdf\"}"
                                     },
                                     {
-                                        "title": "Template 2",
-                                        "const": "def"
+                                        "title": "Erfassungsbeleg zur AO Transferleistungen mit Signaturfeld",
+                                        "const": "{\"guid\": \"aaefa914-3b90-40fd-8f32-a7822c6ae329\", \"templateName\": \"Erfassungsbeleg zur AO Transferleistungen mit Signaturfeld\", \"documentName\": \"Erfassungsbeleg_zur_AO_Transferleistungen_mit_Signaturfeld.pdf\"}"
+                                    },
+                                    {
+                                        "title": "Erfassungsbeleg einmalige oeff rechtliche Forderungen SA 117.11",
+                                        "const": "{\"guid\": \"e451c372-fc99-4c9d-83cc-34c1a663f7f9\", \"templateName\": \"Erfassungsbeleg einmalige oeff rechtliche Forderungen SA 117.11\", \"documentName\": \"Erfassungsbeleg_einmalige_oeff_rechtliche_Forderungen_SA_117_11.pdf\"}"
                                     }
                                 ],
                                 "x-options": {

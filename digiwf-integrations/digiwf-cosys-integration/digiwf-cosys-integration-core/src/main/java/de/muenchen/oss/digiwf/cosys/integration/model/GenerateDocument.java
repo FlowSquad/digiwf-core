@@ -44,6 +44,12 @@ public class GenerateDocument {
     private String guid;
 
     /**
+     * The OutputFormat of generated PDF
+     */
+    @NotBlank(message = "outputFormat is mandatory")
+    private String outputFormat;
+
+    /**
      * All data to be filled into template
      */
     private JsonNode variables;
