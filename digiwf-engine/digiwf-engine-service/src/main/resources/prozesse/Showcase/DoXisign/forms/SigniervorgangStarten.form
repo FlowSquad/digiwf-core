@@ -38,15 +38,15 @@
                                 "anyOf": [
                                     {
                                         "title": "Erfassungsbeleg zur Auszahlungsanordnung",
-                                        "const": "{\"guid\": \"15bef522-8ba8-41b1-9487-1a28bf6300fa\", \"templateName\": \"Erfassungsbeleg zur Auszahlungsanordnung\", \"documentName\": \"Erfassungsbeleg_zur_Auszahlungsanordnung.pdf\"}"
+                                        "const": "{\"guid\": \"15bef522-8ba8-41b1-9487-1a28bf6300fa\", \"templateName\": \"Erfassungsbeleg zur Auszahlungsanordnung\"}"
                                     },
                                     {
                                         "title": "Erfassungsbeleg zur AO Transferleistungen mit Signaturfeld",
-                                        "const": "{\"guid\": \"aaefa914-3b90-40fd-8f32-a7822c6ae329\", \"templateName\": \"Erfassungsbeleg zur AO Transferleistungen mit Signaturfeld\", \"documentName\": \"Erfassungsbeleg_zur_AO_Transferleistungen_mit_Signaturfeld.pdf\"}"
+                                        "const": "{\"guid\": \"aaefa914-3b90-40fd-8f32-a7822c6ae329\", \"templateName\": \"Erfassungsbeleg zur AO Transferleistungen mit Signaturfeld\"}"
                                     },
                                     {
                                         "title": "Erfassungsbeleg einmalige oeff rechtliche Forderungen SA 117.11",
-                                        "const": "{\"guid\": \"e451c372-fc99-4c9d-83cc-34c1a663f7f9\", \"templateName\": \"Erfassungsbeleg einmalige oeff rechtliche Forderungen SA 117.11\", \"documentName\": \"Erfassungsbeleg_einmalige_oeff_rechtliche_Forderungen_SA_117_11.pdf\"}"
+                                        "const": "{\"guid\": \"e451c372-fc99-4c9d-83cc-34c1a663f7f9\", \"templateName\": \"Erfassungsbeleg einmalige oeff rechtliche Forderungen SA 117.11\"}"
                                     }
                                 ],
                                 "x-options": {
