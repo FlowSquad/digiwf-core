@@ -3,7 +3,7 @@
     "schema": {
         "type": "object",
         "x-display": "",
-		"x-options": {
+        "x-options": {
             "sectionsTitlesClasses": [
                 "d-none"
             ]
@@ -76,7 +76,9 @@
                                     "outlined": true,
                                     "dense": true
                                 },
-                                "x-rules": []
+                                "x-rules": [
+                                    "required"
+                                ]
                             }
                         }
                     }
