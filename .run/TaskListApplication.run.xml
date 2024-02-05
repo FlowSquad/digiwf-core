@@ -1,14 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="TaskListApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-    <option name="ACTIVE_PROFILES" value="local,no-ldap" />
+  <configuration default="false" name="TaskListApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <option name="ACTIVE_PROFILES" value="local, no-ldap" />
+    <option name="ALTERNATIVE_JRE_PATH" value="corretto-17" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <module name="digiwf-tasklist-service" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="de.muenchen.oss.digiwf.task.service.TaskListApplication" />
-    <extension name="coverage">
-      <pattern>
-        <option name="PATTERN" value="de.muenchen.oss.digiwf.task.service.*" />
-        <option name="ENABLED" value="true" />
-      </pattern>
-    </extension>
     <extension name="net.ashald.envfile">
       <option name="IS_ENABLED" value="true" />
       <option name="IS_SUBST" value="false" />
