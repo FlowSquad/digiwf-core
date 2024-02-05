@@ -38,6 +38,7 @@ public class GenerateDocumentTest {
                     .client("client")
                     .role("role")
                     .guid("guid")
+                    .outputFormat("pdf")
                     .variables(jsonNode())
                     .documentStorageUrls(List.of(validDocumentStorageUrl))
                     .build();
@@ -53,7 +54,7 @@ public class GenerateDocumentTest {
                 GenerateDocument.builder()
                         .build()
         );
-        Assertions.assertEquals(3, violations.size());
+        Assertions.assertEquals(4, violations.size());
     }
 
     @Test
@@ -69,7 +70,7 @@ public class GenerateDocumentTest {
         violations = this.validator.validate(
                 documentBuilder.documentStorageUrls(new ArrayList<>()).build()
         );
-        Assertions.assertEquals(1, violations.size());
+        Assertions.assertEquals(2, violations.size());
 
         // more than 1 documentStorageUrls and action is wrong
         final DocumentStorageUrl documentStorageUrl = DocumentStorageUrl.builder()
@@ -80,7 +81,7 @@ public class GenerateDocumentTest {
         violations = this.validator.validate(
                 documentBuilder.documentStorageUrls(List.of(documentStorageUrl, documentStorageUrl)).build()
         );
-        Assertions.assertEquals(2, violations.size());
+        Assertions.assertEquals(3, violations.size());
     }
 
 

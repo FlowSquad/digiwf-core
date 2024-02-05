@@ -39,7 +39,7 @@ class CreateDocumentUseCaseTest {
     private List<DocumentStorageUrl> listOfURls = List.of(documentStorageUrl);
     private JsonNode variables = new ObjectMapper().readTree("{\"key1\":\"value\"}");
 
-    private final GenerateDocument generateDocument = new GenerateDocument("Client", "Role", "guid", variables, listOfURls);
+    private final GenerateDocument generateDocument = new GenerateDocument("Client", "Role", "guid", "pdf", variables, listOfURls);
 
     CreateDocumentUseCaseTest() throws JsonProcessingException {
     }

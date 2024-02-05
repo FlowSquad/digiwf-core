@@ -14,21 +14,15 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.*;
 
 
 class S3AdapterTest {
 
     private final S3FileTransferRepository s3FileTransferRepository = mock(S3FileTransferRepository.class);
-    private S3Adapter s3Adapter;
-
     private final String data = "In Cosys generiertes Dokument";
     private final byte[] dataAsByteArray = data.getBytes();
+    private S3Adapter s3Adapter;
 
     @BeforeEach
     void setup() {
@@ -41,7 +35,7 @@ class S3AdapterTest {
         final DocumentStorageUrl documentStorageUrl = new DocumentStorageUrl("URL", "Path", "POST");
         List<DocumentStorageUrl> listOfURls = List.of(documentStorageUrl);
 
-        final GenerateDocument generateDocument = new GenerateDocument("Client", "Role", "guid", null, listOfURls);
+        final GenerateDocument generateDocument = new GenerateDocument("Client", "Role", "guid", "pdf", null, listOfURls);
 
         s3Adapter.saveDocumentInStorage(generateDocument, dataAsByteArray);
 
@@ -56,7 +50,7 @@ class S3AdapterTest {
         final DocumentStorageUrl documentStorageUrl = new DocumentStorageUrl("URL", "Path", "PUT");
         List<DocumentStorageUrl> listOfURls = List.of(documentStorageUrl);
 
-        final GenerateDocument generateDocument = new GenerateDocument("Client", "Role", "guid", null, listOfURls);
+        final GenerateDocument generateDocument = new GenerateDocument("Client", "Role", "guid", "pdf", null, listOfURls);
 
         s3Adapter.saveDocumentInStorage(generateDocument, dataAsByteArray);
 
@@ -71,15 +65,17 @@ class S3AdapterTest {
         final DocumentStorageUrl documentStorageUrl = new DocumentStorageUrl("URL", "Path", "GET");
         List<DocumentStorageUrl> listOfURls = List.of(documentStorageUrl);
 
-        final GenerateDocument generateDocument = new GenerateDocument("Client", "Role", "guid", null, listOfURls);
+        final GenerateDocument generateDocument = new GenerateDocument("Client", "Role", "guid", "pdf", null, listOfURls);
 
-        BpmnError bpmnError = assertThrows(BpmnError.class,  () -> { s3Adapter.saveDocumentInStorage(generateDocument, dataAsByteArray);});
+        BpmnError bpmnError = assertThrows(BpmnError.class, () -> {
+            s3Adapter.saveDocumentInStorage(generateDocument, dataAsByteArray);
+        });
 
         String expectedMessage = "Document storage action GET is not supported.";
         String actualMessage = bpmnError.getErrorMessage();
 
         assertEquals(expectedMessage, actualMessage);
-        assertEquals("S3_FILE_SAVE_ERROR",bpmnError.getErrorCode());
+        assertEquals("S3_FILE_SAVE_ERROR", bpmnError.getErrorCode());
 
 
     }
@@ -91,7 +87,7 @@ class S3AdapterTest {
         final DocumentStorageUrl documentStorageUrl = new DocumentStorageUrl("URL", "Path", "POST");
         List<DocumentStorageUrl> listOfURls = List.of(documentStorageUrl);
 
-        final GenerateDocument generateDocument = new GenerateDocument("Client", "Role", "guid", null, listOfURls);
+        final GenerateDocument generateDocument = new GenerateDocument("Client", "Role", "guid", "pdf", null, listOfURls);
 
         BpmnError bpmnError = assertThrows(BpmnError.class, () -> {
             s3Adapter.saveDocumentInStorage(generateDocument, dataAsByteArray);
@@ -102,7 +98,7 @@ class S3AdapterTest {
 
         assertEquals(expectedMessage, actualMessage);
 
-        assertEquals("S3_FILE_SAVE_ERROR",bpmnError.getErrorCode());
+        assertEquals("S3_FILE_SAVE_ERROR", bpmnError.getErrorCode());
 
     }
 

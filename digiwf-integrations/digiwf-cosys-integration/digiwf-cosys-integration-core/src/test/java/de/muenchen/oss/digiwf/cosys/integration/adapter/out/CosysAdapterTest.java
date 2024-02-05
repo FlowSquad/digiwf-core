@@ -63,7 +63,7 @@ class CosysAdapterTest {
                 generateDocument.getClient(),
                 generateDocument.getRole(),
                 dataFileCaptor.getValue(),
-                null,
+                "pdf",
                 null,
                 null,
                 null,
@@ -81,6 +81,7 @@ class CosysAdapterTest {
                     "client",
                     "role",
                     "guid",
+                    "pdf",
                     new ObjectMapper().readTree("{\"name\":\"John\", \"age\":30}"),
                     List.of(DocumentStorageUrl.builder().url("").build())
             );
