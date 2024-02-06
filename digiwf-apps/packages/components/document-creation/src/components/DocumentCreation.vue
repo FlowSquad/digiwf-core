@@ -1,6 +1,6 @@
 <template>
   <div class="pa-0">
-    <iframe ref="webform" :src="webformUrl" height="350px" width="100%" style="border: none"></iframe>
+    <iframe ref="webform" :src="webformUrl" height="600px" width="100%" style="border: none"></iframe>
     <v-btn color="secondary" @click="submit()" style="margin: 15px">
       Übernehmen
     </v-btn>
