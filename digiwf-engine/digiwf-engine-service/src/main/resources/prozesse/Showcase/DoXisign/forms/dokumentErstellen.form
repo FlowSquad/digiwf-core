@@ -4,14 +4,9 @@
         "key": "MyStartForm",
         "type": "object",
         "x-display": "",
-		"x-options": {
-            "sectionsTitlesClasses": [
-				"d-none"
-            ]
-        },
         "allOf": [
             {
-                "title": "Belegdaten erfassen und übernehmen",
+                "title": "",
                 "description": "",
                 "type": "object",
                 "key": "008e8f69-c94b-44d5-8b9c-527f95f6f376",

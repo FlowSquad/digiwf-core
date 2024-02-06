@@ -74,7 +74,12 @@ public class CosysAdapter implements GenerateDocumentPort, GenerateWebformUrlPor
     public String generateWebformUrl(String webformGuid, String role, String client) {
         final Generator generator = new Generator();
         generator.setType("de.cib.cosys.rest.DynamicJsGenerator");
-        generator.headIncludes(List.of("<script src=\"../../webjars/webform/postmessage.js\"></script>"));
+        List<String> headIncludes = List.of(
+                "<script src=\"../../webjars/webform/postmessage.js\"></script>",
+                "<script src=\"../../webjars/webform/controls.js\"></script>",
+                "<script src=\"../../webjars/webform/messages.js\"></script>",
+                "<link rel=\"stylesheet\" href=\"../../../webform/integration.css\"></link>");
+        generator.headIncludes(headIncludes);
         val response = this.webformApi.prepareWebform(webformGuid, client, role, generator, null, null).block();
         return this.configuration.getWebformUrl() + response.getFormId() + "/html";
     }

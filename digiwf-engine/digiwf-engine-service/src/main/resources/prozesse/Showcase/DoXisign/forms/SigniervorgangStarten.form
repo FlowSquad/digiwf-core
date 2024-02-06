@@ -4,14 +4,9 @@
         "key": "MyStartForm",
         "type": "object",
         "x-display": "",
-		"x-options": {
-            "sectionsTitlesClasses": [
-				"d-none"
-            ]
-        },
         "allOf": [
             {
-                "title": "Erfassungsbeleg auswählen",
+                "title": "",
                 "description": "",
                 "type": "object",
                 "key": "90bc9c7c-f1a3-4c42-a7f9-42325d04d3c0",

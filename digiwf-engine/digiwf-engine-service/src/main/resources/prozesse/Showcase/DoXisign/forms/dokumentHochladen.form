@@ -3,15 +3,10 @@
     "schema": {
         "type": "object",
         "x-display": "",
-        "x-options": {
-            "sectionsTitlesClasses": [
-                "d-none"
-            ]
-        },
         "allOf": [
             {
                 "key": "sectionKey1",
-                "title": "Dokument hochladen",
+                "title": "",
                 "type": "object",
                 "x-options": {
                     "sectionsTitlesClasses": [
