@@ -8,6 +8,6 @@ changes:
       name: camunda-admin
       description: Special camunda admin group.
   - assignRole:
-      user: johndoe
+      user: georghatzelmann
       clientId: ${SSO_ENGINE_CLIENT_ID}
       role: camunda-admin
