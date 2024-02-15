@@ -3,7 +3,7 @@ spring:
     gateway:
       routes:
         - id: backend-dockerized
-          uri: http://host.docker.internal:${ENGINE_SERVER_PORT}/
+          uri: http://digiwf-engine:${ENGINE_SERVER_PORT}/
           predicates:
             - Path=/api/digitalwf-backend-service/**
           filters:
@@ -11,12 +11,12 @@ spring:
             - RemoveResponseHeader=WWW-Authenticate
 
         - id: backend-cockpit
-          uri: http://${ENGINE_SERVER_HOST:host.docker.internal}:${ENGINE_SERVER_PORT}
+          uri: http://digiwf-engine:${ENGINE_SERVER_PORT}
           predicates:
             - Path=/camunda/**
 
         - id: tasklist-dockerized
-          uri: http://host.docker.internal:${TASKSERVICE_SERVER_PORT}/
+          uri: http://digiwf-tasklist-service:${TASKSERVICE_SERVER_PORT}/
           predicates:
             - Path=/api/digitalwf-tasklist-service/rest/**
           filters:
@@ -24,7 +24,7 @@ spring:
             - RemoveResponseHeader=WWW-Authenticate
 
         - id: backend-cockpit
-          uri: http://host.docker.internal:${ENGINE_SERVER_PORT}
+          uri: http://digiwf-engine:${ENGINE_SERVER_PORT}
           predicates:
             - Path=/camunda/**
 
