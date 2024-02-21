@@ -7,5 +7,4 @@ changes:
       secret: ${SSO_TASK_CLIENT_SECRET}
       publicClient: false
       redirectUris:
-        - http://localhost:${TASKSERVICE_SERVER_PORT}/*
-
+        - ${HOST_URL}:${TASKSERVICE_SERVER_PORT}/*

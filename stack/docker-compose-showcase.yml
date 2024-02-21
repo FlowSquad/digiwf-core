@@ -137,6 +137,8 @@ services:
       - docker.env
     environment:
       SPRING_PROFILES_ACTIVE: "local, docker" #possible values: local or  (local, docker) # add profile 'docker' if you want to run the engine and frontend in docker, add local when you want to run the engine and frontend outside of docker
+    ports:
+      - "8086:8086"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:
@@ -221,7 +223,7 @@ services:
       - '8080:8080'
     command: 'start-dev --http-relative-path /auth'
     environment:
-      KC_HOSTNAME: keycloak # this hostname must be resolved to 127.0.0.1 locally. Add it to your hosts file.
+      KC_HOSTNAME: ${HOST} # this hostname must be resolved to 127.0.0.1 locally. Add it to your hosts file.
       KC_HOSTNAME_STRICT: 'false'
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://postgres-keycloak:5432/keycloak
@@ -232,6 +234,8 @@ services:
     networks:
       - local-keycloak
       - internal
+    extra_hosts:
+      - "${HOST}:host-gateway"
 
   init-keycloak:
     image: klg71/keycloakmigration
