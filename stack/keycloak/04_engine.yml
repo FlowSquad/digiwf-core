@@ -7,10 +7,10 @@ changes:
       secret: ${SSO_ENGINE_CLIENT_SECRET}
       publicClient: false
       redirectUris:
-        - ${HOST_URL}:39146/*
-        - ${HOST_URL}:8082/*
-        - ${HOST_URL}:8083/*
-        - ${HOST_URL}:8084/*
+        - ${HOST}:39146/*
+        - ${HOST}:8082/*
+        - ${HOST}:8083/*
+        - ${HOST}:8084/*
   - addRole:
       clientId: ${SSO_ENGINE_CLIENT_ID}
       clientRole: true

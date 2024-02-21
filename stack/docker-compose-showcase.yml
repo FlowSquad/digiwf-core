@@ -122,6 +122,9 @@ services:
 
   digiwf-cosys:
     image: docker.io/library/digiwf-cosys:latest
+    depends_on:
+      init-keycloak:
+        condition: service_completed_successfully
     env_file:
       - docker.env
     environment:
@@ -133,6 +136,9 @@ services:
 
   digiwf-s3:
     image: docker.io/library/digiwf-s3:latest
+    depends_on:
+      init-keycloak:
+        condition: service_completed_successfully
     env_file:
       - docker.env
     environment:
@@ -146,6 +152,9 @@ services:
 
   digiwf-signing:
     image: docker.io/library/digiwf-signing:latest
+    depends_on:
+      init-keycloak:
+        condition: service_completed_successfully
     env_file:
       - docker.env
     environment:
@@ -201,8 +210,8 @@ services:
   digiwf-gateway:
     image: docker.io/library/digiwf-gateway-service:latest
     depends_on:
-      init-keycloak:
-        condition: service_completed_successfully
+      digiwf-engine:
+        condition: service_started
     env_file:
       - docker.env
     ports:
@@ -222,8 +231,10 @@ services:
     ports:
       - '8080:8080'
     command: 'start-dev --http-relative-path /auth'
+    env_file:
+      - './docker.env'
     environment:
-      KC_HOSTNAME: ${HOST} # this hostname must be resolved to 127.0.0.1 locally. Add it to your hosts file.
+#      KC_HOSTNAME: ${HOST} # this hostname must be resolved to 127.0.0.1 locally. Add it to your hosts file.
       KC_HOSTNAME_STRICT: 'false'
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://postgres-keycloak:5432/keycloak
@@ -234,8 +245,6 @@ services:
     networks:
       - local-keycloak
       - internal
-    extra_hosts:
-      - "${HOST}:host-gateway"
 
   init-keycloak:
     image: klg71/keycloakmigration
