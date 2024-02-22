@@ -8,3 +8,4 @@ changes:
       publicClient: false
       redirectUris:
         - ${HOST}:${TASKSERVICE_SERVER_PORT}/*
+        - ${HOST}/*

@@ -11,6 +11,7 @@ changes:
         - ${HOST}:8082/*
         - ${HOST}:8083/*
         - ${HOST}:8084/*
+        - ${HOST}/*
   - addRole:
       clientId: ${SSO_ENGINE_CLIENT_ID}
       clientRole: true
