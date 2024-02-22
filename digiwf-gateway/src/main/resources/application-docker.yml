@@ -32,3 +32,12 @@ spring:
           uri: http://digiwf-tasklist:8080/
           predicates:
             - Path=/**
+
+        # integrations
+        - id: signing-integration
+          uri: http://digiwf-signing:${SIGNING_INTEGRATION_PORT}/
+          predicates:
+            - Path=/api/integration/**
+          filters:
+            - RewritePath=/api/integration/(?<urlsegments>.*), /$\{urlsegments}
+            - RemoveResponseHeader=WWW-Authenticate
