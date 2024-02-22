@@ -33,9 +33,9 @@ public class MockUserServiceImpl implements UserService {
     private final User john = new User(
             "externer.john.doe",
             "123456789",
-            "John",
-            "Doe",
-            "john.doe@example.com",
+            "Benjamin",
+            "Huth",
+            "benjamin.huth@cib.de",
             "cn",
             "86153",
             "Boeheimstrasse 8",
@@ -55,9 +55,9 @@ public class MockUserServiceImpl implements UserService {
     private final User jane = new User(
             "externer.jane.doe",
             "234567890",
-            "Jane",
-            "Doe",
-            "jane.doe@example.com",
+            "Georg",
+            "Hatzelmann",
+            "georg.hatzelmann@cib.com",
             "cn",
             "86153",
             "Boeheimstrasse 8",
@@ -88,10 +88,10 @@ public class MockUserServiceImpl implements UserService {
     @Override
     public List<User> searchUser(final String searchString, final String ous) {
         return Stream.of(this.john, this.jane).filter(it -> it.getForename().contains(searchString)
-                || it.getSurname().contains(searchString)
-                || it.getLhmObjectId().contains(searchString)
-                || it.getUsername().contains(searchString)
-                || it.getEmail().contains(searchString))
+                        || it.getSurname().contains(searchString)
+                        || it.getLhmObjectId().contains(searchString)
+                        || it.getUsername().contains(searchString)
+                        || it.getEmail().contains(searchString))
                 .collect(Collectors.toList());
     }
 

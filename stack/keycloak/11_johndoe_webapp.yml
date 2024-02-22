@@ -8,6 +8,6 @@ changes:
       name: digiwf-webapp-user
       description: Can use Camunda web apps.
   - assignRole:
-      user: johndoe
+      user: benjaminhuth
       clientId: ${SSO_ENGINE_CLIENT_ID}
       role: digiwf-webapp-user

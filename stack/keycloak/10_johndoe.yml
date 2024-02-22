@@ -1,9 +1,9 @@
-id: johndoe
+id: benjaminhuth
 author: Simon Zambrovski
 realm: ${SSO_REALM}
 changes:
   - addUser:
-      name: johndoe
+      name: benjaminhuth
       lastName: Doe
       firstName: John
       enabled: true
@@ -22,5 +22,5 @@ changes:
         - client: ${SSO_ENGINE_CLIENT_ID}
           role: clientrole_task_importer
   - updateUserPassword:
-      name: johndoe
+      name: benjaminhuth
       password: "test"
