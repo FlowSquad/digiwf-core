@@ -28,11 +28,6 @@ spring:
           predicates:
             - Path=/camunda/**
 
-        - id: frontend-dockerized
-          uri: http://digiwf-tasklist:8080/
-          predicates:
-            - Path=/**
-
         # integrations
         - id: signing-integration
           uri: http://digiwf-signing:${SIGNING_INTEGRATION_PORT}/
@@ -41,3 +36,10 @@ spring:
           filters:
             - RewritePath=/api/integration/(?<urlsegments>.*), /$\{urlsegments}
             - RemoveResponseHeader=WWW-Authenticate
+
+        - id: frontend-dockerized
+          uri: http://digiwf-tasklist:8080/
+          predicates:
+            - Path=/**
+
+
